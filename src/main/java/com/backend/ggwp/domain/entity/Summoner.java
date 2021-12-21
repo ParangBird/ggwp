@@ -1,10 +1,12 @@
 package com.backend.ggwp.domain.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
+@NoArgsConstructor
 public class Summoner {
         private String leagueId;
         private String queueType;

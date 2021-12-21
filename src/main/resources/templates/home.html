@@ -5,6 +5,11 @@
     <title>Title</title>
 </head>
 <body>
-  <h2>this is homepage</h2>
+<h2>유저 닉네임 : <span th:text="${summoner.summonerName}"> </span> </h2>
+<h3>티어 : <span th:text="${summoner.tier}"></span> <span th:text="${summoner.rank}"></span></h3>
+<h3>점수 : <span th:text="${summoner.leaguePoints}"></span> <span>LP / </span>
+<span th:text="${summoner.wins}"></span>승 <span th:text="${summoner.losses}"></span>패</h3>
+<br><br>
+
 </body>
 </html>
