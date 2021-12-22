@@ -9,5 +9,14 @@
     <input type="text" name="summonerName">
     <button type="submit">검색</button>
 </form>
+
+<div>
+    <div>금주의 로테이션</div>
+    <div th:each="championName, iter : ${freeChampionNames}">
+        <div>
+            <img width="60px" height="60px" th:src="@{${'https://ddragon.leagueoflegends.com/cdn/' + version + '/img/champion/' + championName  + '.png'}}">
+            <span th:text="${championName}"></span>
+        </div>
+</div>
 </body>
 </html>
