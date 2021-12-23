@@ -19,7 +19,7 @@ import java.util.List;
 
 @Controller
 public class HomeController {
-    final String api_key =  "RGAPI-74c66803-b747-4490-9157-acd91206b3d8";
+    final String api_key =  "RGAPI-e4a216fa-d297-44ed-9058-a68372c41d3d";
     final String version = "11.24.1";
     @GetMapping("/")
     public String index(Model model){
@@ -55,7 +55,8 @@ public class HomeController {
         for(int i=0;i<freeChampionIds.size();i++){
             freeChampionNames.add(changeChampionIdToName(freeChampionIds.get(i)));
         }
-        model.addAttribute("freeChampionNames",freeChampionNames);
+        model.addAttribute("freeChampionNames1",freeChampionNames.subList(0,8));
+        model.addAttribute("freeChampionNames2", freeChampionNames.subList(8,16));
         model.addAttribute("version", version);
         return "index";
         // 로테이션 챔프 이름이 담긴 배열을 건네줘야 할거 같아요
