@@ -2,7 +2,8 @@ package com.backend.ggwp.controller;
 
 import com.backend.ggwp.domain.entity.AccountInfo;
 import com.backend.ggwp.domain.entity.RotationInfo;
-import com.backend.ggwp.domain.entity.Summoner;
+import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
+import com.backend.ggwp.service.RestApiService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @Controller
 public class HomeController {
-    final String api_key =  "RGAPI-e4a216fa-d297-44ed-9058-a68372c41d3d";
+    final static String api_key =  "RGAPI-e4a216fa-d297-44ed-9058-a68372c41d3d";
     final String version = "11.24.1";
     @GetMapping("/")
     public String index(Model model){
@@ -62,7 +63,7 @@ public class HomeController {
         // 로테이션 챔프 이름이 담긴 배열을 건네줘야 할거 같아요
     }
 
-    String changeChampionIdToName(Integer id){
+    public String changeChampionIdToName(Integer id){
         String name = "";
         switch(id){
             case 266:
@@ -391,75 +392,47 @@ public class HomeController {
     }
 
     @GetMapping("/search")
-    public String search(Model model, HttpServletRequest request) {
+    public String search(Model model, HttpServletRequest request, RestApiService restApiService) {
         String summonerName = request.getParameter("summonerName");
         summonerName = summonerName.replace(" ","");
-        StringBuffer encrypted = new StringBuffer();
-        try{ // encryptedId를 알아내기 위한 여정
-            String s = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/"+summonerName+"?api_key=" + api_key;
-            StringBuilder urlBuilder =
-                    new StringBuilder(s);
-            System.out.println("URL :" + s);
-            URL url = new URL(urlBuilder.toString());
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            BufferedReader rd;
-            if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-                rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            } else {
-                rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-            }
-            String line;
-            while ((line = rd.readLine()) != null) {
-                encrypted.append(line + "\n");
-            }
-            rd.close();
-            conn.disconnect();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Gson gson = new Gson();
-        AccountInfo accountInfo = gson.fromJson(encrypted.toString(), AccountInfo.class);
+
+        AccountInfo accountInfo = restApiService.getAccountInfo(summonerName);
+
         if(accountInfo.getId() == null)
             return "none";
+
         String encryptedId = accountInfo.getId();
-        StringBuffer result = new StringBuffer();
-        try { // 랭크정보를 알아내기 위한 여정
-            StringBuilder urlBuilder =
-                    new StringBuilder("https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/" + encryptedId + "?api_key=" + api_key); /*URL*/
-            URL url = new URL(urlBuilder.toString());
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            BufferedReader rd;
-            if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-                rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            } else {
-                rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-            }
-            String line;
-            while ((line = rd.readLine()) != null) {
-                result.append(line + "\n");
-            }
-            rd.close();
-            conn.disconnect();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ArrayList<SummonerLeagueInfo> summoner = restApiService.getAllSummonerLeagueInfo(encryptedId);
 
-        ArrayList<Summoner> summoner = gson.fromJson(result.toString() , new TypeToken<ArrayList<Summoner>>(){}.getType());
-
-        Summoner s = null;
+        SummonerLeagueInfo soloQueue = null;
         for(int i=0;i<summoner.size();i++){
             System.out.println(summoner.get(i).getQueueType());
             if(summoner.get(i).getQueueType().equals("RANKED_SOLO_5x5"))
-                s = summoner.get(i);
+                soloQueue = summoner.get(i);
         }
-        if(s == null)
+
+        if(soloQueue == null)
             return "none";
 
-        model.addAttribute("summoner", s);
+        model.addAttribute("summoner", soloQueue);
+
+
+        ArrayList<String> matchIds = restApiService.getMatchIds(accountInfo.getPuuid());
+/*        for (String matchId : matchIds){
+            System.out.println("matchId = " + matchId);
+        }*/
+        // getParticipantPuuids();
+        // getSummonerNameByPuuid();
+
+
+
+
+
+
         return "search";
     }
+
+    // puuid로 플레이어 matchid 얻기 -> matchid로 검색 -> matchid에서 참가자들 puuid 얻기 -> puuid로 검색해서 사용자 이름 얻기
 
 
 }

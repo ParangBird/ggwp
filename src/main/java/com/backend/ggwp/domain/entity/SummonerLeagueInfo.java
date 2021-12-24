@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-public class Summoner {
+public class SummonerLeagueInfo {
         private String leagueId;
         private String queueType;
         private String tier;
