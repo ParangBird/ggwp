@@ -3,9 +3,10 @@ package com.backend.ggwp.controller;
 import com.backend.ggwp.domain.entity.AccountInfo;
 import com.backend.ggwp.domain.entity.RotationInfo;
 import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
+import com.backend.ggwp.domain.entity.match.Match;
+import com.backend.ggwp.domain.entity.match.Participant;
 import com.backend.ggwp.service.RestApiService;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ import java.util.List;
 
 @Controller
 public class HomeController {
-    final static String api_key =  "RGAPI-e4a216fa-d297-44ed-9058-a68372c41d3d";
+    final static String api_key =  "RGAPI-58bef6a2-51b0-479b-a1b8-2c4c52147441";
     final String version = "11.24.1";
     @GetMapping("/")
     public String index(Model model){
@@ -421,18 +422,21 @@ public class HomeController {
 /*        for (String matchId : matchIds){
             System.out.println("matchId = " + matchId);
         }*/
+
+        Match match = restApiService.getMatchInfo(matchIds.get(0));
+        ArrayList<Participant> participants = match.getInfo().getParticipants();
+        for(int i=0;i<participants.size();i++){
+            System.out.println("participants = " + participants.get(i).getChampionName());
+        }
+
+
         // getParticipantPuuids();
         // getSummonerNameByPuuid();
-
-
-
-
-
 
         return "search";
     }
 
-    // puuid로 플레이어 matchid 얻기 -> matchid로 검색 -> matchid에서 참가자들 puuid 얻기 -> puuid로 검색해서 사용자 이름 얻기
+    // puuid로 플레이어 matchid 얻기 -> matchid로 검색 -> matchid에서 사용자 이름 얻기
 
 
 }
