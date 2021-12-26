@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class RestApiService {
 
 
-    final static String api_key =  "RGAPI-58bef6a2-51b0-479b-a1b8-2c4c52147441";
+    final static String api_key =  "RGAPI-d6a10d25-6332-406d-8f94-c16eb68bcb9e";
 
 
     public AccountInfo getAccountInfo(String summonerName){
