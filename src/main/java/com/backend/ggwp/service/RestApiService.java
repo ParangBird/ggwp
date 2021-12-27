@@ -1,5 +1,6 @@
 package com.backend.ggwp.service;
 
+import com.backend.ggwp.ApiInfo;
 import com.backend.ggwp.domain.entity.AccountInfo;
 import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
 import com.backend.ggwp.domain.entity.match.Match;
@@ -15,30 +16,33 @@ import java.util.ArrayList;
 @Service
 public class RestApiService {
 
+    private final ApiInfo API_INFO;
 
-    final static String api_key =  "RGAPI-d6a10d25-6332-406d-8f94-c16eb68bcb9e";
+    public RestApiService(ApiInfo api_info) {
+        API_INFO = api_info;
+    }
 
 
     public AccountInfo getAccountInfo(String summonerName){
-        String apiURL = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/"+summonerName+"?api_key=" + api_key;
+        String apiURL = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/"+summonerName+"?api_key=" + API_INFO.getApiKey();
         StringBuffer result = restApi(apiURL);
         return new Gson().fromJson(result.toString(), AccountInfo.class);
     }
 
     public ArrayList<SummonerLeagueInfo> getAllSummonerLeagueInfo(String encryptedId){
-        String apiURL = "https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/" + encryptedId + "?api_key=" + api_key;
+        String apiURL = "https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/" + encryptedId + "?api_key=" + API_INFO.getApiKey();
         StringBuffer result = restApi(apiURL);
         return new Gson().fromJson(result.toString() , new TypeToken<ArrayList<SummonerLeagueInfo>>(){}.getType());
     }
 
     public ArrayList<String> getMatchIds(String puuid){
-        String apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids?start=0&count=20&api_key=" + api_key;
+        String apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids?start=0&count=20&api_key=" + API_INFO.getApiKey();
         StringBuffer result = restApi(apiURL);
         return new Gson().fromJson(result.toString() , new TypeToken<ArrayList<String>>(){}.getType());
     }
 
     public Match getMatchInfo(String matchId){
-        String apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/" + matchId + "?api_key=" + api_key;
+        String apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/" + matchId + "?api_key=" + API_INFO.getApiKey();
         System.out.println("apiURL = " + apiURL);
         StringBuffer result = restApi(apiURL);
         System.out.println("result = " + result);

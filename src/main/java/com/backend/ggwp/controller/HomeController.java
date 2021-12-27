@@ -1,5 +1,6 @@
 package com.backend.ggwp.controller;
 
+import com.backend.ggwp.ApiInfo;
 import com.backend.ggwp.domain.entity.AccountInfo;
 import com.backend.ggwp.domain.entity.RotationInfo;
 import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
@@ -21,14 +22,20 @@ import java.util.List;
 
 @Controller
 public class HomeController {
-    final static String api_key =  "RGAPI-d6a10d25-6332-406d-8f94-c16eb68bcb9e";
-    final String version = "11.24.1";
+    private final ApiInfo API_INFO;
+    private final RestApiService restApiService;
+
+    public HomeController(ApiInfo api_info, RestApiService restApiService) {
+        API_INFO = api_info;
+        this.restApiService = restApiService;
+    }
+
     @GetMapping("/")
     public String index(Model model){
         StringBuffer result = new StringBuffer();
         try { // 로테이션 챔피언 아이디 배열을 얻기 위한 여정
             StringBuilder urlBuilder =
-                    new StringBuilder("https://kr.api.riotgames.com/lol/platform/v3/champion-rotations" + "?api_key=" + api_key); /*URL*/
+                    new StringBuilder("https://kr.api.riotgames.com/lol/platform/v3/champion-rotations" + "?api_key=" + API_INFO.getApiKey()); /*URL*/
             URL url = new URL(urlBuilder.toString());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
@@ -59,7 +66,7 @@ public class HomeController {
         }
         model.addAttribute("freeChampionNames1",freeChampionNames.subList(0,8));
         model.addAttribute("freeChampionNames2", freeChampionNames.subList(8,16));
-        model.addAttribute("version", version);
+        model.addAttribute("version", API_INFO.getVersion());
         return "index";
         // 로테이션 챔프 이름이 담긴 배열을 건네줘야 할거 같아요
     }
@@ -393,7 +400,7 @@ public class HomeController {
     }
 
     @GetMapping("/search")
-    public String search(Model model, HttpServletRequest request, RestApiService restApiService) {
+    public String search(Model model, HttpServletRequest request) {
         String summonerName = request.getParameter("summonerName");
         summonerName = summonerName.replace(" ","");
 
