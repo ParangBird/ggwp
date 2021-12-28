@@ -3,6 +3,7 @@ package com.backend.ggwp.service;
 import com.backend.ggwp.ApiInfo;
 import com.backend.ggwp.domain.entity.AccountInfo;
 import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
+import com.backend.ggwp.domain.entity.currentGame.CurrentGameInfo;
 import com.backend.ggwp.domain.entity.match.Match;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -51,6 +52,14 @@ public class RestApiService {
         return match;
     }
 
+    public CurrentGameInfo getCurrentGame(String encryptedId){
+        String apiURL = "https://kr.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/" + encryptedId + "?api_key="+ API_INFO.getApiKey();
+        System.out.println("apiURL = " + apiURL);
+        StringBuffer result = restApi(apiURL);
+        System.out.println("result = " + result);
+        CurrentGameInfo currentGameInfo = new Gson().fromJson(result.toString(), CurrentGameInfo.class);
+        return currentGameInfo;
+    }
 
     public StringBuffer restApi(String apiURL){
         StringBuffer result = new StringBuffer();
