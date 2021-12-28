@@ -2,6 +2,7 @@ package com.backend.ggwp.service;
 
 import com.backend.ggwp.ApiInfo;
 import com.backend.ggwp.domain.entity.AccountInfo;
+import com.backend.ggwp.domain.entity.LeagueEntrySummonerList;
 import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
 import com.backend.ggwp.domain.entity.currentGame.CurrentGameInfo;
 import com.backend.ggwp.domain.entity.match.Match;
@@ -59,6 +60,13 @@ public class RestApiService {
         System.out.println("result = " + result);
         CurrentGameInfo currentGameInfo = new Gson().fromJson(result.toString(), CurrentGameInfo.class);
         return currentGameInfo;
+    }
+
+    public ArrayList<LeagueEntrySummonerList> getChallengerList(){
+        String apiURL = "https://kr.api.riotgames.com/lol/league-exp/v4/entries/RANKED_SOLO_5x5/CHALLENGER/I?page=1&api_key=" + API_INFO.getApiKey();
+        StringBuffer result = restApi(apiURL);
+        ArrayList<LeagueEntrySummonerList> challengerList = new Gson().fromJson(result.toString(), new TypeToken<ArrayList<LeagueEntrySummonerList>>(){}.getType());
+        return challengerList;
     }
 
     public StringBuffer restApi(String apiURL){

@@ -2,6 +2,7 @@ package com.backend.ggwp.controller;
 
 import com.backend.ggwp.ApiInfo;
 import com.backend.ggwp.domain.entity.AccountInfo;
+import com.backend.ggwp.domain.entity.LeagueEntrySummonerList;
 import com.backend.ggwp.domain.entity.RotationInfo;
 import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
 import com.backend.ggwp.domain.entity.currentGame.CurrentGameInfo;
@@ -434,20 +435,21 @@ public class HomeController {
         model.addAttribute("currentGame",currentGameInfo);
         model.addAttribute("version", API_INFO.getVersion());
 
+        // 해당 소환사 최근 20겜 매치아이디 가져오기
         ArrayList<String> matchIds = restApiService.getMatchIds(accountInfo.getPuuid());
-/*        for (String matchId : matchIds){
-            System.out.println("matchId = " + matchId);
-        }*/
-
+/*
+        검색한 소환사 가장 최근 매치 정보 불러오기     
         Match match = restApiService.getMatchInfo(matchIds.get(0));
         ArrayList<Participant> participants = match.getInfo().getParticipants();
-        for(int i=0;i<participants.size();i++){
-            System.out.println("participants = " + participants.get(i).getChampionName());
+
+*/
+        
+/*      챌린저큐 정보 불러오기
+        ArrayList<LeagueEntrySummonerList> challengerList = restApiService.getChallengerList();
+        for(LeagueEntrySummonerList challenger : challengerList){
+            System.out.println(challenger.getSummonerName() + " : " + challenger.getLeaguePoints());
         }
-
-
-        // getParticipantPuuids();
-        // getSummonerNameByPuuid();
+*/
 
         return "search";
     }
