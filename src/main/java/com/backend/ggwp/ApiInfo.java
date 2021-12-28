@@ -1,9 +1,11 @@
 package com.backend.ggwp;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @Component
+@PropertySource("classpath:application-API-KEY.properties")
 public class ApiInfo {
     @Value("${riot-api-key}")
     private String apiKey;
