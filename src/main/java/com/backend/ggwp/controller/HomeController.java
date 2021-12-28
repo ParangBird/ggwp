@@ -4,6 +4,7 @@ import com.backend.ggwp.ApiInfo;
 import com.backend.ggwp.domain.entity.AccountInfo;
 import com.backend.ggwp.domain.entity.RotationInfo;
 import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
+import com.backend.ggwp.domain.entity.currentGame.CurrentGameInfo;
 import com.backend.ggwp.domain.entity.match.Match;
 import com.backend.ggwp.domain.entity.match.Participant;
 import com.backend.ggwp.service.RestApiService;
@@ -422,8 +423,16 @@ public class HomeController {
         if(soloQueue == null)
             return "none";
 
-        model.addAttribute("summoner", soloQueue);
+        CurrentGameInfo currentGameInfo = restApiService.getCurrentGame(encryptedId);
+        if(currentGameInfo.getGameId() == null)
+            model.addAttribute("gaming",0);
+        else
+            model.addAttribute("gaming",1);
 
+        model.addAttribute("summoner", soloQueue);
+        model.addAttribute("account", accountInfo);
+        model.addAttribute("currentGame",currentGameInfo);
+        model.addAttribute("version", API_INFO.getVersion());
 
         ArrayList<String> matchIds = restApiService.getMatchIds(accountInfo.getPuuid());
 /*        for (String matchId : matchIds){

@@ -22,6 +22,13 @@ body{
     margin: 0 auto; width: 30%;
     padding: 0;
 }
+.profile-container{
+    width: 620px;
+    padding: 3px;
+    margin: 10px auto 0;
+    border: 1px solid grey;
+    border-radius: 3px;
+}
 .search-form{
     align-content: center;
     margin: 0 auto;
@@ -37,3 +44,23 @@ body{
     padding-bottom: 20px;
     padding-left: 10px;
 }
+.profileIcon{
+    width: 80px;
+    height: 80px;
+}
+.emblemIcon{
+    width: 100px;
+    height: 100px;
+}
+.username{
+    font-size: 25px;
+    font-weight: bold;
+    vertical-align: top;
+}
+.box-1px-grey{
+    padding: 2px;
+    font-size: 11px;
+    border: 1px solid grey;
+    border-radius: 3px;
+    position: relative;
+  }
