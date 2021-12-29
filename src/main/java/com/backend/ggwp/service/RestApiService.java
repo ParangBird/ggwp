@@ -3,8 +3,10 @@ package com.backend.ggwp.service;
 import com.backend.ggwp.ApiInfo;
 import com.backend.ggwp.domain.entity.AccountInfo;
 import com.backend.ggwp.domain.entity.LeagueEntrySummonerList;
+import com.backend.ggwp.domain.entity.RotationInfo;
 import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
 import com.backend.ggwp.domain.entity.currentGame.CurrentGameInfo;
+import com.backend.ggwp.domain.entity.leagueList.LeagueList;
 import com.backend.ggwp.domain.entity.match.Match;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -24,6 +26,11 @@ public class RestApiService {
         API_INFO = api_info;
     }
 
+    public RotationInfo getRotationInfo(){
+        String apiURL = "https://kr.api.riotgames.com/lol/platform/v3/champion-rotations?api_key=" + API_INFO.getApiKey();
+        StringBuffer result = restApi(apiURL);
+        return new Gson().fromJson(result.toString(), RotationInfo.class);
+    }
 
     public AccountInfo getAccountInfo(String summonerName){
         String apiURL = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/"+summonerName+"?api_key=" + API_INFO.getApiKey();
@@ -62,10 +69,53 @@ public class RestApiService {
         return currentGameInfo;
     }
 
-    public ArrayList<LeagueEntrySummonerList> getChallengerList(){
-        String apiURL = "https://kr.api.riotgames.com/lol/league-exp/v4/entries/RANKED_SOLO_5x5/CHALLENGER/I?page=1&api_key=" + API_INFO.getApiKey();
+    public LeagueList getChallengerList(){
+        String apiURL = "https://kr.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/RANKED_SOLO_5x5?api_key=" + API_INFO.getApiKey();
         StringBuffer result = restApi(apiURL);
-        ArrayList<LeagueEntrySummonerList> challengerList = new Gson().fromJson(result.toString(), new TypeToken<ArrayList<LeagueEntrySummonerList>>(){}.getType());
+        LeagueList challengerList = new Gson().fromJson(result.toString() , LeagueList.class);
+        return challengerList;
+    }
+
+    public LeagueList getGrandMasterList(){
+        String apiURL = "https://kr.api.riotgames.com/lol/league/v4/grandmasterleagues/by-queue/RANKED_SOLO_5x5?api_key=" + API_INFO.getApiKey();
+        StringBuffer result = restApi(apiURL);
+        LeagueList grandMasterList = new Gson().fromJson(result.toString() , LeagueList.class);
+        return grandMasterList;
+    }
+
+
+    public LeagueList getMasterList(){
+        String apiURL = "https://kr.api.riotgames.com/lol/league/v4/masterleagues/by-queue/RANKED_SOLO_5x5?api_key=" + API_INFO.getApiKey();
+        StringBuffer result = restApi(apiURL);
+        LeagueList masterList = new Gson().fromJson(result.toString() , LeagueList.class);
+        return masterList;
+
+    }
+
+    public ArrayList<LeagueEntrySummonerList> getChallengerListSortedByScore(){
+
+        ArrayList<ArrayList<LeagueEntrySummonerList>> challengerListAll = new ArrayList<>();
+
+        int page = 1;
+        while(true){
+            String apiURL = "https://kr.api.riotgames.com/lol/league-exp/v4/entries/RANKED_SOLO_5x5/CHALLENGER/I?page=" + page++ + "&api_key=" + API_INFO.getApiKey();
+            StringBuffer result = restApi(apiURL);
+            System.out.println("result = " + result);
+            System.out.println("result.length() = " + result.length());
+            if(result == null || result.length() == 0 || result.length() == 3) {
+                break;
+            }
+            ArrayList<LeagueEntrySummonerList> challengerList = new Gson().fromJson(result.toString(), new TypeToken<ArrayList<LeagueEntrySummonerList>>(){}.getType());
+            challengerListAll.add(challengerList);
+        }
+
+        ArrayList<LeagueEntrySummonerList> challengerList = new ArrayList<>();
+
+        for(int i=0;i<challengerListAll.size();i++){
+            for(int j=0;j<challengerListAll.get(i).size();j++){
+                challengerList.add(challengerListAll.get(i).get(j));
+            }
+        }
         return challengerList;
     }
 
