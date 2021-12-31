@@ -6,12 +6,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.annotation.processing.Generated;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "leagueItem")
 @Getter
 @Setter
 @NoArgsConstructor
 @Generated("jsonschema2pojo")
 public class LeagueItem {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @SerializedName("summonerId")
     @Expose
     private String summonerId;
