@@ -26,7 +26,9 @@ public class RestApiService {
 
     public AccountInfo getAccountInfo(String summonerName){
         String apiURL = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/"+summonerName+"?api_key=" + API_INFO.getApiKey();
+        System.out.println("apiURL = " + apiURL);
         StringBuffer result = restApi(apiURL);
+        System.out.println("result = " + result);
         return new Gson().fromJson(result.toString(), AccountInfo.class);
     }
 

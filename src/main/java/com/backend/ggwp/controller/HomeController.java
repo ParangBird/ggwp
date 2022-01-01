@@ -3,6 +3,7 @@ package com.backend.ggwp.controller;
 import com.backend.ggwp.ApiInfo;
 import com.backend.ggwp.domain.entity.AccountInfo;
 import com.backend.ggwp.domain.entity.RotationInfo;
+import com.backend.ggwp.domain.entity.SummonerDto;
 import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
 import com.backend.ggwp.domain.entity.currentGame.CurrentGameInfo;
 import com.backend.ggwp.domain.entity.match.Match;
@@ -19,9 +20,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-@Controller
+@RestController
 public class HomeController {
     private final ApiInfo API_INFO;
     private final RestApiService restApiService;
@@ -31,46 +33,79 @@ public class HomeController {
         this.restApiService = restApiService;
     }
 
-    @GetMapping("/")
-    public String index(Model model){
-        StringBuffer result = new StringBuffer();
-        try { // 로테이션 챔피언 아이디 배열을 얻기 위한 여정
-            StringBuilder urlBuilder =
-                    new StringBuilder("https://kr.api.riotgames.com/lol/platform/v3/champion-rotations" + "?api_key=" + API_INFO.getApiKey()); /*URL*/
-            URL url = new URL(urlBuilder.toString());
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            BufferedReader rd;
-            if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-                rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            } else {
-                rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-            }
-            String line;
-            while ((line = rd.readLine()) != null) {
-                result.append(line + "\n");
-            }
-            rd.close();
-            conn.disconnect();
-        } catch (Exception e) {
-            e.printStackTrace();
+    @GetMapping("/reactSearch/{name}")
+    public SummonerDto index(@PathVariable(value = "name")String name){
+        String summonerName = name;
+        if(summonerName.length() == 2) summonerName = summonerName.charAt(0) + " " + summonerName.charAt(1);
+        summonerName = summonerName.replace(" ","+");
+
+        AccountInfo accountInfo = restApiService.getAccountInfo(summonerName);
+
+        if(accountInfo.getId() == null)
+            return null;
+
+        String encryptedId = accountInfo.getId();
+        ArrayList<SummonerLeagueInfo> summoner = restApiService.getAllSummonerLeagueInfo(encryptedId);
+
+        SummonerLeagueInfo soloQueue = null;
+        for(int i=0;i<summoner.size();i++){
+            System.out.println(summoner.get(i).getQueueType());
+            if(summoner.get(i).getQueueType().equals("RANKED_SOLO_5x5"))
+                soloQueue = summoner.get(i);
         }
 
-        Gson gson = new Gson();
-        RotationInfo rotationInfo = gson.fromJson(result.toString(), RotationInfo.class);
-        List<Integer> freeChampionIds = rotationInfo.getFreeChampionIds();
+        if(soloQueue == null)
+            return null;
 
-        ArrayList<String> freeChampionNames = new ArrayList<>();
+        SummonerDto summonerDto = new SummonerDto();
+        summonerDto.setId(accountInfo.getId());
+        summonerDto.setProfileIconId(accountInfo.getProfileIconId());
+        summonerDto.setProfileIconUrl("https://ddragon.leagueoflegends.com/cdn/"+API_INFO.getVersion()+"/img/profileicon/"+ accountInfo.getProfileIconId() +".png");
+        summonerDto.setSummonerLevel(accountInfo.getSummonerLevel());
 
-        for(int i=0;i<freeChampionIds.size();i++){
-            freeChampionNames.add(changeChampionIdToName(freeChampionIds.get(i)));
-        }
-        model.addAttribute("freeChampionNames1",freeChampionNames.subList(0,8));
-        model.addAttribute("freeChampionNames2", freeChampionNames.subList(8,16));
-        model.addAttribute("version", API_INFO.getVersion());
-        return "index";
-        // 로테이션 챔프 이름이 담긴 배열을 건네줘야 할거 같아요
+        return summonerDto;
     }
+
+//    @GetMapping("/")
+//    public String index(Model model){
+//        StringBuffer result = new StringBuffer();
+//        try { // 로테이션 챔피언 아이디 배열을 얻기 위한 여정
+//            StringBuilder urlBuilder =
+//                    new StringBuilder("https://kr.api.riotgames.com/lol/platform/v3/champion-rotations" + "?api_key=" + API_INFO.getApiKey()); /*URL*/
+//            URL url = new URL(urlBuilder.toString());
+//            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//            conn.setRequestMethod("GET");
+//            BufferedReader rd;
+//            if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+//                rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+//            } else {
+//                rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+//            }
+//            String line;
+//            while ((line = rd.readLine()) != null) {
+//                result.append(line + "\n");
+//            }
+//            rd.close();
+//            conn.disconnect();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        Gson gson = new Gson();
+//        RotationInfo rotationInfo = gson.fromJson(result.toString(), RotationInfo.class);
+//        List<Integer> freeChampionIds = rotationInfo.getFreeChampionIds();
+//
+//        ArrayList<String> freeChampionNames = new ArrayList<>();
+//
+//        for(int i=0;i<freeChampionIds.size();i++){
+//            freeChampionNames.add(changeChampionIdToName(freeChampionIds.get(i)));
+//        }
+//        model.addAttribute("freeChampionNames1",freeChampionNames.subList(0,8));
+//        model.addAttribute("freeChampionNames2", freeChampionNames.subList(8,16));
+//        model.addAttribute("version", API_INFO.getVersion());
+//        return "index";
+//        // 로테이션 챔프 이름이 담긴 배열을 건네줘야 할거 같아요
+//    }
 
     public String changeChampionIdToName(Integer id){
         String name = "";
@@ -403,7 +438,8 @@ public class HomeController {
     @GetMapping("/search")
     public String search(Model model, HttpServletRequest request) {
         String summonerName = request.getParameter("summonerName");
-        summonerName = summonerName.replace(" ","");
+        if(summonerName.length() == 2) summonerName = summonerName.charAt(0) + " " + summonerName.charAt(1);
+        summonerName = summonerName.replace(" ","+");
 
         AccountInfo accountInfo = restApiService.getAccountInfo(summonerName);
 
