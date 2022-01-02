@@ -17,7 +17,7 @@ export default function Summoner() {
       .catch(() => {
         console.log("실패");
       });
-  }, []);
+  }, [url]);
 
   return (
     <div>
