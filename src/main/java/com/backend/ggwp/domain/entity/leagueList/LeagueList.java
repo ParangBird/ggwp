@@ -1,6 +1,4 @@
 package com.backend.ggwp.domain.entity.leagueList;
-
-import com.backend.ggwp.domain.entity.LeagueEntrySummonerList;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;

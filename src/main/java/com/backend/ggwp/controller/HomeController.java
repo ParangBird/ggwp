@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -381,6 +382,7 @@ public class HomeController {
         return name;
     }
 
+    @ResponseBody
     @GetMapping("/search")
     public String search(Model model, HttpServletRequest request) {
         String summonerName = request.getParameter("summonerName");
@@ -431,36 +433,7 @@ public class HomeController {
         }
 */
 
-        // 챌린저 ~ 마스터 정보 받아옴
-        // 실제로 이짓거리 하면 느려져서 DB 저장해서 필요할때만 업데이트하고 불러오는 식으로 해야할듯 싶다
-/*
-        LeagueList challengerLeagueList = restApiService.getChallengerList();
-        LeagueList gmLeagueList = restApiService.getGrandMasterList();
-        LeagueList masterLeagueList = restApiService.getMasterList();
 
-        // 챌린저 ~ 마스터 각각 점수순 정렬
-        ArrayList<LeagueItem> challengerList = challengerLeagueList.getEntries();
-        Collections.sort(challengerList, new LeagueItemComparator());
-        ArrayList<LeagueItem> gmList = gmLeagueList.getEntries();
-        Collections.sort(gmList, new LeagueItemComparator());
-        ArrayList<LeagueItem> masterList = masterLeagueList.getEntries();
-        Collections.sort(masterList, new LeagueItemComparator());
-
-        // 각각 정렬한 친구들을 챌-그마-마 순서로 합침
-        ArrayList<LeagueItem> challenger2MasterList = new ArrayList<>();
-        for(LeagueItem c : challengerList)
-            challenger2MasterList.add(c);
-        for(LeagueItem gm : gmList)
-            challenger2MasterList.add(gm);
-        for(LeagueItem m : masterList)
-            challenger2MasterList.add(m);
-*/
-
-        // 전체 출력
-/*        for(LeagueItem item : challenger2MasterList){
-            System.out.println(item.getSummonerName() + " : " + item.getLeaguePoints());
-        }
-*/
         return "search";
     }
 
