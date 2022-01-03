@@ -9,7 +9,6 @@ import javax.annotation.processing.Generated;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "leagueItem")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,7 +28,7 @@ public class LeagueItem {
     private Integer leaguePoints;
     @SerializedName("rank")
     @Expose
-    private String rank;
+    private String summmonerRank;
     @SerializedName("wins")
     @Expose
     private Integer wins;

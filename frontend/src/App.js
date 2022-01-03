@@ -6,18 +6,18 @@ import SearchPage from "./pages/SearchPage";
 import EmptyPage from "./pages/EmptyPage";
 
 function App() {
-  return (
-    <BrowserRouter>
-      <div className="App">
-        <Header />
-        <Routes>
-          <Route exact path="/" element={<MainPage />} />
-          <Route path="/search/:name" element={<SearchPage />} />
-          <Route path="*" element={<EmptyPage />} />
-        </Routes>
-      </div>
-    </BrowserRouter>
-  );
+    return (
+        <BrowserRouter>
+            <div className="App">
+                <Header />
+                <Routes>
+                    <Route exact path="/" element={<MainPage />} />
+                    <Route path="/search/:name" element={<SearchPage />} />
+                    <Route path="*" element={<EmptyPage />} />
+                </Routes>
+            </div>
+        </BrowserRouter>
+    );
 }
 
 export default App;
