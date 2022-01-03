@@ -1,6 +1,30 @@
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react/cjs/react.development";
+import styled from "styled-components";
+
+const ProfileWrapper = styled.div`
+  text-align: left;
+  display: flex;
+  max-width: 1000px;
+  margin: auto;
+  padding: 7px;
+`;
+
+const ProfileIconImg = styled.img`
+  height: 100px;
+  width: 100px;
+  margin: 0px 15px 0px 20px;
+`;
+
+const SummonerInfo = styled.div`
+  margin-right: 15px;
+`;
+
+const SummonerName = styled.span`
+  font-size: 25px;
+  font-weight: 800;
+`;
 
 export default function Summoner() {
   const name = useParams().name;
@@ -20,10 +44,12 @@ export default function Summoner() {
   }, [url]);
 
   return (
-    <div>
-      <div>{name}</div>
-      <img src={summoner.profileIconUrl}></img>
-      <div>{summoner.summonerLevel}</div>
-    </div>
+    <ProfileWrapper>
+      <ProfileIconImg src={summoner.profileIconUrl}></ProfileIconImg>
+      <SummonerInfo>
+        <SummonerName>{name}</SummonerName>
+        <div>레벨: {summoner.summonerLevel}</div>
+      </SummonerInfo>
+    </ProfileWrapper>
   );
 }
