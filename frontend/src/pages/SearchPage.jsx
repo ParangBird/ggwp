@@ -1,4 +1,4 @@
-import Summoner from "../components/Summoner";
+import Summoner from "../components/Summoner/Summoner";
 
 export default function () {
   return (

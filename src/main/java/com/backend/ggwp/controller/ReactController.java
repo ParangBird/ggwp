@@ -8,6 +8,9 @@ import com.backend.ggwp.domain.entity.common.StringFormat;
 import com.backend.ggwp.domain.entity.leagueList.LeagueItem;
 import com.backend.ggwp.service.LeagueItemService;
 import com.backend.ggwp.service.RestApiService;
+import com.backend.ggwp.service.SummonerService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,12 +20,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+
+@Slf4j
 @RestController
 public class ReactController {
 
     private final ApiInfo API_INFO;
     private final RestApiService restApiService;
     private final LeagueItemService leagueItemService;
+
+    @Autowired
+    private SummonerService summonerService;
 
     public ReactController(ApiInfo api_info, RestApiService restApiService, LeagueItemService leagueItemService) {
         API_INFO = api_info;
@@ -35,16 +43,9 @@ public class ReactController {
         String summonerName = StringFormat.setApiString(name);
 
         AccountInfo accountInfo = restApiService.getAccountInfo(summonerName);
+        ArrayList<SummonerLeagueInfo> leagueInfos = restApiService.getAllSummonerLeagueInfo(accountInfo.getId());
 
-        if(accountInfo.getId() == null)
-            return null;
-
-        SummonerDto summonerDto = new SummonerDto();
-        summonerDto.setId(accountInfo.getId());
-        summonerDto.setName(accountInfo.getName());
-        summonerDto.setProfileIconUrl("https://ddragon.leagueoflegends.com/cdn/"+API_INFO.getVersion()+"/img/profileicon/"+ accountInfo.getProfileIconId() +".png");
-        summonerDto.setSummonerLevel(accountInfo.getSummonerLevel());
-
+        SummonerDto summonerDto = summonerService.getSummonerDto(accountInfo, leagueInfos, API_INFO);
         return summonerDto;
     }
 
