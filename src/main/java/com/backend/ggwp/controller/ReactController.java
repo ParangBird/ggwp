@@ -2,7 +2,7 @@ package com.backend.ggwp.controller;
 
 import com.backend.ggwp.ApiInfo;
 import com.backend.ggwp.domain.entity.AccountInfo;
-import com.backend.ggwp.domain.entity.SummonerDto;
+import com.backend.ggwp.domain.Dto.SummonerDto;
 import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
 import com.backend.ggwp.domain.entity.common.StringFormat;
 import com.backend.ggwp.domain.entity.leagueList.LeagueItem;

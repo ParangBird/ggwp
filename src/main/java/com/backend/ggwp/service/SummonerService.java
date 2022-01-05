@@ -2,7 +2,7 @@ package com.backend.ggwp.service;
 
 import com.backend.ggwp.ApiInfo;
 import com.backend.ggwp.domain.entity.AccountInfo;
-import com.backend.ggwp.domain.entity.SummonerDto;
+import com.backend.ggwp.domain.Dto.SummonerDto;
 import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

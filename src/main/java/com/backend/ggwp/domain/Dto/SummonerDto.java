@@ -1,6 +1,7 @@
-package com.backend.ggwp.domain.entity;
+package com.backend.ggwp.domain.Dto;
 
 
+import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
 import lombok.*;
 
 @Setter
