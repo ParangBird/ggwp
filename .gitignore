@@ -6,9 +6,6 @@ build/
 !**/src/test/**/build/
 src/main/resources/application.properties
 src/main/resources/application-API-KEY.properties
-src/main/resources/static/asset-manifest.json
-src/main/resources/static/index.html
-frontend/package-lock.json
 
 ### STS ###
 .apt_generated
