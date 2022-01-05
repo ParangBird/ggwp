@@ -4,9 +4,13 @@ import com.backend.ggwp.ApiInfo;
 import com.backend.ggwp.domain.entity.AccountInfo;
 import com.backend.ggwp.domain.entity.SummonerDto;
 import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
+import com.backend.ggwp.domain.entity.common.StringFormat;
 import com.backend.ggwp.domain.entity.leagueList.LeagueItem;
 import com.backend.ggwp.service.LeagueItemService;
 import com.backend.ggwp.service.RestApiService;
+import com.backend.ggwp.service.SummonerService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,12 +18,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.Optional;
 
+
+@Slf4j
 @RestController
 public class ReactController {
 
     private final ApiInfo API_INFO;
     private final RestApiService restApiService;
     private final LeagueItemService leagueItemService;
+
+    @Autowired
+    private SummonerService summonerService;
 
     public ReactController(ApiInfo api_info, RestApiService restApiService, LeagueItemService leagueItemService) {
         API_INFO = api_info;
@@ -29,34 +38,12 @@ public class ReactController {
 
     @GetMapping("/reactSearch/{name}")
     public SummonerDto index(@PathVariable(value = "name")String name){
-        String summonerName = name;
-        if(summonerName.length() == 2) summonerName = summonerName.charAt(0) + " " + summonerName.charAt(1);
-        summonerName = summonerName.replace(" ","+");
+        String summonerName = StringFormat.setApiString(name);
 
         AccountInfo accountInfo = restApiService.getAccountInfo(summonerName);
+        ArrayList<SummonerLeagueInfo> leagueInfos = restApiService.getAllSummonerLeagueInfo(accountInfo.getId());
 
-        if(accountInfo.getId() == null)
-            return null;
-
-        String encryptedId = accountInfo.getId();
-        ArrayList<SummonerLeagueInfo> summoner = restApiService.getAllSummonerLeagueInfo(encryptedId);
-
-        SummonerLeagueInfo soloQueue = null;
-        for(int i=0;i<summoner.size();i++){
-            System.out.println(summoner.get(i).getQueueType());
-            if(summoner.get(i).getQueueType().equals("RANKED_SOLO_5x5"))
-                soloQueue = summoner.get(i);
-        }
-
-        if(soloQueue == null)
-            return null;
-
-        SummonerDto summonerDto = new SummonerDto();
-        summonerDto.setId(accountInfo.getId());
-        summonerDto.setProfileIconId(accountInfo.getProfileIconId());
-        summonerDto.setProfileIconUrl("https://ddragon.leagueoflegends.com/cdn/"+API_INFO.getVersion()+"/img/profileicon/"+ accountInfo.getProfileIconId() +".png");
-        summonerDto.setSummonerLevel(accountInfo.getSummonerLevel());
-
+        SummonerDto summonerDto = summonerService.getSummonerDto(accountInfo, leagueInfos, API_INFO);
         return summonerDto;
     }
 
