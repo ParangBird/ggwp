@@ -1,6 +1,5 @@
 {
   "dependencies": {
     "create-react-app": "^5.0.0"
-  },
-  "proxy": "http://localhost:8080"
+  }
 }

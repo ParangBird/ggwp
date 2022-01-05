@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -62,16 +60,16 @@ public class ReactController {
         return summonerDto;
     }
 
-    @GetMapping("/rank/{ranking}")
-    public List<LeagueItem> rank(@PathVariable(value = "ranking")String ranking){
+    @GetMapping("/api/rank/{ranking}")
+    public ArrayList<Optional<LeagueItem>> rank(@PathVariable(value = "ranking")String ranking){
         Long rank = Long.parseLong(ranking);
         ArrayList<Optional<LeagueItem>> rank50 = leagueItemService.findRank50(rank);
         for(int i=0;i<rank50.size();i++){
             if(rank50.get(i) != null) {
-                System.out.println("rank50.get(i) = " + rank50.get(i).get().getSummonerName());
+                //System.out.println("rank50.get(i) = " + rank50.get(i).get().getSummonerName());
             }
         }
-        return null;
+        return rank50;
     }
 
 }

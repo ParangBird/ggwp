@@ -24,7 +24,7 @@ public class DbController {
     }
 
     @ResponseBody
-    @GetMapping("/save")
+    @GetMapping("/rankinfo")
     public ArrayList<LeagueItem> getC2MInfo(){
         // 챌린저 ~ 마스터 정보 받아옴
         // 실제로 이짓거리 하면 느려져서 DB 저장해서 필요할때만 업데이트하고 불러오는 식으로 해야할듯 싶다

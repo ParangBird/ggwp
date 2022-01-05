@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import MainPage from "./pages/MainPage";
 import SearchPage from "./pages/SearchPage";
 import EmptyPage from "./pages/EmptyPage";
+import RankingPage from "./pages/RankingPage";
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
                 <Routes>
                     <Route exact path="/" element={<MainPage />} />
                     <Route path="/search/:name" element={<SearchPage />} />
+                    <Route path="/ranking" element={<RankingPage/>}/>
                     <Route path="*" element={<EmptyPage />} />
                 </Routes>
             </div>
