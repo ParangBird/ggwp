@@ -4,6 +4,7 @@ import com.backend.ggwp.ApiInfo;
 import com.backend.ggwp.domain.entity.AccountInfo;
 import com.backend.ggwp.domain.entity.SummonerDto;
 import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
+import com.backend.ggwp.domain.entity.common.StringFormat;
 import com.backend.ggwp.domain.entity.leagueList.LeagueItem;
 import com.backend.ggwp.service.LeagueItemService;
 import com.backend.ggwp.service.RestApiService;
@@ -31,31 +32,16 @@ public class ReactController {
 
     @GetMapping("/reactSearch/{name}")
     public SummonerDto index(@PathVariable(value = "name")String name){
-        String summonerName = name;
-        if(summonerName.length() == 2) summonerName = summonerName.charAt(0) + " " + summonerName.charAt(1);
-        summonerName = summonerName.replace(" ","+");
+        String summonerName = StringFormat.setApiString(name);
 
         AccountInfo accountInfo = restApiService.getAccountInfo(summonerName);
 
         if(accountInfo.getId() == null)
             return null;
 
-        String encryptedId = accountInfo.getId();
-        ArrayList<SummonerLeagueInfo> summoner = restApiService.getAllSummonerLeagueInfo(encryptedId);
-
-        SummonerLeagueInfo soloQueue = null;
-        for(int i=0;i<summoner.size();i++){
-            System.out.println(summoner.get(i).getQueueType());
-            if(summoner.get(i).getQueueType().equals("RANKED_SOLO_5x5"))
-                soloQueue = summoner.get(i);
-        }
-
-        if(soloQueue == null)
-            return null;
-
         SummonerDto summonerDto = new SummonerDto();
         summonerDto.setId(accountInfo.getId());
-        summonerDto.setProfileIconId(accountInfo.getProfileIconId());
+        summonerDto.setName(accountInfo.getName());
         summonerDto.setProfileIconUrl("https://ddragon.leagueoflegends.com/cdn/"+API_INFO.getVersion()+"/img/profileicon/"+ accountInfo.getProfileIconId() +".png");
         summonerDto.setSummonerLevel(accountInfo.getSummonerLevel());
 

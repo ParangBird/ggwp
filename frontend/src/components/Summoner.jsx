@@ -47,7 +47,7 @@ export default function Summoner() {
     <ProfileWrapper>
       <ProfileIconImg src={summoner.profileIconUrl}></ProfileIconImg>
       <SummonerInfo>
-        <SummonerName>{name}</SummonerName>
+        <SummonerName>{summoner.name}</SummonerName>
         <div>레벨: {summoner.summonerLevel}</div>
       </SummonerInfo>
     </ProfileWrapper>

@@ -12,8 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class SummonerDto {
     private String id;
-    private Integer profileIconId;
+    private String name;
     private String profileIconUrl;
     private Integer summonerLevel;
-
 }
