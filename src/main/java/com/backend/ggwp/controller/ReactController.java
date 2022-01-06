@@ -1,11 +1,13 @@
 package com.backend.ggwp.controller;
 
 import com.backend.ggwp.ApiInfo;
+import com.backend.ggwp.domain.Dto.MatchDto;
 import com.backend.ggwp.domain.entity.AccountInfo;
 import com.backend.ggwp.domain.Dto.SummonerDto;
 import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
 import com.backend.ggwp.domain.entity.common.StringFormat;
 import com.backend.ggwp.domain.entity.leagueList.LeagueItem;
+import com.backend.ggwp.domain.entity.match.Match;
 import com.backend.ggwp.service.LeagueItemService;
 import com.backend.ggwp.service.RestApiService;
 import com.backend.ggwp.service.SummonerService;
@@ -45,6 +47,29 @@ public class ReactController {
 
         SummonerDto summonerDto = summonerService.getSummonerDto(accountInfo, leagueInfos, API_INFO);
         return summonerDto;
+    }
+
+    @GetMapping("/api/matches/{name}")
+    public ArrayList<MatchDto> matches(@PathVariable(value = "name")String name){
+        String summonerName = StringFormat.setApiString(name);
+        ArrayList<MatchDto> matchDtoList = new ArrayList<>();
+
+        AccountInfo accountInfo = restApiService.getAccountInfo(summonerName);
+        ArrayList<String> matches = restApiService.getMatchIds(accountInfo.getPuuid());
+
+        for(String s : matches){
+            Match match = restApiService.getMatchInfo(s);
+            MatchDto matchDto = MatchDto.builder()
+                    .queueId(match.getInfo().getQueueId())
+                    .summonerName(accountInfo.getName())
+                    .participants(match.getInfo().getParticipants())
+                    .teams(match.getInfo().getTeams())
+                    .build();
+
+            matchDtoList.add(matchDto);
+        }
+
+        return matchDtoList;
     }
 
     @GetMapping("/api/rank/{ranking}")
