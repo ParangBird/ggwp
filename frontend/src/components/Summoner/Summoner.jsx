@@ -37,7 +37,6 @@ export default function Summoner() {
     axios
       .get(url)
       .then((result) => {
-        console.log(result.data);
         setSummoner(result.data);
       })
       .catch(() => {

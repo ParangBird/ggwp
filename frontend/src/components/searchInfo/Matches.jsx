@@ -22,7 +22,6 @@ export default function () {
       .get(url)
       .then((res) => {
         setMatch(res.data);
-        console.log(res.data);
       })
       .catch(() => {
         console.log("실패");

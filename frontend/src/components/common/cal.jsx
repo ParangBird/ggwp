@@ -15,7 +15,7 @@ export const getGameType = (queueId) => {
     case 920:
       return "포로킹";
     case 450:
-      return "칼바람나락";
+      return "칼바람";
     default:
       return "커스텀";
   }
@@ -27,5 +27,6 @@ export const winOrLose = (win) => {
 };
 
 export const getKDA = (kills, deaths, assists) => {
+  if (!deaths) return "Perfect";
   return ((kills + assists) / deaths).toFixed(2);
 };
