@@ -6,15 +6,20 @@ const ContentWrapper = styled.div`
   text-align: left;
 `;
 
+const SoloRank = (soloRank) => {
+  if (soloRank.leagueId == null) return;
+  return <RankInfo rank={soloRank} />;
+};
+
 const FlexRank = (flexRank) => {
-  if (flexRank.leagueId === null) return;
+  if (flexRank.leagueId == null) return;
   return <RankInfo rank={flexRank} />;
 };
 
 export default function ({ soloRank = {}, flexRank = {} }) {
   return (
     <ContentWrapper>
-      <RankInfo rank={soloRank} />
+      {SoloRank(soloRank)}
       {FlexRank(flexRank)}
     </ContentWrapper>
   );

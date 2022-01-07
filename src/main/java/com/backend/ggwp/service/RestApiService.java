@@ -46,7 +46,7 @@ public class RestApiService {
     }
 
     public ArrayList<String> getMatchIds(String puuid){
-        String apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids?start=0&count=20&api_key=" + API_INFO.getApiKey();
+        String apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids?start=0&count=3&api_key=" + API_INFO.getApiKey();
         StringBuffer result = restApi(apiURL);
         return new Gson().fromJson(result.toString() , new TypeToken<ArrayList<String>>(){}.getType());
     }
