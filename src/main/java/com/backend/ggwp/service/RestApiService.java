@@ -6,6 +6,7 @@ import com.backend.ggwp.domain.entity.LeagueEntrySummonerList;
 import com.backend.ggwp.domain.entity.RotationInfo;
 import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
 import com.backend.ggwp.domain.entity.currentGame.CurrentGameInfo;
+import com.backend.ggwp.domain.entity.leagueList.LeagueItem;
 import com.backend.ggwp.domain.entity.leagueList.LeagueList;
 import com.backend.ggwp.domain.entity.match.Match;
 import com.google.gson.Gson;
@@ -73,6 +74,8 @@ public class RestApiService {
         String apiURL = "https://kr.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/RANKED_SOLO_5x5?api_key=" + API_INFO.getApiKey();
         StringBuffer result = restApi(apiURL);
         LeagueList challengerList = new Gson().fromJson(result.toString() , LeagueList.class);
+        for(LeagueItem c : challengerList.getEntries())
+            c.setSummonerRank("Challenger");
         return challengerList;
     }
 
@@ -80,6 +83,8 @@ public class RestApiService {
         String apiURL = "https://kr.api.riotgames.com/lol/league/v4/grandmasterleagues/by-queue/RANKED_SOLO_5x5?api_key=" + API_INFO.getApiKey();
         StringBuffer result = restApi(apiURL);
         LeagueList grandMasterList = new Gson().fromJson(result.toString() , LeagueList.class);
+        for(LeagueItem gm : grandMasterList.getEntries())
+            gm.setSummonerRank("GrandMaster");
         return grandMasterList;
     }
 
@@ -88,6 +93,8 @@ public class RestApiService {
         String apiURL = "https://kr.api.riotgames.com/lol/league/v4/masterleagues/by-queue/RANKED_SOLO_5x5?api_key=" + API_INFO.getApiKey();
         StringBuffer result = restApi(apiURL);
         LeagueList masterList = new Gson().fromJson(result.toString() , LeagueList.class);
+        for(LeagueItem m : masterList.getEntries())
+            m.setSummonerRank("Master");
         return masterList;
 
     }

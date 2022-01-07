@@ -48,15 +48,17 @@ public class ReactController {
     }
 
     @GetMapping("/api/rank/{ranking}")
-    public ArrayList<Optional<LeagueItem>> rank(@PathVariable(value = "ranking")String ranking){
+    public ArrayList<LeagueItem> rank(@PathVariable(value = "ranking")String ranking){
         Long rank = Long.parseLong(ranking);
         ArrayList<Optional<LeagueItem>> rank50 = leagueItemService.findRank50(rank);
+        ArrayList<LeagueItem> returnRank50 = new ArrayList<>();
         for(int i=0;i<rank50.size();i++){
-            if(rank50.get(i) != null) {
+            if(rank50.get(i).isPresent()) {
                 //System.out.println("rank50.get(i) = " + rank50.get(i).get().getSummonerName());
+                returnRank50.add(rank50.get(i).get());
             }
         }
-        return rank50;
+        return returnRank50;
     }
 
 }

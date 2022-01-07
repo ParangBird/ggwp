@@ -28,7 +28,7 @@ public class LeagueItem {
     private Integer leaguePoints;
     @SerializedName("rank")
     @Expose
-    private String summmonerRank;
+    private String summonerRank;
     @SerializedName("wins")
     @Expose
     private Integer wins;
