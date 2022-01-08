@@ -7,7 +7,6 @@ import EmptyPage from "./pages/EmptyPage";
 import RankingPage from "./pages/RankingPage";
 
 function App() {
-    const props = {}
     return (
         <BrowserRouter>
             <div className="App">
@@ -15,14 +14,8 @@ function App() {
                 <Routes>
                     <Route exact path="/" element={<MainPage />} />
                     <Route path="/search/:name" element={<SearchPage />} />
-                    <Route path="/ranking"
-                           component={(props) => <RankingPage {...props} key={window.location.pathname}/>}
-                           element = {<RankingPage/>}
-                    />
-                    <Route path="/ranking/:summonerName"
-                           component={(props) => <RankingPage {...props} key={1}/>}
-                           element = {<RankingPage/>}
-                    />
+                    <Route path="/ranking" element = {<RankingPage/>}/>
+                    <Route path="/ranking/:summonerName" element = {<RankingPage/>}/>
                     <Route path="*" element={<EmptyPage />} />
                 </Routes>
             </div>
