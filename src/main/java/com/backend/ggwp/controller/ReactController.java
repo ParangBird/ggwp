@@ -72,10 +72,13 @@ public class ReactController {
         return matchDtoList;
     }
 
-    @GetMapping("/api/rank/{ranking}")
-    public ArrayList<LeagueItem> rank(@PathVariable(value = "ranking")String ranking){
-        Long rank = Long.parseLong(ranking);
-        ArrayList<Optional<LeagueItem>> rank50 = leagueItemService.findRank50(rank);
+    @GetMapping("/api/rankBySummonerName/{name}")
+    public ArrayList<LeagueItem> rankBySummonerName(@PathVariable(value = "name")String name){
+        ArrayList<Optional<LeagueItem>> rank50 = leagueItemService.findRank50BySummonerName(name);
+        return getLeagueItems(rank50);
+    }
+
+    private ArrayList<LeagueItem> getLeagueItems(ArrayList<Optional<LeagueItem>> rank50) {
         ArrayList<LeagueItem> returnRank50 = new ArrayList<>();
         for(int i=0;i<rank50.size();i++){
             if(rank50.get(i).isPresent()) {
@@ -84,6 +87,13 @@ public class ReactController {
             }
         }
         return returnRank50;
+    }
+
+    @GetMapping("/api/rank/{ranking}")
+    public ArrayList<LeagueItem> rank(@PathVariable(value = "ranking")String ranking){
+        Long rank = Long.parseLong(ranking);
+        ArrayList<Optional<LeagueItem>> rank50 = leagueItemService.findRank50(rank);
+        return getLeagueItems(rank50);
     }
 
 }

@@ -16,6 +16,21 @@ public class LeagueItemService {
         this.leagueItemRepository = leagueItemRepository;
     }
 
+    public ArrayList<Optional<LeagueItem>> findRank50BySummonerName(String summonerName){
+        ArrayList<Optional<LeagueItem>> leagueItems = new ArrayList<>();
+        Long startRank = -1L;
+        Optional<LeagueItem> leagueItem = leagueItemRepository.findBySummonerName(summonerName);
+        if(leagueItem.isPresent())
+            startRank = leagueItem.get().getId();
+        if(startRank != -1L){
+            for(int i=0;i<50;i++){
+                Optional<LeagueItem> addLeagueItem = leagueItemRepository.findById(startRank+i);
+                if(addLeagueItem.isPresent())
+                    leagueItems.add(addLeagueItem);
+            }
+        }
+        return leagueItems;
+    }
 
 
     public ArrayList<Optional<LeagueItem>> findRank50(Long startId){
