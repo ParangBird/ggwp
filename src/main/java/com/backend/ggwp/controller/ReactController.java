@@ -10,14 +10,13 @@ import com.backend.ggwp.domain.entity.leagueList.LeagueItem;
 import com.backend.ggwp.domain.entity.match.Match;
 import com.backend.ggwp.domain.entity.match.Participant;
 import com.backend.ggwp.domain.entity.record.MatchSummary;
-import com.backend.ggwp.service.LeagueItemService;
-import com.backend.ggwp.service.MatchApiService;
-import com.backend.ggwp.service.RestApiService;
-import com.backend.ggwp.service.SummonerService;
+import com.backend.ggwp.domain.entity.user.User;
+import com.backend.ggwp.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -31,6 +30,9 @@ public class ReactController {
     private final ApiInfo API_INFO;
     private final RestApiService restApiService;
     private final LeagueItemService leagueItemService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private SummonerService summonerService;
@@ -98,6 +100,13 @@ public class ReactController {
         Long rank = Long.parseLong(ranking);
         ArrayList<Optional<LeagueItem>> rank50 = leagueItemService.findRank50(rank);
         return getLeagueItems(rank50);
+    }
+
+
+    @PostMapping("/api/user/register")
+    public void register(User user){
+         if(userService.findByUserName(user.getUserName()) != null)
+            userService.save(user);
     }
 
 }

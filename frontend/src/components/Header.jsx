@@ -4,7 +4,7 @@ import SearchSmall from "./SearchSmall";
 import Logo from "./Logo";
 
 const Topbar = styled(Navbar)`
-  background-color: black;
+    background-color: black;
   height: 150px;
 `;
 
@@ -33,6 +33,7 @@ export default function Header() {
             <Nav.Link href="/ranking">랭킹</Nav.Link>
             <Nav.Link href="#">멀티서치</Nav.Link>
             <Nav.Link href="#">커뮤니티</Nav.Link>
+            <Nav.Link href="/register">회원가입</Nav.Link>
           </Nav>
         </HeaderContainer>
       </Navbar>
