@@ -1,9 +1,12 @@
-import { getGameType, winOrLose, getKDA } from "../common/cal";
+import { getGameType, winOrLose, getKDA, getTimeInfo, getTimeHasBeen, getKillEngage, getCsPerMin } from "../common/cal";
 import { spell } from "../common/spells";
-import { perks } from "../common/perks";
+import { perkInfo } from "../common/perkInfo";
 import styled from "styled-components";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import { getChampImgUrl, getPerkImgUrl, getSpellImgUrl } from "../common/imgSource";
+import { getItemImgUrl, getChampImgUrl, getPerkImgUrl, getSpellImgUrl } from "../common/imgSource";
+import SmallImg from "./SmallImg";
+import ImgBoxN_2 from "./ImgBoxN_2";
+import { Link } from "react-router-dom";
 
 const ContentWrapper = styled.div`
   border: 1px solid #b5babf;
@@ -35,15 +38,6 @@ const ChampionImgBig = styled.div`
   height: 48px;
 `;
 
-const SmallImg = styled.div`
-  background-image: url(${(props) => props.img});
-  background-size: contain;
-  background-repeat: no-repeat;
-  text-align: center;
-  width: 24px;
-  height: 24px;
-`;
-
 const Spell = styled.div`
   display: table-cell;
   vertical-align: middle;
@@ -51,63 +45,83 @@ const Spell = styled.div`
   padding-left: 5px;
 `;
 
-export default function ({ participant, match }) {
-  const spell1 = spell.find((e) => {
-    if (e.key == participant.summoner1Id) return true;
-  });
-
-  const spell2 = spell.find((e) => {
-    if (e.key == participant.summoner2Id) return true;
-  });
-
-  const perkMain = perks.find((e) => {
-    if (e.id == participant.perks.styles[0].style) return true;
-  });
-
-  const perkSub = perks.find((e) => {
-    if (e.id == participant.perks.styles[1].style) return true;
-  });
-
-  const perkInfo = {
-    main: perkMain.slots[0].runes.find((e) => {
-      if (e.id == participant.perks.styles[0].selections[0].perk) return true;
-    }),
-    main1: perkMain.slots[1].runes.find((e) => {
-      if (e.id == participant.perks.styles[0].selections[1].perk) return true;
-    }),
-    main2: perkMain.slots[2].runes.find((e) => {
-      if (e.id == participant.perks.styles[0].selections[2].perk) return true;
-    }),
-    main3: perkMain.slots[3].runes.find((e) => {
-      if (e.id == participant.perks.styles[0].selections[3].perk) return true;
-    }),
+export default function ({ match }) {
+  const spell1 = () => {
+    const res = spell.find((e) => {
+      if (e.key == match.spell1) return true;
+    });
+    return res ? res.id : res;
   };
 
-  console.log(perkInfo);
+  const spell2 = () => {
+    const res = spell.find((e) => {
+      if (e.key == match.spell2) return true;
+    });
+    return res ? res.id : res;
+  };
+
+  const perkMain = perkInfo.find((e) => {
+    if (e.id == match.perkMain) return true;
+  });
+
+  const perkSub = perkInfo.find((e) => {
+    if (e.id == match.perkSub) return true;
+  });
+
+  const itemImgUrls = [
+    getItemImgUrl(match.item0),
+    getItemImgUrl(match.item3),
+    getItemImgUrl(match.item1),
+    getItemImgUrl(match.item4),
+    getItemImgUrl(match.item2),
+    getItemImgUrl(match.item5),
+    getItemImgUrl(match.item6),
+  ];
+
+  const champImgUrls = [
+    getChampImgUrl(match.blueChamp1),
+    getChampImgUrl(match.redChamp1),
+    getChampImgUrl(match.blueChamp2),
+    getChampImgUrl(match.redChamp2),
+    getChampImgUrl(match.blueChamp3),
+    getChampImgUrl(match.redChamp3),
+    getChampImgUrl(match.blueChamp4),
+    getChampImgUrl(match.redChamp4),
+    getChampImgUrl(match.blueChamp5),
+    getChampImgUrl(match.redChamp5),
+  ];
+
   return (
-    <ContentWrapper win={participant.win}>
+    <ContentWrapper win={match.win}>
       <MatchStats>
-        {getGameType(match.queueId)}
+        <span style={{ fontSize: "13px" }}>{getGameType(match.queueId)}</span>
         <br />
-        {winOrLose(participant.win)}
+        <span style={{ fontSize: "15px" }}>{winOrLose(match.win)}</span>
+      </MatchStats>
+      <MatchStats>
+        <span style={{ fontSize: "13px" }}>{getTimeHasBeen(match.gameEndTimestamp)}</span>
+        <br />
+        <span style={{ fontSize: "13px" }}>{getTimeInfo(match.time)}</span>
       </MatchStats>
       <MatchStats style={{ width: "110px" }}>
-        <ChampionImgBig img={getChampImgUrl(participant.championName)}></ChampionImgBig>
+        <ChampionImgBig img={getChampImgUrl(match.champ)}></ChampionImgBig>
         <Spell>
-          <SmallImg img={getSpellImgUrl(spell1.id)}></SmallImg>
-          <SmallImg img={getSpellImgUrl(spell2.id)}></SmallImg>
+          <SmallImg url={getSpellImgUrl(spell1())} />
+          <SmallImg url={getSpellImgUrl(spell2())} />
         </Spell>
         <Spell>
           <OverlayTrigger
             placement="right"
             overlay={(props) => (
               <Tooltip id="button-tooltip-2" {...props}>
-                [{perkInfo.main.name}]<p />
-                {perkInfo.main.shortDesc}
+                [{perkMain.name}]<p />
+                {perkMain.shortDesc}
               </Tooltip>
             )}
           >
-            <SmallImg img={getPerkImgUrl(perkInfo.main.icon)}></SmallImg>
+            <div>
+              <SmallImg url={getPerkImgUrl(perkMain.iconPath)} />
+            </div>
           </OverlayTrigger>
           <OverlayTrigger
             placement="right"
@@ -117,15 +131,30 @@ export default function ({ participant, match }) {
               </Tooltip>
             )}
           >
-            <SmallImg style={{ width: "16px", height: "16px", margin: "3px" }} img={getPerkImgUrl(perkSub.icon)}></SmallImg>
+            <div>
+              <SmallImg style={{ width: "16px", height: "16px", margin: "3px" }} url={getPerkImgUrl(perkSub.iconPath)} />
+            </div>
           </OverlayTrigger>
         </Spell>
-        {participant.championName}
+        {match.champ}
       </MatchStats>
       <MatchStats style={{ width: "90px" }}>
-        {participant.kills} / {participant.deaths} / {participant.assists}
+        {match.kills} / {match.deaths} / {match.assists}
         <br />
-        {getKDA(participant.kills, participant.deaths, participant.assists)}
+        {getKDA(match.kills, match.deaths, match.assists)}
+      </MatchStats>
+      <ImgBoxN_2 row={4} count={7} img={itemImgUrls} />
+      <ImgBoxN_2 row={1} />
+      <ImgBoxN_2 row={5} count={10} img={champImgUrls} />
+      <MatchStats style={{ width: "90px" }}>
+        <span style={{ fontSize: "13px" }}>레벨 {match.level}</span>
+        <br />
+        <span style={{ fontSize: "12.5px" }}>킬관여 {getKillEngage(match.kills + match.assists, match.totalKill)}%</span>
+      </MatchStats>
+      <MatchStats style={{ width: "60px" }}>
+        <span style={{ fontSize: "13px" }}>CS {match.cs}</span>
+        <br />
+        <span style={{ fontSize: "13px" }}>분당 ({getCsPerMin(match.cs, match.time)})</span>
       </MatchStats>
       <br />
     </ContentWrapper>
