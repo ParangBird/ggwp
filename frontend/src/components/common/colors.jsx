@@ -1,5 +1,7 @@
 export const bodyColor = "#ebf5ff";
 
+export const itemBackground = "#bdb4b4";
+
 export const getTierColor = (tier) => {
   switch (tier) {
     case "IRON":

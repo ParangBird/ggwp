@@ -8,7 +8,10 @@ import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
 import com.backend.ggwp.domain.entity.common.StringFormat;
 import com.backend.ggwp.domain.entity.leagueList.LeagueItem;
 import com.backend.ggwp.domain.entity.match.Match;
+import com.backend.ggwp.domain.entity.match.Participant;
+import com.backend.ggwp.domain.entity.record.MatchSummary;
 import com.backend.ggwp.service.LeagueItemService;
+import com.backend.ggwp.service.MatchApiService;
 import com.backend.ggwp.service.RestApiService;
 import com.backend.ggwp.service.SummonerService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +35,9 @@ public class ReactController {
     @Autowired
     private SummonerService summonerService;
 
+    @Autowired
+    private MatchApiService matchApiService;
+
     public ReactController(ApiInfo api_info, RestApiService restApiService, LeagueItemService leagueItemService) {
         API_INFO = api_info;
         this.restApiService = restApiService;
@@ -49,27 +55,25 @@ public class ReactController {
         return summonerDto;
     }
 
-    @GetMapping("/api/matches/{name}")
-    public ArrayList<MatchDto> matches(@PathVariable(value = "name")String name){
+    //전적 갱신
+    @GetMapping("/api/matches/update/{name}")
+    public void updateMatches(@PathVariable(value = "name")String name){
         String summonerName = StringFormat.setApiString(name);
-        ArrayList<MatchDto> matchDtoList = new ArrayList<>();
-
         AccountInfo accountInfo = restApiService.getAccountInfo(summonerName);
-        ArrayList<String> matches = restApiService.getMatchIds(accountInfo.getPuuid());
+        matchApiService.updateMatchSummary(accountInfo);
+        log.info("업데이트 성공");
+    }
 
-        for(String s : matches){
-            Match match = restApiService.getMatchInfo(s);
-            MatchDto matchDto = MatchDto.builder()
-                    .queueId(match.getInfo().getQueueId())
-                    .summonerName(accountInfo.getName())
-                    .participants(match.getInfo().getParticipants())
-                    .teams(match.getInfo().getTeams())
-                    .build();
-
-            matchDtoList.add(matchDto);
-        }
-
-        return matchDtoList;
+    //디비에 저장된 전적 정보 가져와서 반환
+    //추가로 저장된 전적이 부족하면 자동으로 갱신하도록 변경 예정
+    //솔랭, 일반, 자유랭 등 큐타입 선택해서 받는것도 추가해야할듯
+    //전적검색 속도는 충분히 빠른것 같고 추가로 해당 전적의 상세정보 받아오는 것은 이전 방식으로 진행할것
+    @GetMapping("/api/matches/{name}")
+    public ArrayList<MatchSummary> matches(@PathVariable(value = "name")String name){
+        String summonerName = StringFormat.setApiString(name);
+        AccountInfo accountInfo = restApiService.getAccountInfo(summonerName);
+        ArrayList<MatchSummary> matchSummaries = matchApiService.getAll30Matches(accountInfo);
+        return matchSummaries;
     }
 
     @GetMapping("/api/rankBySummonerName/{name}")

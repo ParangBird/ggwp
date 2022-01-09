@@ -28,18 +28,10 @@ export default function () {
       });
   }, [url]);
 
-  const setMatchInfo = (match) => {
-    for (let i = 0; i < 10; i++) {
-      if (match.summonerName == match.participants[i].summonerName) {
-        return <Match participant={match.participants[i]} match={match} />;
-      }
-    }
-  };
-
   return (
     <ContentWrapper>
       {match.map((m) => (
-        <>{setMatchInfo(m)}</>
+        <Match match={m} />
       ))}
     </ContentWrapper>
   );

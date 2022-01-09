@@ -46,18 +46,15 @@ public class RestApiService {
     }
 
     public ArrayList<String> getMatchIds(String puuid){
-        String apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids?start=0&count=3&api_key=" + API_INFO.getApiKey();
+        String apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids?start=0&count=20&api_key=" + API_INFO.getApiKey();
         StringBuffer result = restApi(apiURL);
         return new Gson().fromJson(result.toString() , new TypeToken<ArrayList<String>>(){}.getType());
     }
 
     public Match getMatchInfo(String matchId){
         String apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/" + matchId + "?api_key=" + API_INFO.getApiKey();
-        System.out.println("apiURL = " + apiURL);
         StringBuffer result = restApi(apiURL);
-        System.out.println("result = " + result);
         Match match = new Gson().fromJson(result.toString(), Match.class);
-        System.out.println("match = " + match.getInfo().getParticipants().get(0).getSummonerName());
         return match;
     }
 
