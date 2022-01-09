@@ -21,9 +21,13 @@ public class MatchApiService {
     @Autowired
     private RestApiService restApiService;
 
-    public Boolean matchExist(String matchId){
-        Optional<MatchSummary> matchSummary = matchSummaryRepository.findByMatchId(matchId);
-        return matchSummary.isPresent();
+    public Boolean matchExist(String name, String matchId){
+        ArrayList<MatchSummary> matchSummary = matchSummaryRepository.findByMatchId(matchId);
+
+        for(MatchSummary m : matchSummary){
+            if(m.getName().equals(name)) return true;
+        }
+        return false;
     }
 
     public ArrayList<MatchSummary> getAll30Matches(AccountInfo accountInfo){
@@ -34,9 +38,9 @@ public class MatchApiService {
 
     public void updateMatchSummary(AccountInfo accountInfo){
         ArrayList<String> matches = restApiService.getMatchIds(accountInfo.getPuuid());
-
+        String summonerName = accountInfo.getName();
         for(String s : matches){
-            if(matchExist(s)) continue;
+            if(matchExist(summonerName, s)) continue;
             Match match = restApiService.getMatchInfo(s);
 
             Participant my = new Participant();
@@ -65,7 +69,7 @@ public class MatchApiService {
                     .queueId(match.getInfo().getQueueId())
                     .matchId(s)
                     .gameEndTimestamp(gameTimestamp)
-                    .name(accountInfo.getName())
+                    .name(summonerName)
                     .champ(my.getChampionName())
                     .blueChamp1(champList.get(0))
                     .blueChamp2(champList.get(1))

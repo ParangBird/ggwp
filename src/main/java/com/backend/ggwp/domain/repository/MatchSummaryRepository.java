@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface MatchSummaryRepository extends JpaRepository<MatchSummary, Long> {
-    Optional<MatchSummary> findByMatchId(String matchId);
+    ArrayList<MatchSummary> findByMatchId(String matchId);
 
     //소환사 닉네임의 상위 30개 전적찾기
     @Query(nativeQuery = true, value="SELECT * FROM match_summary WHERE name = :name LIMIT 30")
