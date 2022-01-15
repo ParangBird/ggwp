@@ -63,7 +63,6 @@ public class ReactController {
         String summonerName = StringFormat.setApiString(name);
         AccountInfo accountInfo = restApiService.getAccountInfo(summonerName);
         matchApiService.updateMatchSummary(accountInfo);
-        log.info("업데이트 성공");
     }
 
     //디비에 저장된 전적 정보 가져와서 반환
@@ -71,10 +70,18 @@ public class ReactController {
     //솔랭, 일반, 자유랭 등 큐타입 선택해서 받는것도 추가해야할듯
     //전적검색 속도는 충분히 빠른것 같고 추가로 해당 전적의 상세정보 받아오는 것은 이전 방식으로 진행할것
     @GetMapping("/api/matches/{name}")
-    public ArrayList<MatchSummary> matches(@PathVariable(value = "name")String name){
+    public ArrayList<MatchSummary> getMatches(@PathVariable(value = "name")String name){
         String summonerName = StringFormat.setApiString(name);
         AccountInfo accountInfo = restApiService.getAccountInfo(summonerName);
         ArrayList<MatchSummary> matchSummaries = matchApiService.getAll30Matches(accountInfo);
+        return matchSummaries;
+    }
+
+    @GetMapping("/api/matches/{name}/solo")
+    public ArrayList<MatchSummary> getSoloMatches(@PathVariable(value = "name")String name){
+        String summonerName = StringFormat.setApiString(name);
+        AccountInfo accountInfo = restApiService.getAccountInfo(summonerName);
+        ArrayList<MatchSummary> matchSummaries = matchApiService.get30SoloRankMatches(accountInfo);
         return matchSummaries;
     }
 

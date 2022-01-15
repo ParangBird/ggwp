@@ -14,9 +14,13 @@ const ContentWrapper = styled.div`
 
 export default function () {
   const userName = useParams().name;
-  const url = "/api/matches/" + userName;
-
+  const [url, setUrl] = useState("/api/matches/" + userName);
   const [match, setMatch] = useState([]);
+
+  useEffect(() => {
+    setUrl("/api/matches/" + userName);
+  }, [userName]);
+
   useEffect(() => {
     axios
       .get(url)
@@ -28,8 +32,18 @@ export default function () {
       });
   }, [url]);
 
+  const all = () => {
+    setUrl("/api/matches/" + userName);
+  };
+
+  const solo = () => {
+    setUrl(url + "/solo");
+  };
+
   return (
     <ContentWrapper>
+      <button onClick={all}>all</button>
+      <button onClick={solo}>solo</button>
       {match.map((m) => (
         <Match match={m} />
       ))}

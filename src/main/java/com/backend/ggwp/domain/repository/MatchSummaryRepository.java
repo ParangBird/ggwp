@@ -16,4 +16,7 @@ public interface MatchSummaryRepository extends JpaRepository<MatchSummary, Long
     //소환사 닉네임의 상위 30개 전적찾기
     @Query(nativeQuery = true, value="SELECT * FROM match_summary WHERE name = :name LIMIT 30")
     ArrayList<MatchSummary> find30ByName(@Param("name") String name);
+
+    @Query(nativeQuery = true, value="SELECT * FROM match_summary WHERE name = :name AND queue_id = :queueId LIMIT 30")
+    ArrayList<MatchSummary> find30SoloRankByName(@Param("name") String name, String queueId);
 }

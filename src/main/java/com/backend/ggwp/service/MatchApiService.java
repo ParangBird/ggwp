@@ -32,12 +32,17 @@ public class MatchApiService {
 
     public ArrayList<MatchSummary> getAll30Matches(AccountInfo accountInfo){
         ArrayList<MatchSummary> matchSummaries =  matchSummaryRepository.find30ByName(accountInfo.getName());
-        log.info(matchSummaries.toString());
+        return matchSummaries;
+    }
+
+    public ArrayList<MatchSummary> get30SoloRankMatches(AccountInfo accountInfo){
+        ArrayList<MatchSummary> matchSummaries = matchSummaryRepository.find30SoloRankByName(accountInfo.getName(), "420");
         return matchSummaries;
     }
 
     public void updateMatchSummary(AccountInfo accountInfo){
         ArrayList<String> matches = restApiService.getMatchIds(accountInfo.getPuuid());
+        matches.addAll(restApiService.getSoloMatchIds(accountInfo.getPuuid()));
         String summonerName = accountInfo.getName();
         for(String s : matches){
             if(matchExist(summonerName, s)) continue;

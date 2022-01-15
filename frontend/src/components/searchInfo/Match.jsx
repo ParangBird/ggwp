@@ -23,6 +23,15 @@ const ContentWrapper = styled.div`
   height: 100px;
 `;
 
+const Text = styled.span`
+  font-weight: ${(props) => {
+    return props.weight;
+  }};
+  color: ${(props) => {
+    return props.color;
+  }};
+`;
+
 const MatchStats = styled.div`
   display: table-cell;
   vertical-align: middle;
@@ -138,8 +147,12 @@ export default function ({ match }) {
         </Spell>
         {match.champ}
       </MatchStats>
-      <MatchStats style={{ width: "90px" }}>
-        {match.kills} / {match.deaths} / {match.assists}
+      <MatchStats style={{ width: "120px" }}>
+        <Text weight={700}>{match.kills + " "}</Text>/
+        <Text weight={700} color="red">
+          {" " + match.deaths + " "}
+        </Text>
+        /<Text weight={700}>{" " + match.assists}</Text>
         <br />
         {getKDA(match.kills, match.deaths, match.assists)}
       </MatchStats>
