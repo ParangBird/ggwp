@@ -28,16 +28,28 @@ const SummonerName = styled.span`
   font-weight: 800;
 `;
 
+const recentsUserList = (name, profileIconUrl) => {
+  const item = {
+    name: name,
+    profileIconUrl: profileIconUrl,
+    time: Date.now(),
+  };
+
+  localStorage.setItem(name, JSON.stringify(item));
+};
+
 export default function Summoner() {
   const userName = useParams().name;
   const url = "/reactSearch/" + userName;
-  // const [summoner, setSummoner] = useState([]);
   const [{ name, profileIconUrl, summonerLevel, soloRank = {}, flexRank = {} }, setSummoner] = useState([]);
+
   useEffect(() => {
     axios
       .get(url)
       .then((result) => {
         setSummoner(result.data);
+        console.log(result.data.name);
+        recentsUserList(result.data.name, result.data.profileIconUrl);
       })
       .catch(() => {
         console.log("실패");
