@@ -28,10 +28,10 @@ const SummonerName = styled.span`
   font-weight: 800;
 `;
 
-const recentsUserList = (name, profileIconUrl) => {
+const recentsUserList = (name, url) => {
   const item = {
     name: name,
-    profileIconUrl: profileIconUrl,
+    url: url,
     time: Date.now(),
   };
 
@@ -48,7 +48,6 @@ export default function Summoner() {
       .get(url)
       .then((result) => {
         setSummoner(result.data);
-        console.log(result.data.name);
         recentsUserList(result.data.name, result.data.profileIconUrl);
       })
       .catch(() => {

@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import RecentSearch from "./Summoner/RecentSearch";
 
 const Form = styled.form`
   text-align: right;
-  margin: 30px auto;
+  margin: 30px auto 0px auto;
   background-color: white;
   width: 550px;
 `;
@@ -16,6 +17,7 @@ const SearchBar = styled.input`
   width: 500px;
   border: 0px;
   border-radius: 3px;
+  outline: none;
 `;
 
 const SearchButton = styled.button`
@@ -34,17 +36,25 @@ const SearchButton = styled.button`
 
 export default function Search() {
   const [name, setName] = useState("");
+  const [visible, setVisible] = useState(false);
 
   const nameChange = (e) => {
     setName(e.target.value);
   };
 
+  const inputClick = () => {
+    setVisible(!visible);
+  };
+
   return (
-    <Form>
-      <SearchBar onChange={nameChange} type="text" placeholder="소환사명"></SearchBar>
-      <Link to={`/search/${name}`}>
-        <SearchButton>검색</SearchButton>
-      </Link>
-    </Form>
+    <>
+      <Form>
+        <SearchBar onFocus={inputClick} onBlur={inputClick} onChange={nameChange} type="text" placeholder="소환사명" />
+        <Link to={`/search/${name}`}>
+          <SearchButton>검색</SearchButton>
+        </Link>
+        <RecentSearch visible={visible} icon={true} />
+      </Form>
+    </>
   );
 }

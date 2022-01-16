@@ -19,6 +19,8 @@ export const getGameType = (queueId) => {
       return "일반";
     case 440:
       return "자유랭크";
+    case 700:
+      return "격전";
     case 900:
       return "우르프";
     case 920:
