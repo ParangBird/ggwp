@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import SearchSmall from "./SearchSmall";
 import Logo from "./Logo";
+import LoginForm from "./Login/LoginForm";
 
 const Topbar = styled(Navbar)`
     background-color: black;
@@ -24,6 +25,7 @@ export default function Header() {
             <SearchSmall />
           </Nav>
         </HeaderContainer>
+        <LoginForm/>
       </Topbar>
 
       <Navbar bg="dark" variant="dark">
@@ -33,7 +35,6 @@ export default function Header() {
             <Nav.Link href="/ranking">랭킹</Nav.Link>
             <Nav.Link href="#">멀티서치</Nav.Link>
             <Nav.Link href="#">커뮤니티</Nav.Link>
-            <Nav.Link href="/register">회원가입</Nav.Link>
           </Nav>
         </HeaderContainer>
       </Navbar>

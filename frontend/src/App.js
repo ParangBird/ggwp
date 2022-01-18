@@ -17,7 +17,6 @@ function App() {
                     <Route path="/search/:name" element={<SearchPage />} />
                     <Route path="/ranking" element = {<RankingPage/>}/>
                     <Route path="/ranking/:summonerName" element = {<RankingPage/>}/>
-                    <Route path="/register" element = {<RegisterPage/>}/>
                     <Route path="*" element={<EmptyPage />} />
                 </Routes>
             </div>
