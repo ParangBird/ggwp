@@ -6,20 +6,21 @@ import com.backend.ggwp.domain.entity.match.Participant;
 import com.backend.ggwp.domain.entity.record.MatchSummary;
 import com.backend.ggwp.domain.repository.MatchSummaryRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
 public class MatchApiService {
-    @Autowired
-    private MatchSummaryRepository matchSummaryRepository;
-    @Autowired
-    private RestApiService restApiService;
+    private final MatchSummaryRepository matchSummaryRepository;
+    private final RestApiService restApiService;
+
+    public MatchApiService(MatchSummaryRepository matchSummaryRepository, RestApiService restApiService) {
+        this.matchSummaryRepository = matchSummaryRepository;
+        this.restApiService = restApiService;
+    }
 
     public Boolean matchExist(String name, String matchId){
         ArrayList<MatchSummary> matchSummary = matchSummaryRepository.findByMatchId(matchId);

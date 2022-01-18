@@ -27,13 +27,12 @@ public class DbController {
 
     private final RestApiService restApiService;
     private final LeagueItemService leagueItemService;
+    private final MatchApiService matchApiService;
 
-    @Autowired
-    private MatchApiService matchApiService;
-
-    public DbController(RestApiService restApiService, LeagueItemService leagueItemService) {
+    public DbController(RestApiService restApiService, LeagueItemService leagueItemService, MatchApiService matchApiService) {
         this.restApiService = restApiService;
         this.leagueItemService = leagueItemService;
+        this.matchApiService = matchApiService;
     }
 
     @ResponseBody

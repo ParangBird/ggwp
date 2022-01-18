@@ -18,5 +18,7 @@ public interface MatchSummaryRepository extends JpaRepository<MatchSummary, Long
     ArrayList<MatchSummary> find30ByName(@Param("name") String name);
 
     @Query(nativeQuery = true, value="SELECT * FROM match_summary WHERE name = :name AND queue_id = :queueId LIMIT 30")
-    ArrayList<MatchSummary> find30SoloRankByName(@Param("name") String name, String queueId);
+    ArrayList<MatchSummary> find30SoloRankByName(@Param("name") String name, 
+                                                 //이부분 @Param("queueId") 오류나서 명시적으로 추가함
+                                                 @Param("queueId") String queueId);
 }
