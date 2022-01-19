@@ -6,6 +6,8 @@ import SearchPage from "./pages/SearchPage";
 import EmptyPage from "./pages/EmptyPage";
 import RankingPage from "./pages/RankingPage";
 import RegisterPage from "./pages/RegisterPage";
+import LoginPage from "./pages/LoginPage";
+import FindPage from "./pages/FindPage";
 
 function App() {
     return (
@@ -17,6 +19,9 @@ function App() {
                     <Route path="/search/:name" element={<SearchPage />} />
                     <Route path="/ranking" element = {<RankingPage/>}/>
                     <Route path="/ranking/:summonerName" element = {<RankingPage/>}/>
+                    <Route path="/login" element = {<LoginPage/>}/>
+                    <Route path="/register" element = {<RegisterPage/>}/>
+                    <Route path="/find" element = {<FindPage/>}/>
                     <Route path="*" element={<EmptyPage />} />
                 </Routes>
             </div>

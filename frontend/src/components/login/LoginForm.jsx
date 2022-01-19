@@ -9,7 +9,7 @@ const RegisterFormDiv = styled.div`
   margin-right : 20px;
 `;
 
-const LoginText = styled.text`
+const LoginText = styled.span`
   display : block;
   margin-bottom : 10px;
   color : grey;
@@ -25,7 +25,7 @@ const LoginButton = styled.button`
   border : 0;
 `;
 
-const FindLink = styled.text`
+const FindLink = styled.span`
   &:hover{
     color : black;
     text-decoration : underline;
@@ -36,7 +36,7 @@ const FindLink = styled.text`
   text-decoration-line : none;
 `
 
-const RegisterLink = styled.text`
+const RegisterLink = styled.span`
   text-decoration-line : none;
     &:hover{
     color : black;
@@ -48,12 +48,11 @@ const RegisterLink = styled.text`
 
 export default function LoginForm(){
 
-
     return (
         <RegisterFormDiv>
             <LoginText>GG.WP를 더 편리하게 이용하세요</LoginText>
             <Link to="login" style={{ textDecoration: 'none' }}>
-            <LoginButton onClick={() => { document.location.href('/')}}>GG.WP 로그인</LoginButton>
+            <LoginButton>GG.WP 로그인</LoginButton>
             </Link>
             <FaLock/>
             <Link to="find" style={{ textDecoration: 'none' }}>

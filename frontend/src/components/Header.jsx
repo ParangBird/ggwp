@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import SearchSmall from "./SearchSmall";
 import Logo from "./Logo";
-import LoginForm from "./Login/LoginForm";
+import LoginForm from "./login/LoginForm";
 
 const Topbar = styled(Navbar)`
     background-color: black;
