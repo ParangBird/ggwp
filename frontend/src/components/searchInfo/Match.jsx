@@ -6,7 +6,6 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { getItemImgUrl, getChampImgUrl, getPerkImgUrl, getSpellImgUrl } from "../common/imgSource";
 import SmallImg from "./SmallImg";
 import ImgBoxN_2 from "./ImgBoxN_2";
-import { Link } from "react-router-dom";
 
 const ContentWrapper = styled.div`
   border: 1px solid #b5babf;

@@ -5,7 +5,7 @@ import Logo from "./Logo";
 import LoginForm from "./login/LoginForm";
 
 const Topbar = styled(Navbar)`
-    background-color: black;
+  background-color: black;
   height: 150px;
 `;
 
@@ -25,7 +25,7 @@ export default function Header() {
             <SearchSmall />
           </Nav>
         </HeaderContainer>
-        <LoginForm/>
+        <LoginForm />
       </Topbar>
 
       <Navbar bg="dark" variant="dark">
@@ -33,7 +33,7 @@ export default function Header() {
           <Nav>
             <Nav.Link href="#">챔피언 정보</Nav.Link>
             <Nav.Link href="/ranking">랭킹</Nav.Link>
-            <Nav.Link href="#">멀티서치</Nav.Link>
+            <Nav.Link href="/multi">멀티서치</Nav.Link>
             <Nav.Link href="#">커뮤니티</Nav.Link>
           </Nav>
         </HeaderContainer>
