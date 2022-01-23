@@ -34,7 +34,6 @@ export default function RankTable({name, changeName}) {
     useEffect(
         () => {
             if(searchSummonerName === '...') { // 소환사명 검색 입력 x
-                setStartRank(1)
                 axios.get('/api/rank/' + startRank)
                     .then(res => {
                         setRankInfo(res.data);
@@ -48,15 +47,18 @@ export default function RankTable({name, changeName}) {
                         if(res.data.length === 0) { // 없는 아이디
                             setRankInfo([])
                         }
-                        else
+                        else {
                             setRankInfo(res.data);
+                            setStartRank(res.data[0].ranking);
+                            setSearchSummonerName('...')
+                        }
                     }).catch((err) => {
                     console.error(err)
                 })
             }
 
         }
-    , [searchSummonerName])
+    , [searchSummonerName, startRank])
 
     const onClick = () => {
         setSearchSummonerName(name)
@@ -96,7 +98,7 @@ export default function RankTable({name, changeName}) {
                             {
                                 rankInfo.map((rank, index) => (
                                     <tr style={{border: '1px solid black'}} key={rank.summonerId}>
-                                        <td style={tdStyle}>{rank.id}</td>
+                                        <td style={tdStyle}>{rank.ranking}</td>
                                         <td style={tdStyle}><a target="_blank"
                                                                href={"/search/" + rank.summonerName}>{rank.summonerName}</a>
                                         </td>
