@@ -12,6 +12,7 @@ export const getCsPerMin = (cs, time) => {
 };
 
 export const multiStr = (str) => {
+  if (str == "") return [];
   str = str.replace(/\s/g, ""); //모든 공백 제거
   str = str.replace(/\n/g, ""); //모든 개행 제거
   str = str.replace(/\./g, ","); // 모든 . 를 ,로 바꿈
@@ -21,7 +22,7 @@ export const multiStr = (str) => {
   str = str.replace(/\님이채팅창에참가하셨습니다,/g, ",");
   str = str.replace(/\님이로비에참가하셨습니다,/g, ",");
   str = str.replace(/\,+$/, ""); //마지막 , 를 제거
-  return str;
+  return str.split(",");
 };
 
 export const getGameType = (queueId) => {

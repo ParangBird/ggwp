@@ -6,21 +6,21 @@ const ContentWrapper = styled.div`
   text-align: left;
 `;
 
-const SoloRank = (soloRank) => {
+const SoloRank = (soloRank, imgSize) => {
   if (soloRank.leagueId == null) return;
-  return <RankInfo rank={soloRank} />;
+  return <RankInfo imgSize={imgSize} rank={soloRank} />;
 };
 
-const FlexRank = (flexRank) => {
+const FlexRank = (flexRank, imgSize) => {
   if (flexRank.leagueId == null) return;
-  return <RankInfo rank={flexRank} />;
+  return <RankInfo imgSize={imgSize} rank={flexRank} />;
 };
 
-export default function ({ soloRank = {}, flexRank = {} }) {
+export default function ({ soloRank = {}, flexRank = {}, imgSize }) {
   return (
     <ContentWrapper>
-      {SoloRank(soloRank)}
-      {FlexRank(flexRank)}
+      {SoloRank(soloRank, imgSize)}
+      {FlexRank(flexRank, imgSize)}
     </ContentWrapper>
   );
 }

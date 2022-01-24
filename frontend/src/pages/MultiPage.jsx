@@ -1,11 +1,12 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { multiStr } from "../components/common/cal";
 import MultiSummoner from "../components/multi/MultiSummoner";
+import { useParams } from "react-router-dom";
 
 const MultiSearchDiv = styled.div`
-  margin: auto;
+  margin: 20px auto;
   width: 700px;
 `;
 
@@ -24,29 +25,31 @@ const InfoDiv = styled.div`
 `;
 
 export default function () {
-  const [nameString, setNameString] = useState("");
+  const [nameString, setNameString] = useState(useParams().name);
   const [names, setNames] = useState([]);
   const [infoDisplay, setInfoDisplay] = useState("");
+
+  useEffect(() => {
+    if (nameString) {
+      setNames(multiStr(nameString));
+      setInfoDisplay("none");
+    }
+  }, []);
 
   const nameChange = (e) => {
     setNameString(e.target.value);
   };
 
   const buttonClick = () => {
-    if (nameString == "") {
-      return;
-    }
-    // nameString.replace(/\s/g, "");
-    let str = nameString;
-    str = multiStr(str);
-    setNames(str.split(","));
+    if (nameString == "") return;
+    setNames(multiStr(nameString));
     setInfoDisplay("none");
   };
 
   return (
     <>
       <MultiSearchDiv>
-        <MultiSearch type="textarea" onChange={nameChange} onBlur={nameChange} />
+        <MultiSearch type="textarea" onChange={nameChange} onBlur={nameChange} value={nameString} />
         <Button onClick={buttonClick} style={{ width: "600px" }} variant="outline-secondary">
           동시에 검색하기
         </Button>

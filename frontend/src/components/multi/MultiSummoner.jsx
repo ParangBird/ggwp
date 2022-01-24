@@ -1,23 +1,36 @@
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react/cjs/react.development";
 import styled from "styled-components";
 import LeagueInfo from "../Summoner/LeagueInfo";
+import MultiMatches from "./MutiMatches";
 
 const ContentWrapper = styled.div`
   text-align: left;
-  display: flex;
-  max-width: 1000px;
+  width: 1000px;
   margin: auto;
-  padding: 7px;
+`;
+
+const InnerDiv = styled.div`
+  display: table;
+`;
+
+const MatchDiv = styled.div`
+  display: table-cell;
+  vertical-align: middle;
+  height: 150px;
 `;
 
 const ProfileIconImg = styled.img`
+  display: table-cell;
   height: 30px;
   width: 30px;
-  margin: 0px 5px;
+  margin: 0px 5px 5px 0px;
 `;
 
 const SummonerInfo = styled.div`
+  display: table-cell;
+  vertical-align: middle;
   width: 150px;
 `;
 
@@ -44,17 +57,22 @@ export default function ({ myName }) {
   return (
     <>
       {name && (
-        <>
-          <ContentWrapper>
+        <ContentWrapper>
+          <InnerDiv>
             <ProfileIconImg src={profileIconUrl}></ProfileIconImg>
             <SummonerInfo>
-              <SummonerName>{name}</SummonerName>
+              <Link style={{ textDecoration: "none" }} to={`/search/${name}`}>
+                <SummonerName>{name}</SummonerName>
+              </Link>
             </SummonerInfo>
-          </ContentWrapper>
-          <ContentWrapper>
-            <LeagueInfo soloRank={soloRank} />
-          </ContentWrapper>
-        </>
+          </InnerDiv>
+          <InnerDiv>
+            <MatchDiv>
+              <LeagueInfo imgSize={70} soloRank={soloRank} />
+            </MatchDiv>
+            <MultiMatches myName={name} />
+          </InnerDiv>
+        </ContentWrapper>
       )}
     </>
   );

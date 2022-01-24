@@ -24,6 +24,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/find" element={<FindPage />} />
           <Route path="/multi" element={<MultiPage />} />
+          <Route path="/multi/:name" element={<MultiPage />} />
           <Route path="*" element={<EmptyPage />} />
         </Routes>
       </div>

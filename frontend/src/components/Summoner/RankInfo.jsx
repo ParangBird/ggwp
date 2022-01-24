@@ -11,8 +11,8 @@ const ContentWrapper = styled.div`
 `;
 
 const RankImg = styled.img`
-  width: 100px;
-  height: 100px;
+  width: ${(props) => props.imgSize + "px"};
+  height: ${(props) => props.imgSize + "px"};
   margin: 0px 15px 0px 20px;
 `;
 
@@ -28,12 +28,12 @@ const queueType = (queueType) => {
   }
 };
 
-export default function ({ rank = {} }) {
+export default function ({ rank = {}, imgSize }) {
   let rankImgSource = "/images/emblem/Emblem_" + rank.tier + ".png";
 
   return (
     <ContentWrapper>
-      <RankImg src={rankImgSource} />
+      <RankImg src={rankImgSource} imgSize={imgSize} />
       <RankInfo>
         <span style={{ color: "gray", fontSize: "14px" }}>
           {queueType(rank.queueType)}

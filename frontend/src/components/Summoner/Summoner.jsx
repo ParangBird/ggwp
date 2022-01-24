@@ -68,7 +68,7 @@ export default function Summoner() {
         </SummonerInfo>
       </ContentWrapper>
       <ContentWrapper>
-        <LeagueInfo soloRank={soloRank} flexRank={flexRank} />
+        <LeagueInfo imgSize={100} soloRank={soloRank} flexRank={flexRank} />
       </ContentWrapper>
     </>
   );

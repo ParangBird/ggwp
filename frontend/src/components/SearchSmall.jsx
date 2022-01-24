@@ -38,11 +38,27 @@ export default function SearchSmall() {
     setVisible(!visible);
   };
 
+  const multiCheck = () => {
+    if (name.indexOf(".") != -1 || name.indexOf(",") != -1 || name.length > 30) {
+      return 1;
+    } else {
+      return 0;
+    }
+  };
+
+  const linkTo = () => {
+    if (multiCheck() == 1) {
+      return "/multi/" + name;
+    } else {
+      return "/search/" + name;
+    }
+  };
+
   return (
     <div>
       <form>
         <SearchBar onFocus={inputClick} onBlur={inputClick} onChange={nameChange} type="text" placeholder="소환사명"></SearchBar>
-        <Link to={`/search/${name}`}>
+        <Link to={linkTo()}>
           <SearchButton>검색</SearchButton>
         </Link>
         <RecentSearch visible={visible} width={"390px"} />
