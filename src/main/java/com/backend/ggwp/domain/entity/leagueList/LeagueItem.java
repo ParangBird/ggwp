@@ -47,4 +47,6 @@ public class LeagueItem {
     @SerializedName("hotStreak")
     @Expose
     private Boolean hotStreak;
+
+    private Long ranking;
 }

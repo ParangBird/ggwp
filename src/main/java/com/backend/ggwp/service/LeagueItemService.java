@@ -24,7 +24,7 @@ public class LeagueItemService {
             startRank = leagueItem.get().getId();
         if(startRank != -1L){
             for(int i=0;i<50;i++){
-                Optional<LeagueItem> addLeagueItem = leagueItemRepository.findById(startRank+i);
+                Optional<LeagueItem> addLeagueItem = leagueItemRepository.findByRanking(startRank+i);
                 if(addLeagueItem.isPresent())
                     leagueItems.add(addLeagueItem);
             }
@@ -36,7 +36,7 @@ public class LeagueItemService {
     public ArrayList<Optional<LeagueItem>> findRank50(Long startId){
         ArrayList<Optional<LeagueItem>> leagueItems = new ArrayList<>();
         for(int i=0;i<50;i++){
-            Optional<LeagueItem> leagueItem = leagueItemRepository.findById(startId+i);
+            Optional<LeagueItem> leagueItem = leagueItemRepository.findByRanking(startId+i);
             if(leagueItem != null)
                 leagueItems.add(leagueItem);
         }
@@ -48,5 +48,10 @@ public class LeagueItemService {
         for(LeagueItem leagueItem : leagueItems){
             leagueItemRepository.save(leagueItem);
         }
+    }
+
+    @Transactional
+    public void clearAll(){
+        leagueItemRepository.deleteAllInBatch();
     }
 }
