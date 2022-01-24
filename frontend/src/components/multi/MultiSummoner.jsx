@@ -6,7 +6,7 @@ import LeagueInfo from "../Summoner/LeagueInfo";
 const ContentWrapper = styled.div`
   text-align: left;
   display: flex;
-  max-width: 1300px;
+  max-width: 1000px;
   margin: auto;
   padding: 7px;
 `;
@@ -36,8 +36,6 @@ export default function ({ myName }) {
       .get(url)
       .then((result) => {
         setSummoner(result.data);
-        console.log(userName);
-        console.log(name);
       })
       .catch(() => {
         console.log("실패");
@@ -45,15 +43,19 @@ export default function ({ myName }) {
   }, [url]);
   return (
     <>
-      <ContentWrapper>
-        <ProfileIconImg src={profileIconUrl}></ProfileIconImg>
-        <SummonerInfo>
-          <SummonerName>{name}</SummonerName>
-        </SummonerInfo>
-      </ContentWrapper>
-      <ContentWrapper>
-        <LeagueInfo soloRank={soloRank} />
-      </ContentWrapper>
+      {name && (
+        <>
+          <ContentWrapper>
+            <ProfileIconImg src={profileIconUrl}></ProfileIconImg>
+            <SummonerInfo>
+              <SummonerName>{name}</SummonerName>
+            </SummonerInfo>
+          </ContentWrapper>
+          <ContentWrapper>
+            <LeagueInfo soloRank={soloRank} />
+          </ContentWrapper>
+        </>
+      )}
     </>
   );
 }

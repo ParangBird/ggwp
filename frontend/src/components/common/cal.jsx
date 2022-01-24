@@ -11,6 +11,19 @@ export const getCsPerMin = (cs, time) => {
   return (cs / min).toFixed(1);
 };
 
+export const multiStr = (str) => {
+  str = str.replace(/\s/g, ""); //모든 공백 제거
+  str = str.replace(/\n/g, ""); //모든 개행 제거
+  str = str.replace(/\./g, ","); // 모든 . 를 ,로 바꿈
+  //아래는 여러가지 예신데 님이 ~ 다, 전체를 바꾸는방법 있으면 좋을듯 아님말고
+  str = str.replace(/\님이방에참가하셨습니다,/g, ",");
+  str = str.replace(/\님이채팅방에참가하셨습니다,/g, ",");
+  str = str.replace(/\님이채팅창에참가하셨습니다,/g, ",");
+  str = str.replace(/\님이로비에참가하셨습니다,/g, ",");
+  str = str.replace(/\,+$/, ""); //마지막 , 를 제거
+  return str;
+};
+
 export const getGameType = (queueId) => {
   switch (queueId) {
     case 420:
