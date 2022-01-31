@@ -45,10 +45,12 @@ export default function(){
             }})
             .then((res) => {
                 if(res.data === 'SUCCESS'){
-                    console.log('로그인 성공')
+                    //console.log('로그인 성공')
+                    sessionStorage.setItem('user', inputId);
                 }
                 else if(res.data === 'FAIL'){
-                    console.log('로그인 실패')
+                    //console.log('로그인 실패')
+                    alert('로그인 정보를 확인해주세요');
                 }
             }
             ).catch((err) => {console.error(err)})
