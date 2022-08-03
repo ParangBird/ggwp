@@ -64,10 +64,9 @@ export default function(){
             <LoginButton onClick = {Login}>로그인</LoginButton>
             <hr/>
             <h3>간편 로그인</h3>
-            <h3>뭐</h3>
-            <h3>여러</h3>
-            <h3>가지가</h3>
-            <h3>있겠죠</h3>
+            <a href="http://localhost:8080/oauth2/authorization/google" className="btn btn-success active" role="button">Google Login</a>
+            <h3><button>구글 로그인</button></h3>
+            <h3><button>네이버 로그인</button></h3>
         </LoginDiv>
     )
 }

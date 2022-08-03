@@ -39,6 +39,10 @@ public class HomeController {
 
     @GetMapping("/")
     public String index(Model model){
+
+        return "redirect:http://localhost:3000";
+
+/*
         RotationInfo rotationInfo = restApiService.getRotationInfo();
         List<Integer> freeChampionIds = rotationInfo.getFreeChampionIds();
 
@@ -51,7 +55,7 @@ public class HomeController {
         model.addAttribute("freeChampionNames2", freeChampionNames.subList(8,16));
         model.addAttribute("version", API_INFO.getVersion());
         return "index";
-        // 로테이션 챔프 이름이 담긴 배열을 건네줘야 할거 같아요
+        // 로테이션 챔프 이름이 담긴 배열을 건네줘야 할거 같아요*/
     }
 
     public String changeChampionIdToName(Integer id){
