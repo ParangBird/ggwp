@@ -34,7 +34,7 @@ export default function Header() {
             <Nav.Link href="#">챔피언 정보</Nav.Link>
             <Nav.Link href="/ranking">랭킹</Nav.Link>
             <Nav.Link href="/multi">멀티서치</Nav.Link>
-            <Nav.Link href="#">커뮤니티</Nav.Link>
+            <Nav.Link href="http://localhost:8080/bbs">커뮤니티</Nav.Link>
           </Nav>
         </HeaderContainer>
       </Navbar>
