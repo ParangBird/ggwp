@@ -14,11 +14,13 @@
 
 </div>
 
-<div class="login-form container-md">
-    <form class="search-form" method="GET" action="/search">
-        <button type="button" onclick="location.href='링크주소';" class="btn btn-success">네이버 로그인</button>
-        <button type="button" onclick="location.href='링크주소';" class="btn btn-primary">구글 로그인</button>
-    </form>
+<div th:if="${userName}" class="login-form container-md">
+    logged in as <span th:text="${userName}">ㅇㅇㅇ</span>
+    <a href="/logout" class="btn btn-info active" role="button">Logout</a>
+</div>
+<div th:unless="${userName}">
+    <button type="button" onclick="location.href='링크주소';" class="btn btn-success">네이버 로그인</button>
+    <button type="button" onclick="location.href='/oauth2/authorization/google';" class="btn btn-primary">구글 로그인</button>
 </div>
 
 <div class="center-container">

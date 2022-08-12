@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -16,8 +16,12 @@
 
 <div class="login-form container-md">
     <form class="search-form" method="GET" action="/search">
+        <div th:if="${userName}">
+            logged in as <span th:text="${userName}">ㅇㅇㅇ</span>
+        </div>
         <button type="button" onclick="location.href='링크주소';" class="btn btn-success">네이버 로그인</button>
-        <button type="button" onclick="location.href='링크주소';" class="btn btn-primary">구글 로그인</button>
+        <button type="button" onclick="location.href='/oauth2/authorization/google';" class="btn btn-primary">구글 로그인</button>
+        <a href="/logout" class="btn btn-info active" role="button">Logout</a>
     </form>
 </div>
 
