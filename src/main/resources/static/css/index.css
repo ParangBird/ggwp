@@ -2,6 +2,14 @@ body{
     margin: 0;
     padding: 0;
 }
+.hello{
+    background-color: red;
+    color: red;
+}
+
+.login-container{
+    float: right;
+}
 
 .img-div{
     display: inline-block;

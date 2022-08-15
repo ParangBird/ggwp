@@ -58,7 +58,7 @@ public class HomeController {
         // 로테이션 챔프 이름이 담긴 배열을 건네줘야 할거 같아요*/
     }
 
-    public String changeChampionIdToName(Integer id){
+    public static String changeChampionIdToName(Integer id){
         String name = "";
         switch(id){
             case 266:
