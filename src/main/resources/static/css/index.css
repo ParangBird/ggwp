@@ -2,13 +2,24 @@ body{
     margin: 0;
     padding: 0;
 }
-.hello{
-    background-color: red;
-    color: red;
+
+.header-container{
+    background-color: #393E46;
+    display: flex;
 }
 
 .login-container{
-    float: right;
+    margin-left: auto;
+}
+
+.logo-image{
+    width: 200px;
+    height: 200px;
+    margin-left: auto;
+}
+
+.search-container{
+    margin-left: auto;
 }
 
 .img-div{
@@ -26,10 +37,7 @@ body{
     border: 1px solid grey;
     border-radius: 3px;
 }
-.search-container{
-    margin: 0 auto; width: 30%;
-    padding: 0;
-}
+
 .profile-container{
     width: 620px;
     padding: 3px;
