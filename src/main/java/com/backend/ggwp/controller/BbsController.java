@@ -3,11 +3,15 @@ package com.backend.ggwp.controller;
 import com.backend.ggwp.ApiInfo;
 import com.backend.ggwp.config.auth.dto.SessionUser;
 import com.backend.ggwp.domain.entity.RotationInfo;
+import com.backend.ggwp.domain.post.Post;
+import com.backend.ggwp.domain.post.PostService;
 import com.backend.ggwp.service.RestApiService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
@@ -22,6 +26,7 @@ public class BbsController {
     private final HttpSession httpSession;
     private final ApiInfo API_INFO;
     private final RestApiService restApiService;
+    private final PostService postService;
 
     @GetMapping("")
     public String index(Model model) {
@@ -51,5 +56,22 @@ public class BbsController {
             model.addAttribute("userName", user.getName());
         }
         return "bbs/login";
+    }
+
+    @GetMapping("/top")
+    public String top(){
+        return "bbs/top";
+    }
+
+    @GetMapping("/write")
+    public String write(){
+        return "bbs/write";
+    }
+
+    @PostMapping("/write")
+    public String writePost(){
+        Post post = new Post();
+        postService.save(post);
+        return "redirect:/";
     }
 }
