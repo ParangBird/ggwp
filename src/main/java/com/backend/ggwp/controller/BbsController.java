@@ -7,10 +7,12 @@ import com.backend.ggwp.domain.post.Post;
 import com.backend.ggwp.domain.post.PostService;
 import com.backend.ggwp.service.RestApiService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/bbs")
 @RequiredArgsConstructor
@@ -60,18 +63,22 @@ public class BbsController {
 
     @GetMapping("/top")
     public String top(){
+
         return "bbs/top";
     }
 
     @GetMapping("/write")
-    public String write(){
-        return "bbs/write";
+    public String write(Model model){
+        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+        if(user != null){
+            model.addAttribute("userName", user.getName());
+        }return "bbs/write";
     }
 
     @PostMapping("/write")
-    public String writePost(){
-        Post post = new Post();
-        postService.save(post);
+    public String writePost(@ModelAttribute("post") Post post){
+        log.info("title {} , author {}, content {} ", post.getTitle(), post.getAuthor(), post.getContent());
+        //postService.save(post);
         return "redirect:/";
     }
 }

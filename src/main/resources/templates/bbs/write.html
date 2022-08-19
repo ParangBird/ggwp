@@ -7,6 +7,7 @@
 <body>
     <form action method="post">
         <label for="title">제목</label><input id="title" name="title" type="text"/><br>
+        <label for="author">글쓴이</label><input th:value="${userName}" type="text" id="author" name="author" readonly> <br/>
         <label for="content">내용</label><br/>
         <textarea id="content" name="content"></textarea>
         <button type="submit">submit</button>
