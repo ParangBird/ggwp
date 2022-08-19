@@ -11,10 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -22,7 +22,6 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@RequestMapping("/bbs")
 @RequiredArgsConstructor
 public class BbsController {
 
@@ -31,7 +30,7 @@ public class BbsController {
     private final RestApiService restApiService;
     private final PostService postService;
 
-    @GetMapping("")
+    @GetMapping("/bbs")
     public String index(Model model) {
         SessionUser user = (SessionUser) httpSession.getAttribute("user");
         if(user != null){
@@ -52,7 +51,7 @@ public class BbsController {
 
         return "bbs/index";
     }
-    @GetMapping("/login")
+    @GetMapping("/bbs/login")
     public String login(Model model){
         SessionUser user = (SessionUser) httpSession.getAttribute("user");
         if(user != null){
@@ -61,24 +60,41 @@ public class BbsController {
         return "bbs/login";
     }
 
-    @GetMapping("/top")
+    @GetMapping("/bbs/top")
     public String top(){
 
         return "bbs/top";
     }
 
-    @GetMapping("/write")
+    @GetMapping("/bbs/write")
     public String write(Model model){
         SessionUser user = (SessionUser) httpSession.getAttribute("user");
         if(user != null){
             model.addAttribute("userName", user.getName());
-        }return "bbs/write";
+        }
+        return "bbs/write";
     }
 
-    @PostMapping("/write")
-    public String writePost(@ModelAttribute("post") Post post){
+    @PostMapping("/bbs/write")
+    public String writePost(@Validated @ModelAttribute("post") Post post,
+                            BindingResult bindingResult,
+                            Model model){
         log.info("title {} , author {}, content {} ", post.getTitle(), post.getAuthor(), post.getContent());
+        if(bindingResult.hasErrors()){
+            List<ObjectError> allErrors = bindingResult.getAllErrors();
+            for (ObjectError allError : allErrors) {
+                log.info("Error = {}", allError);
+            }
+            model.addAttribute("userName", post.getAuthor());
+            return "redirect:http://localhost:8080/bbs/write";
+        }
         //postService.save(post);
-        return "redirect:/";
+        return "redirect:http://localhost:8080/bbs";
     }
+
+    @PostMapping("/searchSummoner")
+    public String search(@RequestParam("summonerName")String summonerName){
+        return "redirect:http://localhost:3000/search/" + summonerName;
+    }
+
 }

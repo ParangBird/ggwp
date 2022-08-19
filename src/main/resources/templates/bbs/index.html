@@ -12,7 +12,10 @@
 <div class="header-container">
     <div class="search-container">
         <img class="logo-image" src="/static/images/logo.png" th:src="@{/images/logo.png}"/>
-            <input/><button>검색</button>
+        <form class="search-form" method="POST" action="/searchSummoner">
+            <input type="text" name="summonerName">
+            <button type="submit">검색</button>
+        </form>
     </div>
     <div class="login-container">
         <div th:if="${userName}" class="container-md">
