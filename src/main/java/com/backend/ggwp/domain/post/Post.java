@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-@NoArgsConstructor
 @Getter
 @Setter
 public class Post {
@@ -22,4 +21,14 @@ public class Post {
     private String author;
     @NotBlank
     private String content;
+
+    public Post(){
+
+    }
+    public Post(String title, String author, String content){
+        this.title = title;
+        this.author = author;
+        this.content = content;
+    }
+
 }

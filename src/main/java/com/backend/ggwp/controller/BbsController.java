@@ -69,27 +69,40 @@ public class BbsController {
     @GetMapping("/bbs/write")
     public String write(Model model){
         SessionUser user = (SessionUser) httpSession.getAttribute("user");
-        if(user != null){
-            model.addAttribute("userName", user.getName());
+
+        Post post = new Post();
+        if(user != null) {
+            post.setAuthor(user.getName());
         }
+        model.addAttribute("post", post);
         return "bbs/write";
     }
 
     @PostMapping("/bbs/write")
     public String writePost(@Validated @ModelAttribute("post") Post post,
-                            BindingResult bindingResult,
-                            Model model){
-        log.info("title {} , author {}, content {} ", post.getTitle(), post.getAuthor(), post.getContent());
-        if(bindingResult.hasErrors()){
-            List<ObjectError> allErrors = bindingResult.getAllErrors();
-            for (ObjectError allError : allErrors) {
-                log.info("Error = {}", allError);
-            }
-            model.addAttribute("userName", post.getAuthor());
-            return "redirect:http://localhost:8080/bbs/write";
+                    BindingResult bindingResult,
+                    Model model){
+                if(bindingResult.hasErrors()){
+                    List<ObjectError> allErrors = bindingResult.getAllErrors();
+                    for (ObjectError allError : allErrors) {
+                        log.info("Error = {}", allError);
+                    }
+                    log.info("retry to write");
+                    return "bbs/write";
         }
-        //postService.save(post);
+        log.info("Write Post : title {} , author {}, content {} ", post.getTitle(), post.getAuthor(), post.getContent());
+        postService.save(post);
         return "redirect:http://localhost:8080/bbs";
+    }
+
+    @GetMapping("/bbs/all")
+    public String all(Model model){
+        List<Post> posts = postService.findAll();
+        for (Post post : posts) {
+            log.info("{} : {}, {}, {}", post.getId(), post.getTitle(), post.getAuthor(), post.getContent());
+        }
+        model.addAttribute("posts", posts);
+        return "bbs/index";
     }
 
     @PostMapping("/searchSummoner")

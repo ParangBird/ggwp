@@ -3,13 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>글작성 페이지</title>
+    <style>
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
 </head>
 <body>
-    <form action method="post">
-        <label for="title">제목</label><input id="title" name="title" type="text"/><br>
-        <label for="author">글쓴이</label><input th:value="${userName}" type="text" id="author" name="author" readonly> <br/>
+    <form action th:object="${post}" method="post">
+        <label for="title">제목</label><input th:field="*{title}"
+                                             id="title" name="title" type="text"/><br>
+        <div class="field-error" th:errors="*{title}">
+            제목 오류
+        </div>
+        <label for="author">글쓴이</label><input th:field="*{author}"
+                                              type="text" id="author" name="author" readonly> <br/>
+        <div class="field-error" th:errors="*{author}">
+            글쓴이 오류
+        </div>
         <label for="content">내용</label><br/>
-        <textarea id="content" name="content"></textarea>
+        <textarea th:field="*{content}" id="content" name="content"></textarea>
+        <div class="field-error" th:errors="*{content}">
+            내용 오류
+        </div>
         <button type="submit">submit</button>
     </form>
 </body>
