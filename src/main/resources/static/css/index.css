@@ -12,6 +12,10 @@ body{
     margin-left: auto;
 }
 
+.bbs-container{
+    background-color: red;
+}
+
 .logo-image{
     width: 200px;
     height: 200px;

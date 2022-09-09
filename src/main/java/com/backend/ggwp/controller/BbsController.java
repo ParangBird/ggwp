@@ -105,6 +105,11 @@ public class BbsController {
         return "bbs/index";
     }
 
+    @GetMapping("/logout")
+    public String logout(){
+        return "bbs/index";
+    }
+
     @PostMapping("/searchSummoner")
     public String search(@RequestParam("summonerName")String summonerName){
         return "redirect:http://localhost:3000/search/" + summonerName;

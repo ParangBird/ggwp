@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +23,6 @@ public class Post {
     @NotBlank
     private String content;
 
-    public Post(){
-
-    }
     public Post(String title, String author, String content){
         this.title = title;
         this.author = author;

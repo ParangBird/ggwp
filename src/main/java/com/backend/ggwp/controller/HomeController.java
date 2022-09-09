@@ -282,7 +282,7 @@ public class HomeController {
             case  9:
                 name =  "Fiddlesticks";break;
             case  31:
-                name =  "ChoGath";break;
+                name =  "Chogath";break;
             case  33:
                 name =  "Rammus";break;
             case  7:
