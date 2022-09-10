@@ -13,7 +13,9 @@ body{
 }
 
 .bbs-container{
-    background-color: red;
+    border: 5px solid black;
+    width: 40%;
+    margin: 0 auto;
 }
 
 .logo-image{

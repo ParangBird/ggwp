@@ -22,6 +22,8 @@ public class Post {
     private String author;
     @NotBlank
     private String content;
+    @NotBlank
+    private Enum<PostEnum> postTag;
 
     public Post(String title, String author, String content){
         this.title = title;

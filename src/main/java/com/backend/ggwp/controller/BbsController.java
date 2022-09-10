@@ -36,11 +36,11 @@ public class BbsController {
         if(user != null){
             model.addAttribute("userName", user.getName());
         }
-
         RotationInfo rotationInfo = restApiService.getRotationInfo();
         List<Integer> freeChampionIds = rotationInfo.getFreeChampionIds();
-
         ArrayList<String> freeChampionNames = new ArrayList<>();
+        List<Post> posts = new ArrayList<>();
+        posts = postService.findAll();
 
         for(int i=0;i<freeChampionIds.size();i++){
             freeChampionNames.add(HomeController.changeChampionIdToName(freeChampionIds.get(i)));
@@ -48,6 +48,7 @@ public class BbsController {
         model.addAttribute("freeChampionNames1",freeChampionNames.subList(0,8));
         model.addAttribute("freeChampionNames2", freeChampionNames.subList(8,16));
         model.addAttribute("version", API_INFO.getVersion());
+        model.addAttribute("posts", posts);
 
         return "bbs/index";
     }
@@ -58,6 +59,11 @@ public class BbsController {
             model.addAttribute("userName", user.getName());
         }
         return "bbs/login";
+    }
+
+    @GetMapping("/bbs/register")
+    public String register(Model model){
+        return "null";
     }
 
     @GetMapping("/bbs/top")
