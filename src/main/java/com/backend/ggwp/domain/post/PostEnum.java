@@ -1,5 +1,12 @@
 package com.backend.ggwp.domain.post;
 
 public enum PostEnum {
-    TOP, JUG, MID, ADC, SUP, FREE
+    TOP("TOP"), JUG("JUG"), MID("MID"), ADC("ADC"), SUP("SUP"), FREE("FREE");
+    private final String tag;
+    PostEnum(String tag){
+        this.tag = tag;
+    }
+    public String tag(){
+        return tag;
+    }
 }

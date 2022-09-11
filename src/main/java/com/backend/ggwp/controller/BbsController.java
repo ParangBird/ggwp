@@ -31,7 +31,7 @@ public class BbsController {
     private final PostService postService;
 
     @GetMapping("/bbs")
-    public String index(Model model) {
+    public String index(Model model, @RequestParam(required = false) String tag) {
         SessionUser user = (SessionUser) httpSession.getAttribute("user");
         if(user != null){
             model.addAttribute("userName", user.getName());
@@ -40,7 +40,6 @@ public class BbsController {
         List<Integer> freeChampionIds = rotationInfo.getFreeChampionIds();
         ArrayList<String> freeChampionNames = new ArrayList<>();
         List<Post> posts = new ArrayList<>();
-        posts = postService.findAll();
 
         for(int i=0;i<freeChampionIds.size();i++){
             freeChampionNames.add(HomeController.changeChampionIdToName(freeChampionIds.get(i)));
@@ -48,8 +47,10 @@ public class BbsController {
         model.addAttribute("freeChampionNames1",freeChampionNames.subList(0,8));
         model.addAttribute("freeChampionNames2", freeChampionNames.subList(8,16));
         model.addAttribute("version", API_INFO.getVersion());
-        model.addAttribute("posts", posts);
-
+        //if(tag == null)
+            model.addAttribute("posts", postService.findAll());
+        //else
+            //model.addAttribute("posts", postService.findAllByTag(tag));
         return "bbs/index";
     }
     @GetMapping("/bbs/login")
@@ -75,7 +76,6 @@ public class BbsController {
     @GetMapping("/bbs/write")
     public String write(Model model){
         SessionUser user = (SessionUser) httpSession.getAttribute("user");
-
         Post post = new Post();
         if(user != null) {
             post.setAuthor(user.getName());
@@ -88,13 +88,13 @@ public class BbsController {
     public String writePost(@Validated @ModelAttribute("post") Post post,
                     BindingResult bindingResult,
                     Model model){
-                if(bindingResult.hasErrors()){
-                    List<ObjectError> allErrors = bindingResult.getAllErrors();
-                    for (ObjectError allError : allErrors) {
-                        log.info("Error = {}", allError);
-                    }
-                    log.info("retry to write");
-                    return "bbs/write";
+        if(bindingResult.hasErrors()) {
+            List<ObjectError> allErrors = bindingResult.getAllErrors();
+            for (ObjectError allError : allErrors) {
+                log.info("Error = {}", allError);
+            }
+            log.info("retry to write");
+            return "bbs/write";
         }
         log.info("Write Post : title {} , author {}, content {} ", post.getTitle(), post.getAuthor(), post.getContent());
         postService.save(post);

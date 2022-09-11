@@ -56,20 +56,35 @@
     <a href="jungle" class="btn btn-info" role="button">정글</a>
     <a href="mid" class="btn btn-info" role="button">미드</a>
     <a href="adcarry" class="btn btn-info" role="button">원딜</a>
-    <a href="supporter" class="btn btn-info" role="button">서폿</a>
+
 </div>-->
 
 <div class="bbs-container">
     <h2>게시글 입니다</h2>
-    <button>탑</button>
-    <button>정글</button>
-    <button>미드</button>
-    <button>원딜</button>
-    <button>서폿</button>
-    <button>자유</button>
+    <form action method="get" >
+        <button>전체</button>
+        <button>자유</button>
+        <button>탑</button>
+        <button>정글</button>
+        <button>미드</button>
+        <button>원딜</button>
+        <button>서폿</button>
+        <a href="bbs/write" class="btn btn-info" role="button">글쓰기</a>
+    </form>
     <hr>
     <table>
-        <tr>게시글목록</tr>
+        <tr>
+            <th>분류</th>
+            <th>게시번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+        </tr>
+<        <tr th:each="post : ${posts}">
+            <td th:text="${post.postTag}"></td>
+            <td th:text="${post.id}"></td>
+            <td th:text="${post.title}"></td>
+            <td th:text="${post.author}"></td>
+        </tr>
     </table>
 </div>
 
