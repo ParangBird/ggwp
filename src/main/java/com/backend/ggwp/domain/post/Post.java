@@ -22,13 +22,13 @@ public class Post {
     private String author;
     @NotBlank
     private String content;
-    @NotBlank
-    private Enum<PostEnum> postTag;
+    private PostEnum postTag;
 
-    public Post(String title, String author, String content){
+    public Post(String title, String author, String content, PostEnum postTag){
         this.title = title;
         this.author = author;
         this.content = content;
+        this.postTag = postTag;
     }
 
 }

@@ -61,7 +61,8 @@
 
 <div class="bbs-container">
     <h2>게시글 입니다</h2>
-    <form action method="get" >
+    <form action method="get">
+        <input type="hidden" name="postTag">
         <button>전체</button>
         <button>자유</button>
         <button>탑</button>
@@ -79,9 +80,9 @@
             <th>제목</th>
             <th>작성자</th>
         </tr>
-<        <tr th:each="post : ${posts}">
+        <tr th:each="post : ${posts}">
             <td th:text="${post.postTag}"></td>
-            <td th:text="${post.id}"></td>
+            <td><a th:text="${post.id}" th:href="@{bbs/read/{id}(id = ${post.id})}"></a></td>
             <td th:text="${post.title}"></td>
             <td th:text="${post.author}"></td>
         </tr>

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -31,7 +32,7 @@ public class BbsController {
     private final PostService postService;
 
     @GetMapping("/bbs")
-    public String index(Model model, @RequestParam(required = false) String tag) {
+    public String index(Model model, @RequestParam(required = false) String postTag) {
         SessionUser user = (SessionUser) httpSession.getAttribute("user");
         if(user != null){
             model.addAttribute("userName", user.getName());
@@ -99,6 +100,16 @@ public class BbsController {
         log.info("Write Post : title {} , author {}, content {} ", post.getTitle(), post.getAuthor(), post.getContent());
         postService.save(post);
         return "redirect:http://localhost:8080/bbs";
+    }
+
+    @GetMapping("/bbs/read/{postId}")
+    public String readPost(@PathVariable String postId, Model model){
+        Long id = Long.parseLong(postId);
+        Optional<Post> post = postService.findPostById(id);
+        if(post.isPresent()){
+            model.addAttribute("post", post);
+        }
+        return "bbs/read";
     }
 
     @GetMapping("/bbs/all")

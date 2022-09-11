@@ -2,15 +2,13 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>글작성 페이지</title>
-    <style>
-        .field-error {
-            border-color: #dc3545;
-            color: #dc3545;
-        }
-    </style>
+    <title>글읽기 페이지</title>
 </head>
 <body>
+<div th:if="${post == null}">
+    <h1>그딴거 없다고요 선생님</h1>
+</div>
+<div th:unless="${post == null}">
     <form action th:object="${post}" method="post">
         <label for="postTag">분류</label>
         <select th:field="*{postTag}" id="postTag" name="postTag">
@@ -23,7 +21,7 @@
         </select>
         <br/>
         <label for="title">제목</label><input th:field="*{title}"
-                                             id="title" name="title" type="text"/><br>
+                                            id="title" name="title" type="text"/><br>
         <div class="field-error" th:errors="*{title}">
             제목 오류
         </div>
@@ -38,6 +36,8 @@
             내용 오류
         </div>
         <button type="submit">submit</button>
-    </form>
+    </div>
+</form>
+</div>
 </body>
 </html>

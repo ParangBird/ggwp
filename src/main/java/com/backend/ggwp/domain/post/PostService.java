@@ -3,7 +3,6 @@ package com.backend.ggwp.domain.post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +14,8 @@ public class PostService {
     public void save(Post post){
         postRepository.save(post);
     }
+
+    public Optional<Post> findPostById(Long id) { return postRepository.findById(id);}
 
     public List<Post> findAll(){ return postRepository.findAll(); }
 
