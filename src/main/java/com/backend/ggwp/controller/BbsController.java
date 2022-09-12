@@ -112,6 +112,36 @@ public class BbsController {
         return "bbs/read";
     }
 
+    @GetMapping("/bbs/modify/{postId}")
+    public String showModifyPost(@PathVariable String postId, Model model){
+        Long id = Long.parseLong(postId);
+        Optional<Post> post = postService.findPostById(id);
+        if(post.isPresent()){
+            model.addAttribute("post", post);
+        }
+        return "bbs/modify";
+    }
+
+    @PostMapping("/bbs/modify/{postId}")
+    public String modifyPost(@PathVariable String postId){
+        Long id = Long.parseLong(postId);
+        Optional<Post> post = postService.findPostById(id);
+        if(post.isEmpty()){
+            // error
+        }
+        return "redirect:/bbs/modify";
+    }
+
+    @PostMapping("/bbs/delete/{postId}")
+    public String deletePost(@PathVariable String postId){
+        Long id = Long.parseLong(postId);
+        Optional<Post> post = postService.findPostById(id);
+        if(post.isEmpty()){
+            // error
+        }
+        return "redirect:/bbs/modify";
+    }
+
     @GetMapping("/bbs/all")
     public String all(Model model){
         List<Post> posts = postService.findAll();

@@ -21,4 +21,6 @@ public class PostService {
 
     public List<Post> findAllByTag(String tag){ return postRepository.findAllByPostTag(tag); }
 
+    public void deleteById(Long id) { postRepository.deleteById(id);}
+
 }
