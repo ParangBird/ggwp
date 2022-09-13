@@ -5,10 +5,12 @@ body{
 
 .header-container{
     background-color: #393E46;
-    display: flex;
 }
 
 .login-container{
+    display: flex;
+}
+.login-buttons{
     margin-left: auto;
 }
 
@@ -21,11 +23,14 @@ body{
 .logo-image{
     width: 200px;
     height: 200px;
-    margin-left: auto;
+    margin: 0 auto;
+    display: block;
 }
 
 .search-container{
-    margin-left: auto;
+    margin: 0 auto;
+    padding-bottom: 30px;
+    display: flex;
 }
 
 .img-div{
@@ -52,10 +57,13 @@ body{
     border-radius: 3px;
 }
 .search-form{
-    align-content: center;
     margin: 0 auto;
-    width: 50%;
 }
+.search-input{
+    width: 300px;
+}
+
+
 .champion-name{
     font-size: 4px;
     text-align: center;

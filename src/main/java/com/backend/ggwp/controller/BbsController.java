@@ -48,10 +48,10 @@ public class BbsController {
         model.addAttribute("freeChampionNames1",freeChampionNames.subList(0,8));
         model.addAttribute("freeChampionNames2", freeChampionNames.subList(8,16));
         model.addAttribute("version", API_INFO.getVersion());
-        //if(tag == null)
+        if(postTag == null)
             model.addAttribute("posts", postService.findAll());
-        //else
-            //model.addAttribute("posts", postService.findAllByTag(tag));
+        else
+            model.addAttribute("posts", postService.findAllByTag(postTag));
         return "bbs/index";
     }
     @GetMapping("/bbs/login")
@@ -61,17 +61,6 @@ public class BbsController {
             model.addAttribute("userName", user.getName());
         }
         return "bbs/login";
-    }
-
-    @GetMapping("/bbs/register")
-    public String register(Model model){
-        return "null";
-    }
-
-    @GetMapping("/bbs/top")
-    public String top(){
-
-        return "bbs/top";
     }
 
     @GetMapping("/bbs/write")
@@ -87,8 +76,7 @@ public class BbsController {
 
     @PostMapping("/bbs/write")
     public String writePost(@Validated @ModelAttribute("post") Post post,
-                    BindingResult bindingResult,
-                    Model model){
+                    BindingResult bindingResult){
         if(bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
             for (ObjectError allError : allErrors) {
@@ -107,7 +95,7 @@ public class BbsController {
         Long id = Long.parseLong(postId);
         Optional<Post> post = postService.findPostById(id);
         if(post.isPresent()){
-            model.addAttribute("post", post);
+            model.addAttribute("post", post.get());
         }
         return "bbs/read";
     }
@@ -123,13 +111,19 @@ public class BbsController {
     }
 
     @PostMapping("/bbs/modify/{postId}")
-    public String modifyPost(@PathVariable String postId){
-        Long id = Long.parseLong(postId);
-        Optional<Post> post = postService.findPostById(id);
-        if(post.isEmpty()){
-            // error
+    public String modifyPost(@Validated @ModelAttribute("post") Post post,
+                             BindingResult bindingResult, @PathVariable String postId){
+        if(bindingResult.hasErrors()) {
+            List<ObjectError> allErrors = bindingResult.getAllErrors();
+            for (ObjectError allError : allErrors) {
+                log.info("Error = {}", allError);
+            }
+            log.info("retry to modify");
+            return "bbs/modify";
         }
-        return "redirect:/bbs/modify";
+        log.info("Modify Post : title {} , author {}, content {} ", post.getTitle(), post.getAuthor(), post.getContent());
+        postService.update(post.getId());
+        return "redirect:/bbs";
     }
 
     @PostMapping("/bbs/delete/{postId}")
@@ -139,17 +133,8 @@ public class BbsController {
         if(post.isEmpty()){
             // error
         }
-        return "redirect:/bbs/modify";
-    }
-
-    @GetMapping("/bbs/all")
-    public String all(Model model){
-        List<Post> posts = postService.findAll();
-        for (Post post : posts) {
-            log.info("{} : {}, {}, {}", post.getId(), post.getTitle(), post.getAuthor(), post.getContent());
-        }
-        model.addAttribute("posts", posts);
-        return "bbs/index";
+        postService.deleteById(id);
+        return "redirect:/bbs";
     }
 
     @GetMapping("/logout")

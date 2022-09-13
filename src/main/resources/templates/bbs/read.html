@@ -25,9 +25,11 @@
                                               type="text" id="author" name="author" readonly> <br/>
         <label for="content">내용</label><br/>
         <textarea th:field="*{content}" id="content" name="content" readonly></textarea>
-        <div th:if="${post.author == user.name}">
-            <a th:href="@{bbs/modify/{id}(id = ${post.id})}" class="btn btn-info" role="button">수정하기</a>
-            <a th:href="@{bbs/delete/{id}(id = ${post.id})}" class="btn btn-info" role="button">삭제하기</a>
+        <div th:if="${session.user != null}">
+            <div th:if="${post.author == session.user.name}">
+                <a th:href="@{bbs/modify/{id}(id = ${post.id})}" class="btn btn-info" role="button">수정하기</a>
+                <a th:href="@{bbs/delete/{id}(id = ${post.id})}" class="btn btn-info" role="button">삭제하기</a>
+            </div>
         </div>
     </form>
 </div>

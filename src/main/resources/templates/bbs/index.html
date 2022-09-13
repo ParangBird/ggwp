@@ -10,22 +10,22 @@
 <body>
 
 <div class="header-container">
-    <div class="search-container">
-        <img class="logo-image" src="/static/images/logo.png" th:src="@{/images/logo.png}"/>
-        <form class="search-form" method="POST" action="/searchSummoner">
-            <input type="text" name="summonerName">
-            <button type="submit">검색</button>
-        </form>
-    </div>
-    <div class="login-container">
-        <div th:if="${userName}" class="container-md">
-            logged in as <span th:text="${userName}">ㅇㅇㅇ</span>
-            <a href="/logout" class="btn btn-info active" role="button">Logout</a>
-        </div>
-        <div th:unless="${userName}" class="container-md">
+    <div th:unless="${userName}" class="login-container">
+        <div class="login-buttons">
             <button type="button" onclick="location.href='/oauth2/authorization/naver';" class="btn btn-success">네이버 로그인</button>
             <button type="button" onclick="location.href='/oauth2/authorization/google';" class="btn btn-primary">구글 로그인</button>
+            <div th:if="${userName}" class="container-md">
+                logged in as <span th:text="${userName}">ㅇㅇㅇ</span>
+                <a href="/logout" class="btn btn-info active" role="button">Logout</a>
+            </div>
         </div>
+    </div>
+    <img class="logo-image" src="/static/images/logo.png" th:src="@{/images/logo.png}"/>
+    <div class="search-container">
+        <form class="search-form" method="POST" action="/searchSummoner">
+            <input class="search-input" type="text" name="summonerName">
+            <button type="submit">검색</button>
+        </form>
     </div>
 </div>
 
