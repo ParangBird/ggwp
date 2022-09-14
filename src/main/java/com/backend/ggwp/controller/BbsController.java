@@ -15,7 +15,13 @@ import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,7 +45,6 @@ public class BbsController {
         RotationInfo rotationInfo = restApiService.getRotationInfo();
         List<Integer> freeChampionIds = rotationInfo.getFreeChampionIds();
         ArrayList<String> freeChampionNames = new ArrayList<>();
-        List<Post> posts = new ArrayList<>();
 
         for(int i=0;i<freeChampionIds.size();i++){
             freeChampionNames.add(HomeController.changeChampionIdToName(freeChampionIds.get(i)));
@@ -89,23 +94,35 @@ public class BbsController {
         return "redirect:http://localhost:8080/bbs";
     }
 
-    @GetMapping("/bbs/read/{postId}")
-    public String readPost(@PathVariable String postId, Model model){
+    private Post validPostCheck(String postId, HttpServletResponse response){
         Long id = Long.parseLong(postId);
         Optional<Post> post = postService.findPostById(id);
-        if(post.isPresent()){
-            model.addAttribute("post", post.get());
+        if(post.isEmpty()){
+            log.info("사용자가 존재하지 않는 페이지에 접근");
+            response.setContentType("text/html;charset=UTF-8");
+            try {
+                PrintWriter out = null;
+                out = response.getWriter();
+                out.println("<script>alert('해당 게시글이 존재하지 않습니다.'); location.href='/bbs';</script>");
+                out.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+        return post.get();
+    }
+
+    @GetMapping("/bbs/read/{postId}")
+    public String readPost(@PathVariable String postId, HttpServletResponse response, Model model){
+        Post post = validPostCheck(postId, response);
+        model.addAttribute("post", post);
         return "bbs/read";
     }
 
     @GetMapping("/bbs/modify/{postId}")
-    public String showModifyPost(@PathVariable String postId, Model model){
-        Long id = Long.parseLong(postId);
-        Optional<Post> post = postService.findPostById(id);
-        if(post.isPresent()){
-            model.addAttribute("post", post);
-        }
+    public String showModifyPost(@PathVariable String postId, HttpServletResponse response, Model model){
+        Post post = validPostCheck(postId, response);
+        model.addAttribute("post", post);
         return "bbs/modify";
     }
 
@@ -141,9 +158,10 @@ public class BbsController {
         return "bbs/index";
     }
 
-    @PostMapping("/searchSummoner")
-    public String search(@RequestParam("summonerName")String summonerName){
-        return "redirect:http://localhost:3000/search/" + summonerName;
+    @PostMapping(value = "/searchSummoner", produces = "text/html;charset=UTF-8")
+    public String search(HttpServletRequest request, @RequestParam("summonerName")String summonerName) throws UnsupportedEncodingException {
+        String encodedParam = URLEncoder.encode(summonerName, "UTF-8");
+        return "redirect:http://localhost:3000/search/" + encodedParam;
     }
 
 }
