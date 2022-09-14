@@ -27,10 +27,14 @@ body{
     display: block;
 }
 
+.search-text{
+    text-align: center;
+    padding-bottom: 5px;
+    color: white;
+}
+
 .search-container{
-    margin: 0 auto;
     padding-bottom: 30px;
-    display: flex;
 }
 
 .img-div{
@@ -57,7 +61,7 @@ body{
     border-radius: 3px;
 }
 .search-form{
-    margin: 0 auto;
+    text-align: center;
 }
 .search-input{
     width: 300px;

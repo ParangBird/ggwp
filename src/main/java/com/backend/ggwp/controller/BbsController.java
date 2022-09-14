@@ -8,7 +8,6 @@ import com.backend.ggwp.domain.post.PostService;
 import com.backend.ggwp.service.RestApiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
