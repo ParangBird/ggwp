@@ -2,16 +2,14 @@ package com.backend.ggwp.domain.post;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "post")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +20,7 @@ public class Post {
     private String author;
     @NotBlank
     private String content;
+    @Enumerated(EnumType.STRING)
     private PostEnum postTag;
 
     public Post(String title, String author, String content, PostEnum postTag){

@@ -4,6 +4,7 @@ import com.backend.ggwp.ApiInfo;
 import com.backend.ggwp.config.auth.dto.SessionUser;
 import com.backend.ggwp.domain.entity.RotationInfo;
 import com.backend.ggwp.domain.post.Post;
+import com.backend.ggwp.domain.post.PostEnum;
 import com.backend.ggwp.domain.post.PostService;
 import com.backend.ggwp.service.RestApiService;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -36,7 +35,7 @@ public class BbsController {
     private final RestApiService restApiService;
     private final PostService postService;
 
-    @GetMapping("/bbs")
+    @RequestMapping("/bbs")
     public String index(Model model, @RequestParam(required = false) String postTag) {
         SessionUser user = (SessionUser) httpSession.getAttribute("user");
         if(user != null){
@@ -52,10 +51,11 @@ public class BbsController {
         model.addAttribute("freeChampionNames1",freeChampionNames.subList(0,8));
         model.addAttribute("freeChampionNames2", freeChampionNames.subList(8,16));
         model.addAttribute("version", API_INFO.getVersion());
-        if(postTag == null)
+        if(postTag == null || postTag.equals("ALL"))
             model.addAttribute("posts", postService.findAll());
-        else
-            model.addAttribute("posts", postService.findAllByTag(postTag));
+        else {
+            model.addAttribute("posts", postService.findAllByTag(PostEnum.valueOf(postTag)));
+        }
         return "bbs/index";
     }
     @GetMapping("/bbs/login")
@@ -89,7 +89,7 @@ public class BbsController {
             log.info("retry to write");
             return "bbs/write";
         }
-        log.info("Write Post : title {} , author {}, content {} ", post.getTitle(), post.getAuthor(), post.getContent());
+        log.info("Write Post : title {} , author {}, content {}, postTag {} ", post.getTitle(), post.getAuthor(), post.getContent(), post.getPostTag());
         postService.save(post);
         return "redirect:http://localhost:8080/bbs";
     }
@@ -158,10 +158,10 @@ public class BbsController {
         return "bbs/index";
     }
 
-    @PostMapping(value = "/searchSummoner", produces = "text/html;charset=UTF-8")
-    public String search(HttpServletRequest request, @RequestParam("summonerName")String summonerName) throws UnsupportedEncodingException {
-        String encodedParam = URLEncoder.encode(summonerName, "UTF-8");
-        return "redirect:http://localhost:3000/search/" + encodedParam;
+    @PostMapping(value = "/searchSummoner")
+    public String search( @RequestParam("summonerName")String summonerName) throws UnsupportedEncodingException {
+        String encodedName = URLEncoder.encode(summonerName, "UTF-8");
+        return "redirect:http://localhost:3000/search/" + encodedName;
     }
 
 }

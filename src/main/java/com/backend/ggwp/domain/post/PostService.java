@@ -19,7 +19,7 @@ public class PostService {
 
     public List<Post> findAll(){ return postRepository.findAll(); }
 
-    public List<Post> findAllByTag(String tag){ return postRepository.findAllByPostTag(tag); }
+    public List<Post> findAllByTag(PostEnum tag){ return postRepository.findAllByPostTag(tag); }
 
     public void update(Long id) { postRepository.save(postRepository.getById(id)); }
 
