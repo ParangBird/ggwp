@@ -1,6 +1,7 @@
 body{
     margin: 0;
     padding: 0;
+    background-color: #EEF1FF;
 }
 
 .header-container{
@@ -15,9 +16,10 @@ body{
 }
 
 .bbs-container{
-    border: 5px solid black;
+    border: 3px solid gray;
     width: 40%;
     margin: 0 auto;
+    text-align: center;
 }
 
 .logo-image{
@@ -77,6 +79,8 @@ body{
     padding-top: 20px;
     padding-bottom: 20px;
     padding-left: 10px;
+    text-align: center;
+    font-size: 1.5rem;
 }
 .profileIcon{
     width: 80px;

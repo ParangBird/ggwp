@@ -143,13 +143,9 @@ public class BbsController {
     }
 
     @PostMapping("/bbs/delete/{postId}")
-    public String deletePost(@PathVariable String postId){
-        Long id = Long.parseLong(postId);
-        Optional<Post> post = postService.findPostById(id);
-        if(post.isEmpty()){
-            // error
-        }
-        postService.deleteById(id);
+    public String deletePost(@PathVariable String postId, HttpServletResponse response){
+        Post post = validPostCheck(postId, response);
+        postService.deleteById(post.getId());
         return "redirect:/bbs";
     }
 
@@ -158,10 +154,10 @@ public class BbsController {
         return "bbs/index";
     }
 
-    @PostMapping(value = "/searchSummoner")
-    public String search( @RequestParam("summonerName")String summonerName) throws UnsupportedEncodingException {
-        String encodedName = URLEncoder.encode(summonerName, "UTF-8");
-        return "redirect:http://localhost:3000/search/" + encodedName;
-    }
+        @PostMapping(value = "/searchSummoner")
+        public String search( @RequestParam("summonerName")String summonerName) throws UnsupportedEncodingException {
+            String encodedName = URLEncoder.encode(summonerName, "UTF-8");
+            return "redirect:http://localhost:3000/search/" + encodedName;
+        }
 
 }

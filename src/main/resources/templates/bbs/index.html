@@ -54,32 +54,26 @@
         </div>
     </div>
 </div>
-<!--
-<div>
-    <a href="top" class="btn btn-info" role="button">탑</a>
-    <a href="jungle" class="btn btn-info" role="button">정글</a>
-    <a href="mid" class="btn btn-info" role="button">미드</a>
-    <a href="adcarry" class="btn btn-info" role="button">원딜</a>
 
-</div>-->
+<br/>
 
 <div class="bbs-container">
-    <h2>게시글 입니다</h2>
-    <form action method="POST">
-        <input type="submit" name="postTag" class="tag-button" value="ALL"/>
-        <input type="submit" name="postTag" class="tag-button" value="FREE"/>
-        <input type="submit" name="postTag" class="tag-button" value="TOP"/>
-        <input type="submit" name="postTag" class="tag-button" value="JUG"/>
-        <input type="submit" name="postTag" class="tag-button" value="MID"/>
-        <input type="submit" name="postTag" class="tag-button" value="ADC"/>
-        <input type="submit" name="postTag" class="tag-button" value="SUP"/>
+    <h2>게시판</h2>
+    <form action method="GET">
+        <input type="submit" name="postTag" class="tag-button btn btn-secondary" value="ALL"/>
+        <input type="submit" name="postTag" class="tag-button btn btn-secondary" value="FREE"/>
+        <input type="submit" name="postTag" class="tag-button btn btn-secondary" value="TOP"/>
+        <input type="submit" name="postTag" class="tag-button btn btn-secondary" value="JUG"/>
+        <input type="submit" name="postTag" class="tag-button btn btn-secondary" value="MID"/>
+        <input type="submit" name="postTag" class="tag-button btn btn-secondary" value="ADC"/>
+        <input type="submit" name="postTag" class="tag-button btn btn-secondary" value="SUP"/>
         <a href="bbs/write" class="btn btn-info" role="button">글쓰기</a>
     </form>
     <hr>
-    <table>
-        <tr>
+    <table class="table">
+        <tr class="table-primary">
             <th>분류</th>
-            <th>게시번호</th>
+            <th>번호</th>
             <th>제목</th>
             <th>작성자</th>
         </tr>
