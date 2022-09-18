@@ -138,7 +138,7 @@ public class BbsController {
             return "bbs/modify";
         }
         log.info("Modify Post : title {} , author {}, content {} ", post.getTitle(), post.getAuthor(), post.getContent());
-        postService.update(post.getId());
+        postService.update(post);
         return "redirect:/bbs";
     }
 
@@ -154,10 +154,10 @@ public class BbsController {
         return "bbs/index";
     }
 
-        @PostMapping(value = "/searchSummoner")
-        public String search( @RequestParam("summonerName")String summonerName) throws UnsupportedEncodingException {
-            String encodedName = URLEncoder.encode(summonerName, "UTF-8");
-            return "redirect:http://localhost:3000/search/" + encodedName;
-        }
+    @PostMapping(value = "/searchSummoner")
+    public String search( @RequestParam("summonerName")String summonerName) throws UnsupportedEncodingException {
+        String encodedName = URLEncoder.encode(summonerName, "UTF-8");
+        return "redirect:http://localhost:3000/search/" + encodedName;
+    }
 
 }

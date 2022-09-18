@@ -21,7 +21,7 @@ public class PostService {
 
     public List<Post> findAllByTag(PostEnum tag){ return postRepository.findAllByPostTag(tag); }
 
-    public void update(Long id) { postRepository.save(postRepository.getById(id)); }
+    public void update(Post post) { postRepository.save(post); }
 
     public void deleteById(Long id) { postRepository.deleteById(id);}
 
