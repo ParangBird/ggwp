@@ -22,11 +22,16 @@ body{
     text-align: center;
 }
 
-.logo-image{
+.logo-div{
     width: 200px;
     height: 200px;
     margin: 0 auto;
-    display: block;
+    background-color: red;
+}
+
+.logo-image{
+    width: 200px;
+    height: 200px;
 }
 
 .search-text{
