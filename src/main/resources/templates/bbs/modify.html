@@ -29,7 +29,12 @@
         </div>
     </div>
 
-    <img class="logo-image" src="/static/images/logo.png" th:src="@{/images/logo.png}"/>
+    <div class="logo-div">
+        <a href="http://localhost:8080/bbs">
+            <img class="logo-image" src="/static/images/logo.png" th:src="@{/images/logo.png}"/>
+        </a>
+    </div>
+
     <div class="search-container">
         <h2 class="search-text">소환사 검색</h2>
         <form class="search-form" method="POST" action="/searchSummoner">
