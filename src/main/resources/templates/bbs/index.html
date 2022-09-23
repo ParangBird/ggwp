@@ -71,7 +71,7 @@
         <input type="submit" name="postTag" class="tag-button btn btn-secondary" value="MID"/>
         <input type="submit" name="postTag" class="tag-button btn btn-secondary" value="ADC"/>
         <input type="submit" name="postTag" class="tag-button btn btn-secondary" value="SUP"/>
-        <a href="bbs/write" class="btn btn-info" role="button">글쓰기</a>
+        <a href="/bbs/write" th:href="@{/bbs/write}" class="btn btn-info" role="button">글쓰기</a>
     </form>
     <hr>
     <table class="table">
@@ -83,7 +83,7 @@
         </tr>
         <tr th:each="post : ${posts}">
             <td th:text="${post.postTag}"></td>
-            <td><a th:text="${post.id}" th:href="@{bbs/read/{id}(id = ${post.id})}"></a></td>
+            <td><a th:text="${post.id}" th:href="@{/bbs/read/{id}(id = ${post.id})}"></a></td>
             <td th:text="${post.title}"></td>
             <td th:text="${post.author}"></td>
         </tr>
