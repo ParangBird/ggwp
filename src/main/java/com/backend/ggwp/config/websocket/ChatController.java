@@ -1,12 +1,18 @@
 package com.backend.ggwp.config.websocket;
 
+import com.backend.ggwp.config.auth.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RequiredArgsConstructor
-@RestController
+@Slf4j
+@Controller
 @RequestMapping("/chat")
 public class ChatController {
     private final ChatService chatService;
@@ -17,7 +23,12 @@ public class ChatController {
     }
 
     @GetMapping
-    public List<ChatRoom> findAllRoom(){
-        return chatService.findAllRoom();
+    public String findAllRoom(HttpSession httpSession, Model model){
+        log.info("chatting GET");
+        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+        if(user != null){
+            model.addAttribute("userName", user.getName());
+        }
+        return "bbs/chat";
     }
 }

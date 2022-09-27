@@ -40,7 +40,7 @@ public class HomeController {
     @GetMapping("/")
     public String index(Model model){
 
-        return "redirect:http://localhost:3000";
+        return "redirect:http://localhost:8080/bbs";
 
 /*
         RotationInfo rotationInfo = restApiService.getRotationInfo();
