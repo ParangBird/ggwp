@@ -138,7 +138,12 @@ public class BbsController {
             return "bbs/modify";
         }
         log.info("Modify Post : title {} , author {}, content {} ", post.getTitle(), post.getAuthor(), post.getContent());
-        postService.update(post);
+        Post updatePost = postService.findPostById(Long.parseLong(postId)).get();
+        updatePost.setTitle(post.getTitle());
+        updatePost.setContent(post.getContent());
+        updatePost.setAuthor(post.getAuthor());
+        updatePost.setPostTag(post.getPostTag());
+        postService.update(updatePost);
         return "redirect:/bbs";
     }
 

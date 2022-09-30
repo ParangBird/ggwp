@@ -7,6 +7,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 @Slf4j
 public class LoginInterceptor implements HandlerInterceptor {
@@ -16,7 +18,16 @@ public class LoginInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession();
         if(session.getAttribute("user") == null){
             log.info("사용자가 로그인 안 됐음");
-            response.sendRedirect("/bbs");
+            try {
+                response.setContentType("text/html; charset=utf-8");
+                PrintWriter out = response.getWriter();
+                out.print("<script>alert('로그인을 먼저 해 주세요.'); location.href='/bbs';</script>");
+                out.flush();
+                out.close();
+                return false;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
