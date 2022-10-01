@@ -39,7 +39,7 @@ public class BbsController {
     public String index(Model model, @RequestParam(required = false) String postTag) {
         SessionUser user = (SessionUser) httpSession.getAttribute("user");
         if(user != null){
-            model.addAttribute("userName", user.getName());
+            model.addAttribute("user", user);
         }
         RotationInfo rotationInfo = restApiService.getRotationInfo();
         List<Integer> freeChampionIds = rotationInfo.getFreeChampionIds();

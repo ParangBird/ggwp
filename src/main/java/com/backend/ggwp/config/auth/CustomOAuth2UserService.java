@@ -3,8 +3,8 @@ package com.backend.ggwp.config.auth;
 import com.backend.ggwp.config.auth.dto.SessionUser;
 import com.backend.ggwp.domain.repository.PageUserRepository;
 import com.backend.ggwp.domain.user.PageUser;
-import com.backend.ggwp.domain.user.Role;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {

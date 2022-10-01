@@ -4,23 +4,27 @@ import com.backend.ggwp.domain.user.PageUser;
 import com.backend.ggwp.domain.user.Role;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 
+@Slf4j
 @Getter
 public class OAuthAttributes {
     private Map<String, Object> attributes;
     private String nameAttributeKey;
     private String name;
     private String email;
+    //private String nickname;
     private String picture;
 
     @Builder
-    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email, String picture){
+    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email,/* String nickname,*/ String picture){
         this.attributes = attributes;
         this.nameAttributeKey = nameAttributeKey;
         this.name = name;
         this.email = email;
+        //this.nickname = nickname;
         this.picture = picture;
     }
 
@@ -34,9 +38,11 @@ public class OAuthAttributes {
     private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes){
         Map<String, Object> response = (Map<String, Object>) attributes.get("response");
 
+
         return OAuthAttributes.builder()
                 .name((String) response.get("name"))
                 .email((String) response.get("email"))
+                //.nickname((String) response.get("nickname"))
                 .picture((String) response.get("profile_image"))
                 .attributes(response)
                 .nameAttributeKey(userNameAttributeName)
@@ -62,6 +68,7 @@ public class OAuthAttributes {
         return PageUser.builder()
                 .name(name)
                 .email(email)
+                //.nickname(nickname)
                 .picture(picture)
                 .role(Role.GUEST)	// 가입 기본 권한 == GUEST
                 .build();

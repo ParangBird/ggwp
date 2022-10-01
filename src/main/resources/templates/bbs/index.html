@@ -10,15 +10,15 @@
 <body>
 
 <div class="header-container">
-    <div th:unless="${userName}" class="login-container">
+    <div th:unless="${user}" class="login-container">
         <div class="login-buttons">
             <button type="button" onclick="location.href='/oauth2/authorization/naver';" class="btn btn-success">네이버 로그인</button>
             <button type="button" onclick="location.href='/oauth2/authorization/google';" class="btn btn-primary">구글 로그인</button>
         </div>
     </div>
-    <div th:if="${userName}" class="login-container">
+    <div th:if="${user}" class="login-container">
         <div class="login-buttons">
-            <span class="search-text">반갑습니다, <span th:text="${userName}">ㅇㅇㅇ</span> 님!</span>
+            <span class="search-text">반갑습니다, <span th:text="${user.name}">ㅇㅇㅇ</span> 님!</span>
             <a href="/logout" class="btn btn-info active" role="button">Logout</a>
         </div>
     </div>

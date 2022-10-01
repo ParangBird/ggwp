@@ -20,6 +20,9 @@ public class PageUser {
     @Column(nullable = false)
     private String email;
 
+    //Column(nullable = true)
+    //private String nickname;
+
     @Column
     private String picture;
 
@@ -28,9 +31,10 @@ public class PageUser {
     private Role role;
 
     @Builder
-    public PageUser(String name, String email, String picture, Role role){
+    public PageUser(String name, String email, /*String nickname,*/ String picture, Role role){
         this.name = name;
         this.email = email;
+        //this.nickname = nickname;
         this.picture = picture;
         this.role = role;
     }
@@ -38,7 +42,6 @@ public class PageUser {
     public PageUser update(String name, String picture){
         this.name = name;
         this.picture = picture;
-
         return this;
     }
 
