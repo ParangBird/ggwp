@@ -15,6 +15,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -90,10 +92,24 @@ public class BbsController {
             return "bbs/write";
         }
         log.info("Write Post : title {} , author {}, content {}, postTag {} ", post.getTitle(), post.getAuthor(), post.getContent(), post.getPostTag());
+        log.info("Writer email : {}", post.getAuthorEmail());
         postService.save(post);
         return "redirect:http://localhost:8080/bbs";
     }
 
+    private void validAuthorCheck(Post post, HttpServletResponse response, SessionUser user){
+        if(user == null || post.getAuthorEmail() == null || user.getEmail() == null || !post.getAuthorEmail().equals(user.getEmail())){
+            try{
+                response.setContentType("text/html; charset=utf-8");
+                PrintWriter out = response.getWriter();
+                out.print("<script>alert('권한이 없습니다!'); location.href='/bbs';</script>");
+                out.flush();
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     private Post validPostCheck(String postId, HttpServletResponse response){
         Long id = Long.parseLong(postId);
         Optional<Post> post = postService.findPostById(id);
@@ -120,15 +136,21 @@ public class BbsController {
     }
 
     @GetMapping("/bbs/modify/{postId}")
-    public String showModifyPost(@PathVariable String postId, HttpServletResponse response, Model model){
+    public String showModifyPost(@PathVariable String postId, HttpServletRequest request, HttpServletResponse response, Model model){
         Post post = validPostCheck(postId, response);
+        HttpSession session = request.getSession();
+        SessionUser user = (SessionUser) session.getAttribute("user");
+        validAuthorCheck(post, response, user);
         model.addAttribute("post", post);
         return "bbs/modify";
     }
 
     @PostMapping("/bbs/modify/{postId}")
     public String modifyPost(@Validated @ModelAttribute("post") Post post,
-                             BindingResult bindingResult, @PathVariable String postId){
+                             BindingResult bindingResult, @PathVariable String postId,
+                             HttpServletResponse response, HttpSession session){
+        SessionUser user = (SessionUser) session.getAttribute("user");
+        validAuthorCheck(post, response, user);
         if(bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
             for (ObjectError allError : allErrors) {
@@ -148,8 +170,10 @@ public class BbsController {
     }
 
     @PostMapping("/bbs/delete/{postId}")
-    public String deletePost(@PathVariable String postId, HttpServletResponse response){
+    public String deletePost(@PathVariable String postId, HttpServletResponse response, HttpSession session){
         Post post = validPostCheck(postId, response);
+        SessionUser user = (SessionUser) session.getAttribute("user");
+        validAuthorCheck(post, response, user);
         postService.deleteById(post.getId());
         return "redirect:/bbs";
     }

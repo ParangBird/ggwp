@@ -20,13 +20,16 @@ public class Post {
     private String author;
     @NotBlank
     private String content;
+    @NotBlank
+    private String authorEmail;
     @Enumerated(EnumType.STRING)
     private PostEnum postTag;
 
-    public Post(String title, String author, String content, PostEnum postTag){
+    public Post(String title, String author, String content, String authorEmail, PostEnum postTag){
         this.title = title;
         this.author = author;
         this.content = content;
+        this.authorEmail = authorEmail;
         this.postTag = postTag;
     }
 

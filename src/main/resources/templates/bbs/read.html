@@ -59,14 +59,14 @@
             <div class="input-group mb-3 title-div">
                 <span class="input-group-text" id="form-title">제목</span>
                 <input type="text" th:field="*{title}" id="title" name="title" placeholder="제목을 입력하세요"
-                       class="form-control" aria-label="Sizing example input" aria-describedby="form-title">
+                       class="form-control" aria-label="Sizing example input" readonly aria-describedby="form-title">
             </div>
             <div class="input-group mb-3 author-div">
                 <span class="input-group-text" id="form-title">글쓴이</span>
                 <input type="text" th:field="*{author}" id="author" name="author"
                        class="form-control" aria-label="Sizing example input" readonly aria-describedby="form-title">
             </div>
-            <textarea th:field="*{content}" id="content" name="content" placeholder="내용을 입력하세요"
+            <textarea th:field="*{content}" id="content" name="content" placeholder="내용을 입력하세요" readonly
                       class="form-control content-textarea" rows="5"></textarea>
             <div th:if="${session.user != null}">
                 <div th:if="${post.author == session.user.name}">

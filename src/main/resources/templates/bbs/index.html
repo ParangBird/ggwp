@@ -9,6 +9,10 @@
 </head>
 <body>
 
+<div th:if="${session.user != null}">
+<span th:text="${session.user.email}"></span>
+</div>
+
 <div class="header-container">
     <div th:unless="${user}" class="login-container">
         <div class="login-buttons">
