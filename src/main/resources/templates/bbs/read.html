@@ -20,7 +20,7 @@
 </head>
 <body>
     <div class="header-container">
-        <div th:unless="${user}" class="login-container">
+        <div th:unless="${session.user}" class="login-container">
             <div class="register-div-form">
                 <p class="login-text">GG.WP를 더 편리하게 이용하세요</p>
                 <button class="login-button">GG.WP 로그인</button></br>
@@ -32,9 +32,9 @@
                 </div>
             </div>
         </div>
-        <div th:if="${user}" class="login-container">
+        <div th:if="${session.user}" class="login-container">
             <div class="login-buttons">
-                <span class="search-text">반갑습니다, <span th:text="${user.name}">ㅇㅇㅇ</span> 님!</span>
+                <span class="search-text">반갑습니다, <span th:text="${session.user.name}">ㅇㅇㅇ</span> 님!</span>
                 <a href="/logout" class="btn btn-info active" role="button">Logout</a>
             </div>
         </div>
