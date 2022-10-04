@@ -8,11 +8,6 @@
     <link rel="stylesheet" href="/static/css/index.css" th:href="@{/css/index.css}">
 </head>
 <body>
-
-<div th:if="${session.user != null}">
-<span th:text="${session.user.email}"></span>
-</div>
-
 <div class="header-container">
     <div th:unless="${user}" class="login-container">
         <div class="login-buttons">
@@ -47,8 +42,14 @@
     <div class="free-champions-row">
         <div class="img-div" th:each="championName, iter : ${freeChampionNames1}">
             <div class="">
+                <a href="https://www.op.gg/champions/shen"
+                   class="link-dark"
+                   target="_blank"
+                   th:href="@{https://www.op.gg/champions/{name}(name = ${championName})}"
+                >
                 <img class="champion-image" width="60px" height="60px" th:src="@{${'https://ddragon.leagueoflegends.com/cdn/' + version + '/img/champion/' + championName  + '.png'}}">
                 <div class="champion-name" th:text="${championName}"></div>
+                </a>
             </div>
         </div>
     </div>
@@ -56,8 +57,14 @@
     <div class="free-champions-row">
         <div class="img-div" th:each="championName, iter : ${freeChampionNames2}">
             <div class="">
+                <a href="https://www.op.gg/champions/shen"
+                   class="link-dark"
+                   target="_blank"
+                   th:href="@{https://www.op.gg/champions/{name}(name = ${championName})}"
+                >
                 <img width="60px" height="60px" th:src="@{${'https://ddragon.leagueoflegends.com/cdn/' + version + '/img/champion/' + championName  + '.png'}}">
                 <div class="champion-name" th:text="${championName}"></div>
+                </a>
             </div>
         </div>
     </div>
