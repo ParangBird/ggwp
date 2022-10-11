@@ -24,6 +24,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,10 +54,15 @@ public class BbsController {
         model.addAttribute("freeChampionNames1",freeChampionNames.subList(0,8));
         model.addAttribute("freeChampionNames2", freeChampionNames.subList(8,16));
         model.addAttribute("version", API_INFO.getVersion());
+        List<Post> allPost = null;
         if(postTag == null || postTag.equals("ALL"))
-            model.addAttribute("posts", postService.findAll());
+            allPost = postService.findAll();
         else {
-            model.addAttribute("posts", postService.findAllByTag(PostEnum.valueOf(postTag)));
+            allPost = postService.findAllByTag(PostEnum.valueOf(postTag));
+        }
+        if(allPost != null) {
+            Collections.reverse(allPost);
+            model.addAttribute("posts", allPost);
         }
         return "bbs/index";
     }
