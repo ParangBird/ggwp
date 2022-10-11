@@ -1,36 +1,27 @@
 package com.backend.ggwp.controller;
 
-
 import com.backend.ggwp.domain.entity.leagueList.LeagueItem;
 import com.backend.ggwp.domain.entity.leagueList.LeagueItemComparator;
 import com.backend.ggwp.domain.entity.leagueList.LeagueList;
 import com.backend.ggwp.service.LeagueItemService;
 import com.backend.ggwp.service.RestApiService;
-import org.springframework.stereotype.Controller;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.Collections;
 
 
-@Controller
-public class DbController {
+@RestController
+@RequiredArgsConstructor
+public class RestApiController {
 
     private final RestApiService restApiService;
     private final LeagueItemService leagueItemService;
 
-    public DbController(RestApiService restApiService, LeagueItemService leagueItemService) {
-        this.restApiService = restApiService;
-        this.leagueItemService = leagueItemService;
-    }
-
-    @ResponseBody
     @GetMapping("/api/rankinfo")
     public ArrayList<LeagueItem> getC2MInfo(){
         // 챌린저 ~ 마스터 정보 받아옴
-        // 실제로 이짓거리 하면 느려져서 DB 저장해서 필요할때만 업데이트하고 불러오는 식으로 해야할듯 싶다
-
         LeagueList challengerLeagueList = restApiService.getChallengerList();
         LeagueList gmLeagueList = restApiService.getGrandMasterList();
         LeagueList masterLeagueList = restApiService.getMasterList();
@@ -52,10 +43,10 @@ public class DbController {
         for(LeagueItem m : masterList)
             challenger2MasterList.add(m);
 
-
         for(long i=0;i<challenger2MasterList.size();i++){
             challenger2MasterList.get((int) i).setRanking(i+1);
         }
+
         leagueItemService.clearAll();
         leagueItemService.saveAll(challenger2MasterList);
         return (challenger2MasterList);
