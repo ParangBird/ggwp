@@ -1,61 +1,74 @@
 package com.backend.ggwp.controller;
 
 import com.backend.ggwp.ApiInfo;
+import com.backend.ggwp.config.auth.dto.SessionUser;
 import com.backend.ggwp.domain.entity.AccountInfo;
-import com.backend.ggwp.domain.entity.LeagueEntrySummonerList;
 import com.backend.ggwp.domain.entity.RotationInfo;
 import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
 import com.backend.ggwp.domain.entity.currentGame.CurrentGameInfo;
-import com.backend.ggwp.domain.entity.leagueList.LeagueItem;
-import com.backend.ggwp.domain.entity.leagueList.LeagueItemComparator;
-import com.backend.ggwp.domain.entity.leagueList.LeagueList;
-import com.backend.ggwp.domain.entity.match.Match;
-import com.backend.ggwp.domain.entity.match.Participant;
+import com.backend.ggwp.domain.post.Post;
+import com.backend.ggwp.domain.post.PostEnum;
+import com.backend.ggwp.domain.post.PostService;
 import com.backend.ggwp.service.RestApiService;
-import com.google.gson.Gson;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Controller
 public class HomeController {
     private final ApiInfo API_INFO;
     private final RestApiService restApiService;
-
-    public HomeController(ApiInfo api_info, RestApiService restApiService) {
-        API_INFO = api_info;
-        this.restApiService = restApiService;
-    }
+    private final HttpSession httpSession;
+    private final PostService postService;
 
     @GetMapping("/")
     public String index(Model model){
 
         return "redirect:http://localhost:8080/bbs";
+    }
 
-/*
+    @RequestMapping("/bbs")
+    public String index(Model model, @RequestParam(required = false) String postTag) {
+        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+        if(user != null){
+            model.addAttribute("user", user);
+        }
         RotationInfo rotationInfo = restApiService.getRotationInfo();
         List<Integer> freeChampionIds = rotationInfo.getFreeChampionIds();
-
         ArrayList<String> freeChampionNames = new ArrayList<>();
 
         for(int i=0;i<freeChampionIds.size();i++){
-            freeChampionNames.add(changeChampionIdToName(freeChampionIds.get(i)));
+            freeChampionNames.add(HomeController.changeChampionIdToName(freeChampionIds.get(i)));
         }
         model.addAttribute("freeChampionNames1",freeChampionNames.subList(0,8));
         model.addAttribute("freeChampionNames2", freeChampionNames.subList(8,16));
         model.addAttribute("version", API_INFO.getVersion());
-        return "index";
-        // 로테이션 챔프 이름이 담긴 배열을 건네줘야 할거 같아요*/
+        List<Post> allPost = null;
+        if(postTag == null || postTag.equals("ALL"))
+            allPost = postService.findAll();
+        else {
+            allPost = postService.findAllByTag(PostEnum.valueOf(postTag));
+        }
+        if(allPost != null) {
+            Collections.reverse(allPost);
+            model.addAttribute("posts", allPost);
+        }
+        return "bbs/index";
+    }
+
+    @PostMapping(value = "/searchSummoner")
+    public String search( @RequestParam("summonerName")String summonerName) throws UnsupportedEncodingException {
+        String encodedName = URLEncoder.encode(summonerName, "UTF-8");
+        return "redirect:http://localhost:3000/search/" + encodedName;
     }
 
     public static String changeChampionIdToName(Integer id){

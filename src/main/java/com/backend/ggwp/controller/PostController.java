@@ -31,49 +31,11 @@ import java.util.Optional;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-public class BbsController {
+public class PostController {
 
     private final HttpSession httpSession;
-    private final ApiInfo API_INFO;
-    private final RestApiService restApiService;
     private final PostService postService;
 
-    @RequestMapping("/bbs")
-    public String index(Model model, @RequestParam(required = false) String postTag) {
-        SessionUser user = (SessionUser) httpSession.getAttribute("user");
-        if(user != null){
-            model.addAttribute("user", user);
-        }
-        RotationInfo rotationInfo = restApiService.getRotationInfo();
-        List<Integer> freeChampionIds = rotationInfo.getFreeChampionIds();
-        ArrayList<String> freeChampionNames = new ArrayList<>();
-
-        for(int i=0;i<freeChampionIds.size();i++){
-            freeChampionNames.add(HomeController.changeChampionIdToName(freeChampionIds.get(i)));
-        }
-        model.addAttribute("freeChampionNames1",freeChampionNames.subList(0,8));
-        model.addAttribute("freeChampionNames2", freeChampionNames.subList(8,16));
-        model.addAttribute("version", API_INFO.getVersion());
-        List<Post> allPost = null;
-        if(postTag == null || postTag.equals("ALL"))
-            allPost = postService.findAll();
-        else {
-            allPost = postService.findAllByTag(PostEnum.valueOf(postTag));
-        }
-        if(allPost != null) {
-            Collections.reverse(allPost);
-            model.addAttribute("posts", allPost);
-        }
-        return "bbs/index";
-    }
-    @GetMapping("/bbs/login")
-    public String login(Model model){
-        SessionUser user = (SessionUser) httpSession.getAttribute("user");
-        if(user != null){
-            model.addAttribute("userName", user.getName());
-        }
-        return "bbs/login";
-    }
 
     @GetMapping("/bbs/write")
     public String write(Model model){
@@ -184,15 +146,5 @@ public class BbsController {
         return "redirect:/bbs";
     }
 
-    @GetMapping("/logout")
-    public String logout(){
-        return "bbs/index";
-    }
-
-    @PostMapping(value = "/searchSummoner")
-    public String search( @RequestParam("summonerName")String summonerName) throws UnsupportedEncodingException {
-        String encodedName = URLEncoder.encode(summonerName, "UTF-8");
-        return "redirect:http://localhost:3000/search/" + encodedName;
-    }
 
 }
