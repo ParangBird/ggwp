@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-<header th:fragment="copy">
+
+<header th:fragment="header">
     <div class="header-container">
         <div th:unless="${session.user}" class="login-container">
             <div class="register-div-form">
@@ -16,7 +17,7 @@
         </div>
         <div th:if="${session.user}" class="login-container">
             <div class="login-buttons">
-                <span class="search-text">반갑습니다, <span th:text="${user.name}">ㅇㅇㅇ</span> 님!</span>
+                <span class="search-text">반갑습니다, <span th:text="${session.user.name}">ㅇㅇㅇ</span> 님!</span>
                 <a href="/logout" class="btn btn-info active" role="button">Logout</a>
             </div>
         </div>
