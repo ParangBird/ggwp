@@ -6,6 +6,18 @@
         <div th:unless="${session.user}" class="login-container">
             <div class="register-div-form">
                 <p class="login-text">GG.WP를 더 편리하게 이용하세요</p>
+                <form class="login-form">
+                    <div class="form-floating mb-3 login-form-email">
+                        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                        <label for="floatingInput">이메일 주소</label>
+                    </div>
+                    <div class="form-floating login-form-password">
+                        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                        <label for="floatingPassword">비밀번호</label>
+                    </div>
+                </form>
+
+
                 <button class="login-button" onclick="location.href='/bbs/login'">GG.WP 로그인</button></br>
                 <a class="register-link fas fa-lock">아이디ㆍ비밀번호찾기</a>
                 <a class="find-link fas fa-user-alt">회원가입</a>
@@ -29,9 +41,9 @@
         </div>
         <div class="search-container">
             <h2 class="search-text">소환사 검색</h2>
-            <form class="search-form" method="POST" action="/searchSummoner">
-                <input class="search-input" type="text" name="summonerName">
-                <button type="submit" class="btn btn-primary">검색</button>
+            <form class="input-group mb-3" method="POST" action="/searchSummoner">
+                <input type="text" class="form-control" name="summonerName" placeholder="소환사명">
+                <button class="btn btn-outline-primary active" type="submit">검색</button>
             </form>
         </div>
     </div>

@@ -6,6 +6,7 @@ body{
 
 .header-container{
     background-color: #393E46;
+    height: 350px;
 }
 
 .login-container{
@@ -25,24 +26,31 @@ body{
 }
 
 .logo-div{
-    width: 200px;
-    height: 200px;
+    width: 235px;
+    height: 235px;
     margin: 0 auto;
 }
 
 .logo-image{
-    width: 200px;
-    height: 200px;
+    width: 235px;
+    height: 235px;
 }
 
 .search-text{
-    text-align: center;
     padding-bottom: 5px;
     color: white;
 }
 
 .search-container{
+    width: 400px;
+    height: 100px;
+    margin: 0 auto;
+    text-align: center;
+    /*
+    background-color: red;
+    text-align: center;
     padding-bottom: 30px;
+    */
 }
 
 .img-div{
@@ -68,13 +76,11 @@ body{
     border: 1px solid grey;
     border-radius: 3px;
 }
-.search-form{
-    text-align: center;
-}
 .search-input{
     width: 300px;
 }
-
+.search-form{
+}
 
 .champion-name{
     font-size: 4px;
@@ -114,6 +120,7 @@ body{
 }
 
 .register-div-form{
+    z-index: 100;
     display: inline-block;
     background-color: #f4f4f4;
     text-align: center;
@@ -155,4 +162,18 @@ body{
 }
 .oauth-login-div{
     margin-top: 5px;
+}
+
+.login-form{
+    text-align: left;
+}
+
+.login-form-email{
+    margin: 0 10px;
+}
+
+.login-form-password{
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 15px;
 }
