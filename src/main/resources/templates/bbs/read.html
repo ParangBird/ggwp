@@ -21,7 +21,8 @@
 <body>
 <div th:insert="~{fragments/header :: header}"></div>
     <div class="write-container">
-        <form class="write-form" action th:object="${post}" method="post">
+        <form class="write-form" th:action="@{/bbs/delete/{id}(id = ${post.id})}" action="/bbs/delete/id" th:object="${post}" method="post">
+            <input type="hidden" th:field="*{authorEmail}" name="authorEmail" id="authorEmail">
             <label for="postTag">분류</label>
             <select class="form-select select-div" th:field="*{postTag}" id="postTag" name="postTag">
                 <option disabled="disabled" value="FREE">자유</option>
@@ -47,7 +48,7 @@
             <div th:if="${session.user != null}">
                 <div th:if="${post.author == session.user.name}">
                     <a th:href="@{/bbs/modify/{id}(id = ${post.id})}" href="/bbs/modify/id" class="btn btn-info" role="button">수정하기</a>
-                    <a th:href="@{/bbs/delete/{id}(id = ${post.id})}" class="btn btn-info" role="button">삭제하기</a>
+                    <input type="submit" value="삭제하기"  class="btn btn-secondary"/>
                 </div>
             </div>
         </form>
