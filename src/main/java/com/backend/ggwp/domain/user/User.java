@@ -1,5 +1,6 @@
-package com.backend.ggwp.domain.entity.user;
+package com.backend.ggwp.domain.user;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +12,6 @@ import javax.persistence.Id;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 public class User {
     @Id
@@ -20,4 +20,8 @@ public class User {
     private String userName;
     private String password;
     private String email;
+    @Builder
+    public User(String userName, String password, String  email){
+        this.userName = userName; this.password = password; this.email = email;
+    }
 }

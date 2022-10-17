@@ -1,16 +1,13 @@
 package com.backend.ggwp.controller;
 
 import com.backend.ggwp.ApiInfo;
-import com.backend.ggwp.domain.Dto.MatchDto;
 import com.backend.ggwp.domain.entity.AccountInfo;
 import com.backend.ggwp.domain.Dto.SummonerDto;
 import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
 import com.backend.ggwp.domain.entity.common.StringFormat;
 import com.backend.ggwp.domain.entity.leagueList.LeagueItem;
-import com.backend.ggwp.domain.entity.match.Match;
-import com.backend.ggwp.domain.entity.match.Participant;
 import com.backend.ggwp.domain.entity.record.MatchSummary;
-import com.backend.ggwp.domain.entity.user.User;
+import com.backend.ggwp.domain.user.User;
 import com.backend.ggwp.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
