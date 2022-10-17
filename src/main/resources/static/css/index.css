@@ -177,3 +177,7 @@ body{
     margin-right: 10px;
     margin-bottom: 15px;
 }
+
+.login-form-enter{
+    display: none;
+}
