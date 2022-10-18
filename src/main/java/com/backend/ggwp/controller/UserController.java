@@ -4,6 +4,7 @@ import com.backend.ggwp.config.auth.dto.SessionUser;
 import com.backend.ggwp.domain.repository.UserRepository;
 import com.backend.ggwp.domain.user.User;
 import com.backend.ggwp.domain.user.dto.LoginDto;
+import com.backend.ggwp.domain.user.dto.RegisterDto;
 import com.backend.ggwp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,21 @@ public class UserController {
             return "잘못된 정보";
         }
         return "로그인 성공";
+    }
+
+    @ResponseBody
+    @PostMapping("/bbs/register")
+    public String register(@ModelAttribute @Validated RegisterDto registerDto){
+        Optional<User> dup = userService.findByUserName(registerDto.getUserName());
+        if(dup != null && dup.isPresent()){
+            return "중복된 아이디";
+        }
+        String userName = registerDto.getUserName();
+        String password = registerDto.getPassword();
+        String email = registerDto.getEmail();
+        User newUser = User.builder().userName(userName).password(password).email(email).build();
+        userService.save(newUser);
+        return "회원가입 성공";
     }
 
     @GetMapping("/logout")
