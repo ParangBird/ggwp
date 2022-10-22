@@ -74,6 +74,10 @@ public class HomeController {
     public static String changeChampionIdToName(Integer id){
         String name = "";
         switch(id){
+            case 221 :
+                name = "Zeri"; break;
+            case 888 :
+                name = "RenetaGlasc"; break;
             case 266:
                 name = "Aatrox";break; // 챔피언 영어 이름
             case 412:
