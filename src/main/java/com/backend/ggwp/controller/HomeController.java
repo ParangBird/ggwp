@@ -404,12 +404,11 @@ public class HomeController {
     }
 
     @ResponseBody
-    @GetMapping("/search")
-    public String search(Model model, HttpServletRequest request) {
-        String summonerName = request.getParameter("summonerName");
+    @GetMapping("/search/{summonerName}")
+    public String search(Model model, @PathVariable("summonerName") String summonerName) throws UnsupportedEncodingException {
         summonerName = summonerName.replace(" ","");
-
-        AccountInfo accountInfo = restApiService.getAccountInfo(summonerName);
+        String encodedName = URLEncoder.encode(summonerName, "UTF-8");
+        AccountInfo accountInfo = restApiService.getAccountInfo(encodedName);
 
         if(accountInfo.getId() == null)
             return "none";

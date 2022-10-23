@@ -8,6 +8,8 @@ import com.backend.ggwp.domain.repository.MatchSummaryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +33,10 @@ public class MatchApiService {
         return false;
     }
 
-    public ArrayList<MatchSummary> getAll30Matches(AccountInfo accountInfo){
-        ArrayList<MatchSummary> matchSummaries =  matchSummaryRepository.find30ByName(accountInfo.getName());
+    public ArrayList<MatchSummary> getAll30Matches(AccountInfo accountInfo) throws UnsupportedEncodingException {
+        String summonerName = accountInfo.getName();
+        //String encodedName = URLEncoder.encode(summonerName, "UTF-8");
+        ArrayList<MatchSummary> matchSummaries =  matchSummaryRepository.find30ByName(summonerName);
         return matchSummaries;
     }
 
@@ -45,6 +49,7 @@ public class MatchApiService {
         ArrayList<String> matches = restApiService.getMatchIds(accountInfo.getPuuid());
         matches.addAll(restApiService.getSoloMatchIds(accountInfo.getPuuid()));
         String summonerName = accountInfo.getName();
+        //log.info(" UPDATE MATCH SUMMARY ---");
         for(String s : matches){
             if(matchExist(summonerName, s)) continue;
             Match match = restApiService.getMatchInfo(s);

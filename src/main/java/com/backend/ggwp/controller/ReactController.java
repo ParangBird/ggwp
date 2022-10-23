@@ -9,6 +9,7 @@ import com.backend.ggwp.domain.entity.leagueList.LeagueItem;
 import com.backend.ggwp.domain.entity.record.MatchSummary;
 import com.backend.ggwp.domain.user.User;
 import com.backend.ggwp.service.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,32 +17,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Optional;
 
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class ReactController {
 
     private final ApiInfo API_INFO;
     private final RestApiService restApiService;
     private final LeagueItemService leagueItemService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private SummonerService summonerService;
-
-    @Autowired
-    private MatchApiService matchApiService;
-
-    public ReactController(ApiInfo api_info, RestApiService restApiService, LeagueItemService leagueItemService) {
-        API_INFO = api_info;
-        this.restApiService = restApiService;
-        this.leagueItemService = leagueItemService;
-    }
+    private final UserService userService;
+    private final SummonerService summonerService;
+    private final MatchApiService matchApiService;
 
     @GetMapping("/reactSearch/{name}")
     public SummonerDto index(@PathVariable(value = "name")String name){
@@ -56,9 +48,11 @@ public class ReactController {
 
     //전적 갱신
     @GetMapping("/api/matches/update/{name}")
-    public void updateMatches(@PathVariable(value = "name")String name){
+    public void updateMatches(@PathVariable(value = "name")String name) throws UnsupportedEncodingException {
         String summonerName = StringFormat.setApiString(name);
+        String encodedName = URLEncoder.encode(summonerName, "UTF-8");
         AccountInfo accountInfo = restApiService.getAccountInfo(summonerName);
+        //log.info(accountInfo.toString());
         matchApiService.updateMatchSummary(accountInfo);
     }
 
@@ -67,10 +61,12 @@ public class ReactController {
     //솔랭, 일반, 자유랭 등 큐타입 선택해서 받는것도 추가해야할듯
     //전적검색 속도는 충분히 빠른것 같고 추가로 해당 전적의 상세정보 받아오는 것은 이전 방식으로 진행할것
     @GetMapping("/api/matches/{name}")
-    public ArrayList<MatchSummary> getMatches(@PathVariable(value = "name")String name){
+    public ArrayList<MatchSummary> getMatches(@PathVariable(value = "name")String name) throws UnsupportedEncodingException {
         String summonerName = StringFormat.setApiString(name);
+        String encodedName = URLEncoder.encode(summonerName, "UTF-8");
         AccountInfo accountInfo = restApiService.getAccountInfo(summonerName);
         ArrayList<MatchSummary> matchSummaries = matchApiService.getAll30Matches(accountInfo);
+        //log.info(matchSummaries.get(0).toString());
         return matchSummaries;
     }
 
