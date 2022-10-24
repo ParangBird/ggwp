@@ -61,6 +61,16 @@ public class UserController {
         return "회원가입 성공";
     }
 
+    @GetMapping("/bbs/reset-password")
+    public String resetPassword(){
+        return "bbs/reset-password";
+    }
+
+    @GetMapping("/bbs/register")
+    public String register(){
+        return "bbs/register";
+    }
+
     @GetMapping("/logout")
     public String logout(){
         return "bbs/index";
