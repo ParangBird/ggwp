@@ -172,6 +172,10 @@ body{
     margin: 0 10px;
 }
 
+.reset-password-form-email{
+    margin: 0 10px;
+}
+
 .login-form-password{
     margin-left: 10px;
     margin-right: 10px;
@@ -179,5 +183,19 @@ body{
 }
 
 .login-form-enter{
+    display: none;
+}
+
+.reset-password-div-form{
+
+    width: 40%;
+    border: 2px solid black;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.reset-password-form-enter{
     display: none;
 }
