@@ -4,7 +4,7 @@
 <header th:fragment="header">
     <div class="header-container">
         <div th:unless="${session.user}" class="login-container">
-            <div class="register-div-form">
+            <div class="login-div-form">
                 <p class="login-text">GG.WP를 더 편리하게 이용하세요</p>
                 <form class="login-form" method="post" action="/bbs/login" th:action="@{/bbs/login}">
                     <div class="form-floating mb-3 login-form-email">

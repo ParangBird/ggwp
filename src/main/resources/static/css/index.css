@@ -119,9 +119,8 @@ body{
 
 }
 
-.register-div-form{
+.login-div-form{
     z-index: 100;
-    display: inline-block;
     background-color: #f4f4f4;
     text-align: center;
     width: 320px;
@@ -129,6 +128,15 @@ body{
     margin-top: 10px;
     margin-right: 10px;
 }
+
+.register-div-form{
+    border: 2px solid black;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .login-text{
     display: block;
     margin-bottom: 10px;
