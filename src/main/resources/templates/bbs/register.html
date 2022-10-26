@@ -13,8 +13,8 @@
 </head>
 <body>
     <div class="register-div-form">
-        <p class="login-text">회원가입</p>
-        <form class="login-form" method="post" action="/bbs/login" th:action="@{/bbs/login}">
+        <p class="register-text">회원가입</p>
+        <form class="login-form" method="post" action="/bbs/register" th:action="@{/bbs/register}">
             <div class="form-floating mb-3 login-form-email">
                 <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
                 <label for="floatingInput">이메일 주소</label>
@@ -33,8 +33,10 @@
             </div>
             <input type="submit" class="login-form-enter">
         </form>
-        <button class="login-button" onclick="location.href='/bbs/login'">GG.WP 회원가입</button></br>
-        <a class="register-link fas fa-lock" href="/bbs/reset-password" th:href="@{/bbs/reset-password}">비밀번호찾기</a>
+        <button class="register-button" type="submit" onclick="location.href='/bbs/register'">GG.WP 회원가입</button></br>
+        <div class="register-link-div">
+            <a class="register-link fas fa-lock" href="/bbs/reset-password" th:href="@{/bbs/reset-password}">비밀번호찾기</a>
+        </div>
         <div class="oauth-login-div">
             <button type="button" onclick="location.href='/oauth2/authorization/naver';" class="oauth-login-button btn btn-success">네이버 로그인</button>
             <button type="button" onclick="location.href='/oauth2/authorization/google';" class="oauth-login-button btn btn-primary">구글 로그인</button>

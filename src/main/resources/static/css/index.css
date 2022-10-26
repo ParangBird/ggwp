@@ -130,11 +130,21 @@ body{
 }
 
 .register-div-form{
+    padding: 20px;
+    background-color: #ffffff;
     border: 2px solid black;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+}
+
+.register-text{
+    display: block;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 1.5rem;
+    color: black;
 }
 
 .login-text{
@@ -151,6 +161,21 @@ body{
     color: white;
     border: 0;
 }
+.register-button{
+    background-color: grey;
+    display: block;
+    width: 100%;
+    font-size: 30px;
+    margin: -5px auto -18px;
+    color: white;
+    border: 0;
+
+}
+
+.register-link-div{
+    text-align: center;
+}
+
 .register-link{
     text-decoration-line: none;
     color: black;
