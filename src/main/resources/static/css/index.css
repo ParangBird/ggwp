@@ -193,6 +193,19 @@ body{
     color: black;
     text-decoration: underline;
 }
+
+.main-link{
+    color: black;
+    display: inline;
+    text-decoration-line: none;
+    margin-right: 10px;
+}
+
+.main-link:hover{
+    color: black;
+    text-decoration: underline;
+}
+
 .oauth-login-div{
     margin-top: 5px;
 }
@@ -220,8 +233,8 @@ body{
 }
 
 .reset-password-div-form{
-
-    width: 40%;
+    padding: 20px;
+    background-color: #ffffff;
     border: 2px solid black;
     position: absolute;
     left: 50%;
@@ -231,4 +244,19 @@ body{
 
 .reset-password-form-enter{
     display: none;
+}
+
+.reset-password-text{
+    color: black;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.reset-password-info-text{
+    display: block;
+    color: grey;
+}
+
+.reset-password-link-div{
+    text-align: center;
 }
