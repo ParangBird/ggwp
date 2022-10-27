@@ -16,7 +16,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Optional;
 
 @Slf4j
@@ -36,14 +40,24 @@ public class UserController {
 
     @ResponseBody
     @PostMapping("/bbs/login")
-    public String login(@ModelAttribute @Validated LoginDto loginDto){
+    public String login(@ModelAttribute @Validated LoginDto loginDto,
+                        HttpServletRequest request, HttpServletResponse response){
         String email = loginDto.getEmail();
         String password = loginDto.getPassword();
         Optional<User> user = userService.findByEmail(email);
         if(user == null || user.isEmpty() || !user.get().getPassword().equals(password)){
-            return "잘못된 정보";
+            try {
+                PrintWriter out = null;
+                out = response.getWriter();
+                out.println("<script>alert('해당 게시글이 존재하지 않습니다.'); location.href='/bbs';</script>");
+                out.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        return "로그인 성공";
+        HttpSession session = request.getSession();
+        session.setAttribute("ggwpUser", user.get());
+        return "redirect:/bbs";
     }
 
     @ResponseBody
