@@ -1,6 +1,6 @@
 package com.backend.ggwp.service;
 
-import com.backend.ggwp.domain.user.User;
+import com.backend.ggwp.domain.user.GgwpUser;
 import com.backend.ggwp.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,13 +13,13 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     @Transactional
-    public void save(User user){
-        userRepository.save(user);
+    public void save(GgwpUser ggwpUser){
+        userRepository.save(ggwpUser);
     }
-    public Optional<User> findByUserName(String username){
+    public Optional<GgwpUser> findByUserName(String username){
         return userRepository.findByUserName(username);
     }
-    public Optional<User> findByEmail(String email){
+    public Optional<GgwpUser> findByEmail(String email){
         return userRepository.findByEmail(email);
     }
 }

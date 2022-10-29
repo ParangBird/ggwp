@@ -1,18 +1,19 @@
 package com.backend.ggwp.config.auth.dto;
 
 import com.backend.ggwp.domain.user.PageUser;
+import com.backend.ggwp.domain.user.User;
 import lombok.Getter;
 
 import java.io.Serializable;
 
 @Getter
-public class SessionUser implements Serializable {
+public class OauthUser implements Serializable, User {
     private String name;
     private String email;
     //private String nickname;
     private String picture;
 
-    public SessionUser(PageUser user){
+    public OauthUser(PageUser user){
         this.name = user.getName();
         this.email = user.getEmail();
         //this.nickname = user.getNickname();

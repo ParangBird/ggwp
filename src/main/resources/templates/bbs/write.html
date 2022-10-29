@@ -22,7 +22,7 @@
     <div th:insert="~{fragments/header :: header}"></div>
     <div class="write-container">
         <form class="write-form" action th:object="${post}" method="post">
-            <input type="hidden" th:value="${session.user.email}" name="authorEmail" id="authorEmail">
+            <input type="hidden" th:value="${session.ggwpUser.email}" name="authorEmail" id="authorEmail">
             <label for="postTag">글 분류</label>
             <select class="form-select select-div" th:field="*{postTag}" id="postTag" name="postTag">
                 <option value="FREE">자유</option>

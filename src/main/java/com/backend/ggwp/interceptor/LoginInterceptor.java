@@ -16,7 +16,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("{} Login 인증 확인", request.getRequestURI());
         HttpSession session = request.getSession();
-        if(session.getAttribute("user") == null){
+        if(session.getAttribute("ggwpUser") == null && session.getAttribute("user") == null){
             log.info("사용자가 로그인 안 됐음");
             try {
                 response.setContentType("text/html; charset=utf-8");

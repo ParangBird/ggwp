@@ -1,12 +1,8 @@
 package com.backend.ggwp.controller;
 
-import com.backend.ggwp.ApiInfo;
-import com.backend.ggwp.config.auth.dto.SessionUser;
-import com.backend.ggwp.domain.entity.RotationInfo;
+import com.backend.ggwp.config.auth.dto.OauthUser;
 import com.backend.ggwp.domain.post.Post;
-import com.backend.ggwp.domain.post.PostEnum;
 import com.backend.ggwp.domain.post.PostService;
-import com.backend.ggwp.service.RestApiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -35,7 +31,7 @@ public class PostController {
 
     @GetMapping("/bbs/write")
     public String write(Model model){
-        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+        OauthUser user = (OauthUser) httpSession.getAttribute("user");
         Post post = new Post();
         if(user != null) {
             post.setAuthor(user.getName());
@@ -61,7 +57,7 @@ public class PostController {
         return "redirect:http://localhost:8080/bbs";
     }
 
-    private void validAuthorCheck(Post post, HttpServletResponse response, SessionUser user){
+    private void validAuthorCheck(Post post, HttpServletResponse response, OauthUser user){
         if(user == null || post.getAuthorEmail() == null || user.getEmail() == null || !post.getAuthorEmail().equals(user.getEmail())){
             try{
                 response.setContentType("text/html; charset=utf-8");
@@ -103,7 +99,7 @@ public class PostController {
     public String showModifyPost(@PathVariable String postId, HttpServletRequest request, HttpServletResponse response, Model model){
         Post post = validPostCheck(postId, response);
         HttpSession session = request.getSession();
-        SessionUser user = (SessionUser) session.getAttribute("user");
+        OauthUser user = (OauthUser) session.getAttribute("user");
         validAuthorCheck(post, response, user);
         model.addAttribute("post", post);
         return "bbs/modify";
@@ -113,7 +109,7 @@ public class PostController {
     public String modifyPost(@Validated @ModelAttribute("post") Post post,
                              BindingResult bindingResult, @PathVariable String postId,
                              HttpServletResponse response, HttpSession session){
-        SessionUser user = (SessionUser) session.getAttribute("user");
+        OauthUser user = (OauthUser) session.getAttribute("user");
         validAuthorCheck(post, response, user);
         if(bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
@@ -136,7 +132,7 @@ public class PostController {
     @PostMapping("/bbs/delete/{postId}")
     public String deletePost(@PathVariable String postId, HttpServletResponse response, HttpSession session){
         Post post = validPostCheck(postId, response);
-        SessionUser user = (SessionUser) session.getAttribute("user");
+        OauthUser user = (OauthUser) session.getAttribute("user");
         validAuthorCheck(post, response, user);
         postService.deleteById(post.getId());
         return "redirect:/bbs";

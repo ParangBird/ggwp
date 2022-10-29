@@ -1,7 +1,7 @@
 package com.backend.ggwp.controller;
 
 import com.backend.ggwp.ApiInfo;
-import com.backend.ggwp.config.auth.dto.SessionUser;
+import com.backend.ggwp.config.auth.dto.OauthUser;
 import com.backend.ggwp.domain.entity.AccountInfo;
 import com.backend.ggwp.domain.entity.RotationInfo;
 import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpServletRequest;
+
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -38,7 +38,7 @@ public class HomeController {
 
     @RequestMapping("/bbs")
     public String index(Model model, @RequestParam(required = false) String postTag) {
-        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+        OauthUser user = (OauthUser) httpSession.getAttribute("user");
         if(user != null){
             model.addAttribute("user", user);
         }

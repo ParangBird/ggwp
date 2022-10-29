@@ -45,8 +45,8 @@
             </div>
             <textarea th:field="*{content}" id="content" name="content" placeholder="내용을 입력하세요" readonly
                       class="form-control content-textarea" rows="5"></textarea>
-            <div th:if="${session.user != null}">
-                <div th:if="${post.author == session.user.name}">
+            <div th:if="${session.ggwpUser != null}">
+                <div th:if="${post.author == session.ggwpUser.name}">
                     <a th:href="@{/bbs/modify/{id}(id = ${post.id})}" href="/bbs/modify/id" class="btn btn-info" role="button">수정하기</a>
                     <input type="submit" value="삭제하기"  class="btn btn-secondary"/>
                 </div>

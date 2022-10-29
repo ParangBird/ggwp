@@ -7,11 +7,10 @@ import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
 import com.backend.ggwp.domain.entity.common.StringFormat;
 import com.backend.ggwp.domain.entity.leagueList.LeagueItem;
 import com.backend.ggwp.domain.entity.record.MatchSummary;
-import com.backend.ggwp.domain.user.User;
+import com.backend.ggwp.domain.user.GgwpUser;
 import com.backend.ggwp.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -104,9 +103,9 @@ public class ReactController {
 
 
     @PostMapping("/api/user/register")
-    public void register(User user){
-         if(userService.findByUserName(user.getUserName()) != null)
-            userService.save(user);
+    public void register(GgwpUser ggwpUser){
+         if(userService.findByUserName(ggwpUser.getUserName()) != null)
+            userService.save(ggwpUser);
     }
 
 }

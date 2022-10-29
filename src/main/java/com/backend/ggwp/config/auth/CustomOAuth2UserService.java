@@ -1,6 +1,6 @@
 package com.backend.ggwp.config.auth;
 
-import com.backend.ggwp.config.auth.dto.SessionUser;
+import com.backend.ggwp.config.auth.dto.OauthUser;
 import com.backend.ggwp.domain.repository.PageUserRepository;
 import com.backend.ggwp.domain.user.PageUser;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +41,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
         PageUser user = saveOrUpdate(attributes);
 
-        httpSession.setAttribute("user", new SessionUser(user));
+        httpSession.setAttribute("user", new OauthUser(user));
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
