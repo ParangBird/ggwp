@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -28,10 +31,11 @@ import java.util.Optional;
 public class UserController {
     private final HttpSession httpSession;
     private final UserService userService;
+
     @GetMapping("/bbs/login")
-    public String loginPage(Model model){
+    public String loginPage(Model model) {
         OauthUser user = (OauthUser) httpSession.getAttribute("user");
-        if(user != null){
+        if (user != null) {
             model.addAttribute("userName", user.getName());
         }
         return "bbs/login";
@@ -40,11 +44,11 @@ public class UserController {
     @ResponseBody
     @PostMapping("/bbs/login")
     public String login(@ModelAttribute @Validated LoginDto loginDto,
-                        HttpServletRequest request, HttpServletResponse response){
+                        HttpServletRequest request, HttpServletResponse response) {
         String email = loginDto.getEmail();
         String password = loginDto.getPassword();
         Optional<GgwpUser> user = userService.findByEmail(email);
-        if(user == null || user.isEmpty() || !user.get().getPassword().equals(password)){
+        if (user == null || user.isEmpty() || !user.get().getPassword().equals(password)) {
             try {
                 PrintWriter out = null;
                 out = response.getWriter();
@@ -59,11 +63,19 @@ public class UserController {
         return "redirect:/bbs";
     }
 
-    @ResponseBody
     @PostMapping("/bbs/register")
-    public String register(@ModelAttribute @Validated RegisterDto registerDto){
+    public String register(@Validated @ModelAttribute("registerDto") RegisterDto registerDto, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> allErrors = bindingResult.getAllErrors();
+            for (ObjectError allError : allErrors) {
+                log.info("Error = {}", allError);
+            }
+            log.info("retry to register");
+            return "bbs/register";
+        }
         Optional<GgwpUser> dup = userService.findByUserName(registerDto.getUserName());
-        if(dup != null && dup.isPresent()){
+        if (dup != null && dup.isPresent()) {
             return "중복된 아이디";
         }
         String userName = registerDto.getUserName();
@@ -75,17 +87,18 @@ public class UserController {
     }
 
     @GetMapping("/bbs/reset-password")
-    public String resetPassword(){
+    public String resetPassword() {
         return "bbs/reset-password";
     }
 
     @GetMapping("/bbs/register")
-    public String register(){
+    public String register(Model model) {
+        model.addAttribute("registerDto", new RegisterDto());
         return "bbs/register";
     }
 
     @GetMapping("/logout")
-    public String logout(){
+    public String logout() {
         return "bbs/index";
     }
 
