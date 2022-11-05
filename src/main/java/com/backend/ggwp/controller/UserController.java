@@ -12,10 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,7 +49,7 @@ public class UserController {
             try {
                 PrintWriter out = null;
                 out = response.getWriter();
-                out.println("<script>alert('해당 게시글이 존재하지 않습니다.'); location.href='/bbs';</script>");
+                out.println("<script>alert('회원 정보가 부정확합니다.'); location.href='/bbs';</script>");
                 out.flush();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -87,8 +84,14 @@ public class UserController {
     }
 
     @GetMapping("/bbs/reset-password")
-    public String resetPassword() {
+    public String resetPasswordPage() {
         return "bbs/reset-password";
+    }
+
+    @PostMapping("/bbs/reset-password")
+    @ResponseBody
+    public String resetPassword(@RequestParam("email") String email){
+        return email + "에 메일 발송";
     }
 
     @GetMapping("/bbs/register")

@@ -242,10 +242,6 @@ body{
     transform: translate(-50%, -50%);
 }
 
-.reset-password-form-enter{
-    display: none;
-}
-
 .reset-password-text{
     color: black;
     font-size: 1.5rem;
@@ -259,4 +255,10 @@ body{
 
 .reset-password-link-div{
     text-align: center;
+}
+
+.reset-password-button{
+    text-align: center;
+    margin: 10px auto;
+    display: block;
 }
