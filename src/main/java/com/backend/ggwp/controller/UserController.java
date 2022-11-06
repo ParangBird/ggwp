@@ -4,6 +4,7 @@ import com.backend.ggwp.config.auth.dto.OauthUser;
 import com.backend.ggwp.domain.user.GgwpUser;
 import com.backend.ggwp.domain.user.dto.LoginDto;
 import com.backend.ggwp.domain.user.dto.RegisterDto;
+import com.backend.ggwp.domain.user.dto.ResetPasswordDto;
 import com.backend.ggwp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,6 +61,35 @@ public class UserController {
         return "redirect:/bbs";
     }
 
+    @GetMapping("/bbs/reset-password")
+    public String resetPasswordPage(Model model) {
+        model.addAttribute("resetPasswordDto", new ResetPasswordDto("이메일"));
+        return "bbs/reset-password";
+    }
+
+    @PostMapping("/bbs/reset-password")
+    public String resetPassword(@Validated @ModelAttribute("resetPasswordDto")
+                                        ResetPasswordDto resetPasswordDto,
+                                BindingResult bindingResult) {
+        System.out.println("resetPasswordDto = " + resetPasswordDto.getEmail());
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> allErrors = bindingResult.getAllErrors();
+            for (ObjectError allError : allErrors) {
+                log.info("Error = {}", allError);
+            }
+            log.info("retry to reset-password");
+            return "bbs/reset-password";
+        }
+        log.info("이메일 보냄");
+        return "redirect:/bbs";
+    }
+
+    @GetMapping("/bbs/register")
+    public String register(Model model) {
+        model.addAttribute("registerDto", new RegisterDto());
+        return "bbs/register";
+    }
+
     @PostMapping("/bbs/register")
     public String register(@Validated @ModelAttribute("registerDto") RegisterDto registerDto, BindingResult bindingResult) {
 
@@ -81,23 +111,6 @@ public class UserController {
         GgwpUser newGgwpUser = GgwpUser.builder().userName(userName).password(password).email(email).build();
         userService.save(newGgwpUser);
         return "회원가입 성공";
-    }
-
-    @GetMapping("/bbs/reset-password")
-    public String resetPasswordPage() {
-        return "bbs/reset-password";
-    }
-
-    @PostMapping("/bbs/reset-password")
-    @ResponseBody
-    public String resetPassword(@RequestParam("email") String email){
-        return email + "에 메일 발송";
-    }
-
-    @GetMapping("/bbs/register")
-    public String register(Model model) {
-        model.addAttribute("registerDto", new RegisterDto());
-        return "bbs/register";
     }
 
     @GetMapping("/logout")
