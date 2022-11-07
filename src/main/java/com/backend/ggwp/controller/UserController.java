@@ -63,7 +63,7 @@ public class UserController {
 
     @GetMapping("/bbs/reset-password")
     public String resetPasswordPage(Model model) {
-        model.addAttribute("resetPasswordDto", new ResetPasswordDto("이메일"));
+        model.addAttribute("resetPasswordDto", new ResetPasswordDto());
         return "bbs/reset-password";
     }
 
@@ -91,7 +91,8 @@ public class UserController {
     }
 
     @PostMapping("/bbs/register")
-    public String register(@Validated @ModelAttribute("registerDto") RegisterDto registerDto, BindingResult bindingResult) {
+    public String register(@Validated @ModelAttribute("registerDto") RegisterDto registerDto,
+                           BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
@@ -101,15 +102,37 @@ public class UserController {
             log.info("retry to register");
             return "bbs/register";
         }
-        Optional<GgwpUser> dup = userService.findByUserName(registerDto.getUserName());
-        if (dup != null && dup.isPresent()) {
-            return "중복된 아이디";
+
+        if (!registerDto.getPassword().equals(registerDto.getPasswordCheck())) {
+            log.info("password != passwordCheck");
+            bindingResult.rejectValue("passwordCheck", "패스워드 확인 해주세요", "패스워드 확인 해주세요");
+            return "bbs/register";
         }
+
+        Optional<GgwpUser> userNameDup = userService.findByUserName(registerDto.getUserName());
+        Optional<GgwpUser> emailDup = userService.findByEmail(registerDto.getEmail());
+        if (userNameDup != null && userNameDup.isPresent()) {
+            log.info("userName duplicated");
+            bindingResult.rejectValue("userName", "다른 닉네임을 입력해주세요", "다른 닉네임을 입력해주세요");
+            return "bbs/register";
+        }
+        if (emailDup != null && emailDup.isPresent()) {
+            log.info("email duplicated");
+            bindingResult.rejectValue("email", "이미 가입된 이메일입니다", "이미 가입된 이메일입니다");
+            return "bbs/register";
+        }
+
         String userName = registerDto.getUserName();
         String password = registerDto.getPassword();
         String email = registerDto.getEmail();
-        GgwpUser newGgwpUser = GgwpUser.builder().userName(userName).password(password).email(email).build();
-        userService.save(newGgwpUser);
+        GgwpUser newGgwpUser = GgwpUser.
+                builder().
+                userName(userName).
+                password(password).
+                email(email).
+                build();
+
+        //userService.save(newGgwpUser);
         return "회원가입 성공";
     }
 

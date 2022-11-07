@@ -132,6 +132,7 @@ body{
 .register-div-form{
     padding: 20px;
     background-color: #ffffff;
+    width: 500px;
     border: 2px solid black;
     position: absolute;
     left: 50%;
