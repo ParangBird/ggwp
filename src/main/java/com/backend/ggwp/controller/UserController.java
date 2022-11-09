@@ -92,7 +92,7 @@ public class UserController {
 
     @PostMapping("/bbs/register")
     public String register(@Validated @ModelAttribute("registerDto") RegisterDto registerDto,
-                           BindingResult bindingResult) {
+                           BindingResult bindingResult, HttpServletResponse response) {
 
         if (bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
@@ -132,8 +132,8 @@ public class UserController {
                 email(email).
                 build();
 
-        //userService.save(newGgwpUser);
-        return "회원가입 성공";
+        userService.save(newGgwpUser);
+        return "redirect:/bbs";
     }
 
     @GetMapping("/logout")
