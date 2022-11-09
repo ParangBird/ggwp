@@ -9,6 +9,8 @@ import com.backend.ggwp.domain.entity.currentGame.CurrentGameInfo;
 import com.backend.ggwp.domain.post.Post;
 import com.backend.ggwp.domain.post.PostEnum;
 import com.backend.ggwp.domain.post.PostService;
+import com.backend.ggwp.domain.user.GgwpUser;
+import com.backend.ggwp.domain.user.User;
 import com.backend.ggwp.service.RestApiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -39,8 +41,13 @@ public class HomeController {
     @RequestMapping("/bbs")
     public String index(Model model, @RequestParam(required = false) String postTag) {
         OauthUser user = (OauthUser) httpSession.getAttribute("user");
+        GgwpUser ggwpUser = (GgwpUser) httpSession.getAttribute("ggwpUser");
         if(user != null){
             model.addAttribute("user", user);
+        }
+        else if(ggwpUser != null){
+            System.out.println("set ggwpUser");
+            model.addAttribute("user", ggwpUser);
         }
         RotationInfo rotationInfo = restApiService.getRotationInfo();
         List<Integer> freeChampionIds = rotationInfo.getFreeChampionIds();

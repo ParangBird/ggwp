@@ -104,7 +104,7 @@ public class ReactController {
 
     @PostMapping("/api/user/register")
     public void register(GgwpUser ggwpUser){
-         if(userService.findByUserName(ggwpUser.getUserName()) != null)
+         if(userService.findByName(ggwpUser.getName()) != null)
             userService.save(ggwpUser);
     }
 

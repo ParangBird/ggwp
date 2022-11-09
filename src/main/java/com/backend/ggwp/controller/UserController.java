@@ -1,6 +1,5 @@
 package com.backend.ggwp.controller;
 
-import com.backend.ggwp.config.auth.dto.OauthUser;
 import com.backend.ggwp.domain.user.GgwpUser;
 import com.backend.ggwp.domain.user.dto.LoginDto;
 import com.backend.ggwp.domain.user.dto.RegisterDto;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,34 +27,22 @@ public class UserController {
     private final HttpSession httpSession;
     private final UserService userService;
 
-    @GetMapping("/bbs/login")
-    public String loginPage(Model model) {
-        OauthUser user = (OauthUser) httpSession.getAttribute("user");
-        if (user != null) {
-            model.addAttribute("userName", user.getName());
-        }
-        return "bbs/login";
-    }
-
-    @ResponseBody
     @PostMapping("/bbs/login")
-    public String login(@ModelAttribute @Validated LoginDto loginDto,
+    public String login(@Validated @ModelAttribute("loginDto") LoginDto loginDto,
                         HttpServletRequest request, HttpServletResponse response) {
         String email = loginDto.getEmail();
+        System.out.println("email = " + email);
         String password = loginDto.getPassword();
+        System.out.println("password = " + password);
         Optional<GgwpUser> user = userService.findByEmail(email);
-        if (user == null || user.isEmpty() || !user.get().getPassword().equals(password)) {
-            try {
-                PrintWriter out = null;
-                out = response.getWriter();
-                out.println("<script>alert('회원 정보가 부정확합니다.'); location.href='/bbs';</script>");
-                out.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (user.isEmpty() ||
+                (user != null && (user.get().getPassword() == null ||
+                        !user.get().getPassword().equals(password)))) {
+            return "redirect:/bbs";
         }
         HttpSession session = request.getSession();
         session.setAttribute("ggwpUser", user.get());
+        System.out.println("user.get().getUserName() = " + user.get().getName());
         return "redirect:/bbs";
     }
 
@@ -109,7 +94,7 @@ public class UserController {
             return "bbs/register";
         }
 
-        Optional<GgwpUser> userNameDup = userService.findByUserName(registerDto.getUserName());
+        Optional<GgwpUser> userNameDup = userService.findByName(registerDto.getUserName());
         Optional<GgwpUser> emailDup = userService.findByEmail(registerDto.getEmail());
         if (userNameDup != null && userNameDup.isPresent()) {
             log.info("userName duplicated");
@@ -127,7 +112,7 @@ public class UserController {
         String email = registerDto.getEmail();
         GgwpUser newGgwpUser = GgwpUser.
                 builder().
-                userName(userName).
+                name(userName).
                 password(password).
                 email(email).
                 build();

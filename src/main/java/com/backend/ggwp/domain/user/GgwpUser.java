@@ -17,11 +17,11 @@ public class GgwpUser implements User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String userName;
+    private String name;
     private String password;
     private String email;
     @Builder
-    public GgwpUser(String userName, String password, String  email){
-        this.userName = userName; this.password = password; this.email = email;
+    public GgwpUser(String name, String password, String  email){
+        this.name = name; this.password = password; this.email = email;
     }
 }

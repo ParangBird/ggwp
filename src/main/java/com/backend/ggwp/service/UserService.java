@@ -16,8 +16,8 @@ public class UserService {
     public void save(GgwpUser ggwpUser){
         userRepository.save(ggwpUser);
     }
-    public Optional<GgwpUser> findByUserName(String username){
-        return userRepository.findByUserName(username);
+    public Optional<GgwpUser> findByName(String username){
+        return userRepository.findByName(username);
     }
     public Optional<GgwpUser> findByEmail(String email){
         return userRepository.findByEmail(email);
