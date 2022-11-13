@@ -1,6 +1,8 @@
 .chat-container{
+    width: 60%;
+}
+.chat-div{
     margin: 0 auto;
     display: block;
     text-align: center;
-    width: 30%;
 }
