@@ -80,7 +80,9 @@
         </tr>
     </table>
 </div>
-<input type="hidden" id="username" th:value="${user.name}">
+<div th:if="${user}">
+    <input type="hidden" id="username" th:value="${user.name}">
+</div>
 <div class="container chat-container">
     <div class="col-6">
         <label><b>채팅방</b></label>
