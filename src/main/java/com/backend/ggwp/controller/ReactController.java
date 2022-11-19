@@ -1,13 +1,17 @@
 package com.backend.ggwp.controller;
 
-import com.backend.ggwp.ApiInfo;
-import com.backend.ggwp.domain.entity.AccountInfo;
-import com.backend.ggwp.domain.Dto.SummonerDto;
-import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
-import com.backend.ggwp.domain.entity.common.StringFormat;
-import com.backend.ggwp.domain.entity.leagueList.LeagueItem;
-import com.backend.ggwp.domain.entity.record.MatchSummary;
+import com.backend.ggwp.config.ApiInfo;
+import com.backend.ggwp.domain.AccountInfo;
+import com.backend.ggwp.domain.leagueitem.LeagueItemService;
+import com.backend.ggwp.domain.record.MatchApiService;
+import com.backend.ggwp.domain.summoner.SummonerDto;
+import com.backend.ggwp.domain.SummonerLeagueInfo;
+import com.backend.ggwp.domain.summoner.SummonerService;
+import com.backend.ggwp.utils.StringFormat;
+import com.backend.ggwp.domain.leagueitem.LeagueItem;
+import com.backend.ggwp.domain.record.MatchSummary;
 import com.backend.ggwp.domain.user.GgwpUser;
+import com.backend.ggwp.domain.user.UserService;
 import com.backend.ggwp.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

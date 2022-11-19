@@ -1,0 +1,129 @@
+package com.backend.ggwp.domain.user;
+
+import com.backend.ggwp.domain.user.GgwpUser;
+import com.backend.ggwp.domain.user.dto.LoginDto;
+import com.backend.ggwp.domain.user.dto.RegisterDto;
+import com.backend.ggwp.domain.user.dto.ResetPasswordDto;
+import com.backend.ggwp.domain.user.UserService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.Optional;
+
+@Slf4j
+@Controller
+@RequiredArgsConstructor
+public class UserController {
+    private final HttpSession httpSession;
+    private final UserService userService;
+
+    @PostMapping("/bbs/login")
+    public String login(@Validated @ModelAttribute("loginDto") LoginDto loginDto,
+                        HttpServletRequest request, HttpServletResponse response) {
+        String email = loginDto.getEmail();
+        System.out.println("email = " + email);
+        String password = loginDto.getPassword();
+        System.out.println("password = " + password);
+        Optional<GgwpUser> user = userService.findByEmail(email);
+        if (user.isEmpty() ||
+                (user != null && (user.get().getPassword() == null ||
+                        !user.get().getPassword().equals(password)))) {
+            return "redirect:/bbs";
+        }
+        HttpSession session = request.getSession();
+        session.setAttribute("ggwpUser", user.get());
+        System.out.println("user.get().getUserName() = " + user.get().getName());
+        return "redirect:/bbs";
+    }
+
+    @GetMapping("/bbs/reset-password")
+    public String resetPasswordPage(Model model) {
+        model.addAttribute("resetPasswordDto", new ResetPasswordDto());
+        return "bbs/reset-password";
+    }
+
+    @PostMapping("/bbs/reset-password")
+    public String resetPassword(@Validated @ModelAttribute("resetPasswordDto")
+                                        ResetPasswordDto resetPasswordDto,
+                                BindingResult bindingResult) {
+        System.out.println("resetPasswordDto = " + resetPasswordDto.getEmail());
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> allErrors = bindingResult.getAllErrors();
+            for (ObjectError allError : allErrors) {
+                log.info("Error = {}", allError);
+            }
+            log.info("retry to reset-password");
+            return "bbs/reset-password";
+        }
+        log.info("이메일 보냄");
+        return "redirect:/bbs";
+    }
+
+    @GetMapping("/bbs/register")
+    public String register(Model model) {
+        model.addAttribute("registerDto", new RegisterDto());
+        return "bbs/register";
+    }
+
+    @PostMapping("/bbs/register")
+    public String register(@Validated @ModelAttribute("registerDto") RegisterDto registerDto,
+                           BindingResult bindingResult, HttpServletResponse response) {
+
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> allErrors = bindingResult.getAllErrors();
+            for (ObjectError allError : allErrors) {
+                log.info("Error = {}", allError);
+            }
+            log.info("retry to register");
+            return "bbs/register";
+        }
+
+        if (!registerDto.getPassword().equals(registerDto.getPasswordCheck())) {
+            log.info("password != passwordCheck");
+            bindingResult.rejectValue("passwordCheck", "패스워드 확인 해주세요", "패스워드 확인 해주세요");
+            return "bbs/register";
+        }
+
+        Optional<GgwpUser> userNameDup = userService.findByName(registerDto.getUserName());
+        Optional<GgwpUser> emailDup = userService.findByEmail(registerDto.getEmail());
+        if (userNameDup != null && userNameDup.isPresent()) {
+            log.info("userName duplicated");
+            bindingResult.rejectValue("userName", "다른 닉네임을 입력해주세요", "다른 닉네임을 입력해주세요");
+            return "bbs/register";
+        }
+        if (emailDup != null && emailDup.isPresent()) {
+            log.info("email duplicated");
+            bindingResult.rejectValue("email", "이미 가입된 이메일입니다", "이미 가입된 이메일입니다");
+            return "bbs/register";
+        }
+
+        String userName = registerDto.getUserName();
+        String password = registerDto.getPassword();
+        String email = registerDto.getEmail();
+        GgwpUser newGgwpUser = GgwpUser.
+                builder().
+                name(userName).
+                password(password).
+                email(email).
+                build();
+
+        userService.save(newGgwpUser);
+        return "redirect:/bbs";
+    }
+
+    @GetMapping("/logout")
+    public String logout() {
+        return "bbs/index";
+    }
+
+}

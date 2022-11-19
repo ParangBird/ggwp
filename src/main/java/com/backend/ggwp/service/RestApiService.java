@@ -1,14 +1,14 @@
 package com.backend.ggwp.service;
 
-import com.backend.ggwp.ApiInfo;
-import com.backend.ggwp.domain.entity.AccountInfo;
-import com.backend.ggwp.domain.entity.LeagueEntrySummonerList;
-import com.backend.ggwp.domain.entity.RotationInfo;
-import com.backend.ggwp.domain.entity.SummonerLeagueInfo;
-import com.backend.ggwp.domain.entity.currentGame.CurrentGameInfo;
-import com.backend.ggwp.domain.entity.leagueList.LeagueItem;
-import com.backend.ggwp.domain.entity.leagueList.LeagueList;
-import com.backend.ggwp.domain.entity.match.Match;
+import com.backend.ggwp.config.ApiInfo;
+import com.backend.ggwp.domain.AccountInfo;
+import com.backend.ggwp.domain.LeagueEntrySummonerList;
+import com.backend.ggwp.domain.RotationInfo;
+import com.backend.ggwp.domain.SummonerLeagueInfo;
+import com.backend.ggwp.domain.currentGame.CurrentGameInfo;
+import com.backend.ggwp.domain.leagueitem.LeagueItem;
+import com.backend.ggwp.domain.leagueitem.LeagueList;
+import com.backend.ggwp.domain.match.Match;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
