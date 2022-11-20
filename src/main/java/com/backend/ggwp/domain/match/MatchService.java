@@ -1,11 +1,7 @@
-package com.backend.ggwp.domain.record;
+package com.backend.ggwp.domain.match;
 
-import com.backend.ggwp.domain.AccountInfo;
-import com.backend.ggwp.domain.match.Match;
-import com.backend.ggwp.domain.match.Participant;
-import com.backend.ggwp.domain.record.MatchSummary;
-import com.backend.ggwp.domain.record.MatchSummaryRepository;
-import com.backend.ggwp.service.RestApiService;
+import com.backend.ggwp.domain.summoner.AccountInfo;
+import com.backend.ggwp.restapi.RestApiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +11,11 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class MatchApiService {
+public class MatchService {
     private final MatchSummaryRepository matchSummaryRepository;
     private final RestApiService restApiService;
 
-    public MatchApiService(MatchSummaryRepository matchSummaryRepository, RestApiService restApiService) {
+    public MatchService(MatchSummaryRepository matchSummaryRepository, RestApiService restApiService) {
         this.matchSummaryRepository = matchSummaryRepository;
         this.restApiService = restApiService;
     }

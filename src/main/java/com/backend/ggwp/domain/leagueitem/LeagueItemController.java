@@ -1,10 +1,6 @@
 package com.backend.ggwp.domain.leagueitem;
 
-import com.backend.ggwp.domain.leagueitem.LeagueItem;
-import com.backend.ggwp.domain.leagueitem.LeagueItemComparator;
-import com.backend.ggwp.domain.leagueitem.LeagueList;
-import com.backend.ggwp.domain.leagueitem.LeagueItemService;
-import com.backend.ggwp.service.RestApiService;
+import com.backend.ggwp.restapi.RestApiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

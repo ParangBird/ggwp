@@ -1,4 +1,4 @@
-package com.backend.ggwp.domain.record;
+package com.backend.ggwp.domain.match;
 
 import lombok.*;
 

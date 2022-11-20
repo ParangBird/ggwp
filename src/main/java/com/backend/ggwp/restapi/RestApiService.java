@@ -1,10 +1,8 @@
-package com.backend.ggwp.service;
+package com.backend.ggwp.restapi;
 
 import com.backend.ggwp.config.ApiInfo;
-import com.backend.ggwp.domain.AccountInfo;
-import com.backend.ggwp.domain.LeagueEntrySummonerList;
-import com.backend.ggwp.domain.RotationInfo;
-import com.backend.ggwp.domain.SummonerLeagueInfo;
+import com.backend.ggwp.domain.summoner.AccountInfo;
+import com.backend.ggwp.domain.summoner.SummonerLeagueInfo;
 import com.backend.ggwp.domain.currentGame.CurrentGameInfo;
 import com.backend.ggwp.domain.leagueitem.LeagueItem;
 import com.backend.ggwp.domain.leagueitem.LeagueList;

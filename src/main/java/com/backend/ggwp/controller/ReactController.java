@@ -1,18 +1,18 @@
 package com.backend.ggwp.controller;
 
 import com.backend.ggwp.config.ApiInfo;
-import com.backend.ggwp.domain.AccountInfo;
+import com.backend.ggwp.domain.summoner.AccountInfo;
 import com.backend.ggwp.domain.leagueitem.LeagueItemService;
-import com.backend.ggwp.domain.record.MatchApiService;
+import com.backend.ggwp.domain.match.MatchService;
 import com.backend.ggwp.domain.summoner.SummonerDto;
-import com.backend.ggwp.domain.SummonerLeagueInfo;
+import com.backend.ggwp.domain.summoner.SummonerLeagueInfo;
 import com.backend.ggwp.domain.summoner.SummonerService;
 import com.backend.ggwp.utils.StringFormat;
 import com.backend.ggwp.domain.leagueitem.LeagueItem;
-import com.backend.ggwp.domain.record.MatchSummary;
+import com.backend.ggwp.domain.match.MatchSummary;
 import com.backend.ggwp.domain.user.GgwpUser;
 import com.backend.ggwp.domain.user.UserService;
-import com.backend.ggwp.service.*;
+import com.backend.ggwp.restapi.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +36,7 @@ public class ReactController {
     private final LeagueItemService leagueItemService;
     private final UserService userService;
     private final SummonerService summonerService;
-    private final MatchApiService matchApiService;
+    private final MatchService matchService;
 
     @GetMapping("/reactSearch/{name}")
     public SummonerDto index(@PathVariable(value = "name")String name){
@@ -56,7 +56,7 @@ public class ReactController {
         String encodedName = URLEncoder.encode(summonerName, "UTF-8");
         AccountInfo accountInfo = restApiService.getAccountInfo(summonerName);
         //log.info(accountInfo.toString());
-        matchApiService.updateMatchSummary(accountInfo);
+        matchService.updateMatchSummary(accountInfo);
     }
 
     //디비에 저장된 전적 정보 가져와서 반환
@@ -68,7 +68,7 @@ public class ReactController {
         String summonerName = StringFormat.setApiString(name);
         String encodedName = URLEncoder.encode(summonerName, "UTF-8");
         AccountInfo accountInfo = restApiService.getAccountInfo(summonerName);
-        ArrayList<MatchSummary> matchSummaries = matchApiService.getAll30Matches(accountInfo);
+        ArrayList<MatchSummary> matchSummaries = matchService.getAll30Matches(accountInfo);
         //log.info(matchSummaries.get(0).toString());
         return matchSummaries;
     }
@@ -77,7 +77,7 @@ public class ReactController {
     public ArrayList<MatchSummary> getSoloMatches(@PathVariable(value = "name")String name){
         String summonerName = StringFormat.setApiString(name);
         AccountInfo accountInfo = restApiService.getAccountInfo(summonerName);
-        ArrayList<MatchSummary> matchSummaries = matchApiService.get30SoloRankMatches(accountInfo);
+        ArrayList<MatchSummary> matchSummaries = matchService.get30SoloRankMatches(accountInfo);
         return matchSummaries;
     }
 

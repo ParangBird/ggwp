@@ -1,4 +1,4 @@
-package com.backend.ggwp.domain;
+package com.backend.ggwp.restapi;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

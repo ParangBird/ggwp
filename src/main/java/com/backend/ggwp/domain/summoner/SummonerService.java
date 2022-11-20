@@ -1,8 +1,6 @@
 package com.backend.ggwp.domain.summoner;
 
 import com.backend.ggwp.config.ApiInfo;
-import com.backend.ggwp.domain.AccountInfo;
-import com.backend.ggwp.domain.SummonerLeagueInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

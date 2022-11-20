@@ -2,15 +2,15 @@ package com.backend.ggwp.controller;
 
 import com.backend.ggwp.config.ApiInfo;
 import com.backend.ggwp.auth.OauthUser;
-import com.backend.ggwp.domain.AccountInfo;
-import com.backend.ggwp.domain.RotationInfo;
-import com.backend.ggwp.domain.SummonerLeagueInfo;
+import com.backend.ggwp.domain.summoner.AccountInfo;
+import com.backend.ggwp.restapi.RotationInfo;
+import com.backend.ggwp.domain.summoner.SummonerLeagueInfo;
 import com.backend.ggwp.domain.currentGame.CurrentGameInfo;
 import com.backend.ggwp.domain.post.Post;
 import com.backend.ggwp.domain.post.PostEnum;
 import com.backend.ggwp.domain.post.PostService;
 import com.backend.ggwp.domain.user.GgwpUser;
-import com.backend.ggwp.service.RestApiService;
+import com.backend.ggwp.restapi.RestApiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +25,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
-public class HomeController {
+public class SpringController {
     private final ApiInfo API_INFO;
     private final RestApiService restApiService;
     private final HttpSession httpSession;

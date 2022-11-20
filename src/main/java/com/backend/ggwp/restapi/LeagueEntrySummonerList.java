@@ -1,4 +1,4 @@
-package com.backend.ggwp.domain;
+package com.backend.ggwp.restapi;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
