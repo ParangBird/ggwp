@@ -65,6 +65,11 @@ public class UserController {
             log.info("retry to reset-password");
             return "bbs/reset-password";
         }
+        Optional<GgwpUser> byEmail = userService.findByEmail(resetPasswordDto.getEmail());
+        if(byEmail == null || byEmail.isEmpty()){
+            bindingResult.rejectValue("email", "", "회원정보에 해당 이메일이 존재하지 않습니다.");
+            return "bbs/reset-password";
+        }
         log.info("이메일 보냄");
         return "redirect:/bbs";
     }

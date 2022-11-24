@@ -14,6 +14,6 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class ResetPasswordDto {
     @Email
-    @NotBlank(message = "이메일을 입력해주세요")
+    @NotBlank(message = "올바른 이메일을 입력해주세요")
     private String email;
 }
