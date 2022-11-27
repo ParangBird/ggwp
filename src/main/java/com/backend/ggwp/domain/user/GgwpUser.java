@@ -20,8 +20,13 @@ public class GgwpUser implements User {
     private String name;
     private String password;
     private String email;
+    private boolean emailAuth;
+
     @Builder
-    public GgwpUser(String name, String password, String  email){
-        this.name = name; this.password = password; this.email = email;
+    public GgwpUser(String name, String password, String email) {
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        emailAuth = false;
     }
 }
