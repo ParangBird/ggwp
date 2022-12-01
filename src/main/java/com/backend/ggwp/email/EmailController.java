@@ -27,6 +27,15 @@ public class EmailController {
 
     @GetMapping("/bbs/emailAuth")
     public String emailAuthPage(Model model) {
+        model.addAttribute("emailAuthDto", new EmailAuthDto());
+        return "bbs/email-auth";
+    }
+
+    @PostMapping("/bbs/emailAuth")
+    public String emailAuth(@RequestParam String email, Model model) throws Exception {
+        log.info("email to {}", email);
+        String authString = emailService.sendSimpleMessage(email);
+        model.addAttribute("emailAuthDto", new EmailAuthDto(authString));
         return "bbs/email-auth";
     }
 
