@@ -24,9 +24,8 @@
 <div class="reset-password-div-form">
     <p class="reset-password-text">이메일 인증하기</p>
     <p class="reset-password-info-text">가입하신 이메일을 입력해주시면, 해당 메일로 비밀번호 재설정을 도와드릴게요.</p>
-    <p>인증해야 할 번호 : </p> <p th:text="${emailAuthDto.authString}"></p>
     <form class="login-form" method="post" th:action="@{/bbs/email/send}">
-        <input type="text" th:name="email">
+        <input type="email" th:name="email" class="form-control" placeholder="name@example.com">
         <input class="btn btn-primary reset-password-button" type="submit" value="이메일 인증">
     </form>
     <div class="reset-password-link-div">

@@ -17,9 +17,10 @@ import java.util.Random;
 public class EmailServiceImpl implements EmailService {
     private final JavaMailSender emailSender;
 
-    public static final String ePw = createKey();
+    public static String ePw;
 
     private MimeMessage createMessage(String to) throws Exception {
+        ePw = createKey();
         log.info("보내는 대상 : {}", to);
         log.info("인증 번호 : {}", ePw);
         MimeMessage message = emailSender.createMimeMessage();

@@ -220,7 +220,10 @@ body{
 }
 
 .reset-password-form-email{
-    margin: 0 10px;
+    margin: 0 auto;
+    display: block;
+    width: 300px;
+    text-align: center;
 }
 
 .login-form-password{
