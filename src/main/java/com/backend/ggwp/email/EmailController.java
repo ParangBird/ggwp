@@ -25,25 +25,22 @@ public class EmailController {
         return confirm;
     }
 
-    @GetMapping("/bbs/emailAuth")
-    public String emailAuthPage(Model model) {
+    @GetMapping("/bbs/email/send")
+    public String emailSendPage(Model model) {
         model.addAttribute("emailAuthDto", new EmailAuthDto());
-        return "bbs/email-auth";
+        return "bbs/email-send";
     }
 
-    @PostMapping("/bbs/emailAuth")
-    public String emailAuth(@RequestParam String email, Model model) throws Exception {
+    @PostMapping("/bbs/email/send")
+    public String emailSend(@RequestParam String email, Model model) throws Exception {
         log.info("email to {}", email);
         String authString = emailService.sendSimpleMessage(email);
         model.addAttribute("emailAuthDto", new EmailAuthDto(authString));
-        return "bbs/email-auth";
+        return "redirect:/bbs/email/auth";
     }
 
-    @PostMapping("/bbs/sendEmail")
-    public String sendEmail(@RequestParam String email, Model model) throws Exception {
-        log.info("email to {}", email);
-        String authString = emailService.sendSimpleMessage(email);
-        model.addAttribute("emailAuthDto", new EmailAuthDto(authString));
+    @GetMapping("/bbs/email/auth")
+    public String emailAuth(Model model) throws Exception {
         return "bbs/email-auth";
     }
 }
