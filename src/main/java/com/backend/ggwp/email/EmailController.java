@@ -13,7 +13,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -53,19 +56,35 @@ public class EmailController {
         }
         String email = emailAuthDto.getEmail();
         Optional<GgwpUser> byEmail = userService.findByEmail(email);
-        if(byEmail == null || byEmail.isEmpty()){
+        if (byEmail == null || byEmail.isEmpty()) {
             bindingResult.rejectValue("email", "", "해당 이메일 정보가 없습니다.");
             return "bbs/email-send";
         }
         log.info("email to {}", email);
-        String authString = emailService.sendSimpleMessage(email);
-        emailAuthDto.setAuthString(authString);
+        //String authString = emailService.sendSimpleMessage(email);
+        emailAuthDto.setAuthString("authString");
         ra.addFlashAttribute("emailAuthDto", emailAuthDto);
         return "redirect:/bbs/email/auth";
     }
 
     @GetMapping("/bbs/email/auth")
-    public String emailAuth(Model model) {
+    public String emailAuthPage(@ModelAttribute("emailAuthDto") EmailAuthDto emailAuthDto, HttpSession session) {
+        log.info("emailAuthDto 전달 : {} 과 {} ", emailAuthDto.getEmail(), emailAuthDto.getAuthString());
+        session.setAttribute("emailAuthDto", emailAuthDto);
         return "bbs/email-auth";
+    }
+
+    @PostMapping("/bbs/email/auth")
+    public String emailAuth(@RequestParam("userAuthString") String userAuthString, Model model, HttpSession session) {
+        EmailAuthDto emailAuthDto = (EmailAuthDto) session.getAttribute("emailAuthDto");
+        String authString = emailAuthDto.getAuthString();
+        log.info("유저 입력 {} vs 정답 {}", userAuthString, authString);
+        if (!authString.equals(userAuthString)) {
+            log.info("정답 : {} 인데, 제출 {}", authString, userAuthString);
+            model.addAttribute("emailAuthDto", emailAuthDto);
+            return "bbs/email-auth";
+        }
+        log.info("인증 성공 !! ! !");
+        return "redirect:/bbs";
     }
 }
