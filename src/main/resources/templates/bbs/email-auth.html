@@ -20,13 +20,12 @@
     />
 </head>
 <body>
-<h1>이메일 인증 페이지</h1>
 <div class="reset-password-div-form">
     <p class="reset-password-text">이메일 인증하기</p>
     <p class="reset-password-info-text">인증번호 입력하십쇼</p>
-    <p>인증해야 할 번호 : </p> <p th:text="${emailAuthDto.authString}"></p>
-    <form class="login-form" method="post" th:action="@{/bbs/email/send}">
-        <input type="text" th:name="email">
+    <p>인증해야 할 번호</p> <p th:text="${emailAuthDto.authString}"></p>
+    <form class="" method="post" th:action="@{/bbs/email/send}">
+        <input type="text" class="" th:name="email">
         <input class="btn btn-primary reset-password-button" type="submit" value="이메일 인증">
     </form>
     <div class="reset-password-link-div">
