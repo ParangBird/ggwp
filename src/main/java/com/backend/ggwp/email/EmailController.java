@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -60,9 +63,13 @@ public class EmailController {
             bindingResult.rejectValue("email", "", "해당 이메일 정보가 없습니다.");
             return "bbs/email-send";
         }
+        if (byEmail.get().isEmailAuth()) {
+            bindingResult.rejectValue("email", "", "이미 인증된 이메일입니다.");
+            return "bbs/email-send";
+        }
         log.info("email to {}", email);
-        //String authString = emailService.sendSimpleMessage(email);
-        emailAuthDto.setAuthString("authString");
+        String authString = emailService.sendSimpleMessage(email);
+        emailAuthDto.setAuthString(authString);
         ra.addFlashAttribute("emailAuthDto", emailAuthDto);
         return "redirect:/bbs/email/auth";
     }
@@ -75,15 +82,25 @@ public class EmailController {
     }
 
     @PostMapping("/bbs/email/auth")
-    public String emailAuth(@RequestParam("userAuthString") String userAuthString, Model model, HttpSession session) {
+    public String emailAuth(@RequestParam("userAuthString") String userAuthString,
+                            HttpServletResponse response,
+                            Model model, HttpSession session) throws IOException {
         EmailAuthDto emailAuthDto = (EmailAuthDto) session.getAttribute("emailAuthDto");
         String authString = emailAuthDto.getAuthString();
         log.info("유저 입력 {} vs 정답 {}", userAuthString, authString);
         if (!authString.equals(userAuthString)) {
             log.info("정답 : {} 인데, 제출 {}", authString, userAuthString);
             model.addAttribute("emailAuthDto", emailAuthDto);
+            // 이때 contentType을 먼저하지 않으면, 한글이 깨질 수 있습니다.
+            response.setContentType("text/html; charset=euc-kr");
+            PrintWriter out = response.getWriter();
+            out.println("<script>alert('인증번호가 틀립니다'); </script>");
+            out.flush();
             return "bbs/email-auth";
         }
+        GgwpUser authedUser = userService.findByEmail(emailAuthDto.getEmail()).get();
+        authedUser.setEmailAuth(true);
+        userService.save(authedUser);
         log.info("인증 성공 !! ! !");
         return "redirect:/bbs";
     }

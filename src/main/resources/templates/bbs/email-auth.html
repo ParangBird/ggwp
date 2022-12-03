@@ -22,8 +22,7 @@
 <body>
 <div class="reset-password-div-form">
     <p class="reset-password-text">이메일 인증하기</p>
-    <p class="reset-password-info-text">인증번호 입력하십쇼</p>
-    <p>인증해야 할 번호</p> <p th:text="${emailAuthDto.authString}"></p>
+    <p class="reset-password-info-text">인증번호 입력</p>
     <form class="" method="post" th:action>
         <input type="text" class="" th:name="userAuthString">
         <input class="btn btn-primary reset-password-button" type="submit" value="이메일 인증">

@@ -29,4 +29,8 @@ public class GgwpUser implements User {
         this.email = email;
         emailAuth = false;
     }
+
+    public void setEmailAuth(boolean emailAuth) {
+        this.emailAuth = emailAuth;
+    }
 }
