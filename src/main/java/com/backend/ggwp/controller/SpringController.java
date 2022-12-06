@@ -86,7 +86,7 @@ public class SpringController {
                 name = "Zeri";
                 break;
             case 888:
-                name = "RenetaGlasc";
+                name = "Renata";
                 break;
             case 266:
                 name = "Aatrox";
