@@ -22,13 +22,16 @@
 <body>
 <div class="reset-password-div-form">
     <p class="reset-password-text">이메일 인증하기</p>
-    <p class="reset-password-info-text">인증번호 입력</p>
-    <form class="" method="post" th:action>
-        <input type="text" class="" th:name="userAuthString">
+    <p class="reset-password-info-text">가입하신 이메일을 입력해주세요.</p>
+    <form th:object="${emailAuthDto}" class="login-form" method="post" th:action="@{/bbs/email/send}">
+        <div class="field-error" th:errors="*{email}">
+            이메일 오류
+        </div>
+        <input th:value="*{email}" type="email" th:name="email" class="form-control" placeholder="name@example.com">
         <input class="btn btn-primary reset-password-button" type="submit" value="이메일 인증">
     </form>
     <div class="reset-password-link-div">
-        <a class="main-link fas fa-home" href="/bbs" th:href="@{/bbs}">메인으로</a>
+        <a class="main-link fas fa-home" href="/bbs" th:href="@{/templates/bbs}">메인으로</a>
         <a class="find-link fas fa-user-alt" href="/bbs/register" th:href="@{/bbs/register}">회원가입</a>
     </div>
 </div>
