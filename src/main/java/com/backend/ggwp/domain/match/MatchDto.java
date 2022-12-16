@@ -1,8 +1,6 @@
 package com.backend.ggwp.domain.match;
 
 
-import com.backend.ggwp.domain.match.Participant;
-import com.backend.ggwp.domain.match.Team;
 import lombok.*;
 
 import java.util.List;

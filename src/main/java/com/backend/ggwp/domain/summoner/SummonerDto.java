@@ -15,7 +15,7 @@ public class SummonerDto {
     private SummonerLeagueInfo flexRank;
 
     @Builder
-    public SummonerDto (String id, String name, String profileIconUrl, Integer summonerLevel, SummonerLeagueInfo soloRank, SummonerLeagueInfo flexRank){
+    public SummonerDto(String id, String name, String profileIconUrl, Integer summonerLevel, SummonerLeagueInfo soloRank, SummonerLeagueInfo flexRank) {
         this.id = id;
         this.name = name;
         this.profileIconUrl = profileIconUrl;

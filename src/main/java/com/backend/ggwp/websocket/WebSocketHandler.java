@@ -18,6 +18,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     //private final ObjectMapper objectMapper;
     //private final ChatService chatService;
     private static List<WebSocketSession> list = new ArrayList<>();
+
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
@@ -26,12 +27,14 @@ public class WebSocketHandler extends TextWebSocketHandler {
             webSocketSession.sendMessage(message);
         }
     }
+
     /* Client 접속 시 호출되는 메서드드 */
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         list.add(session);
         log.info(session + " 클라이언트 접속");
     }
+
     /* Client 접속 해제 시 호출되는 메서드 */
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {

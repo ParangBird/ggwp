@@ -13,11 +13,11 @@ public class ApiInfo {
     @Value("${riot-version}")
     private String version;
 
-    public String getApiKey(){
+    public String getApiKey() {
         return apiKey;
     }
 
-    public String getVersion(){
+    public String getVersion() {
         return version;
     }
 

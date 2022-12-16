@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class GgwpApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(GgwpApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(GgwpApplication.class, args);
+    }
 
 }

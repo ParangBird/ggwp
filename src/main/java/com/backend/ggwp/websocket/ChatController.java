@@ -17,15 +17,15 @@ public class ChatController {
     private final ChatService chatService;
 
     @PostMapping
-    public ChatRoom createRoom(@RequestBody String name){
+    public ChatRoom createRoom(@RequestBody String name) {
         return chatService.createRoom(name);
     }
 
     @GetMapping
-    public String findAllRoom(HttpSession httpSession, Model model){
+    public String findAllRoom(HttpSession httpSession, Model model) {
         log.info("chatting GET");
         OauthUser user = (OauthUser) httpSession.getAttribute("user");
-        if(user != null){
+        if (user != null) {
             model.addAttribute("userName", user.getName());
         }
         return "bbs/chat";

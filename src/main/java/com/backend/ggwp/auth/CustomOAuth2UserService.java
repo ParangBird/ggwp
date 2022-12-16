@@ -48,6 +48,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 attributes.getNameAttributeKey()
         );
     }
+
     private PageUser saveOrUpdate(OAuthAttributes attributes) {
         PageUser user = pageUserRepository.findByEmail(attributes.getEmail())
                 .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))

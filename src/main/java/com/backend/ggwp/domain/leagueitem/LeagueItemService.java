@@ -14,16 +14,16 @@ public class LeagueItemService {
         this.leagueItemRepository = leagueItemRepository;
     }
 
-    public ArrayList<Optional<LeagueItem>> findRank50BySummonerName(String summonerName){
+    public ArrayList<Optional<LeagueItem>> findRank50BySummonerName(String summonerName) {
         ArrayList<Optional<LeagueItem>> leagueItems = new ArrayList<>();
         Long startRank = -1L;
         Optional<LeagueItem> leagueItem = leagueItemRepository.findBySummonerName(summonerName);
-        if(leagueItem.isPresent())
+        if (leagueItem.isPresent())
             startRank = leagueItem.get().getId();
-        if(startRank != -1L){
-            for(int i=0;i<50;i++){
-                Optional<LeagueItem> addLeagueItem = leagueItemRepository.findByRanking(startRank+i);
-                if(addLeagueItem.isPresent())
+        if (startRank != -1L) {
+            for (int i = 0; i < 50; i++) {
+                Optional<LeagueItem> addLeagueItem = leagueItemRepository.findByRanking(startRank + i);
+                if (addLeagueItem.isPresent())
                     leagueItems.add(addLeagueItem);
             }
         }
@@ -31,25 +31,25 @@ public class LeagueItemService {
     }
 
 
-    public ArrayList<Optional<LeagueItem>> findRank50(Long startId){
+    public ArrayList<Optional<LeagueItem>> findRank50(Long startId) {
         ArrayList<Optional<LeagueItem>> leagueItems = new ArrayList<>();
-        for(int i=0;i<50;i++){
-            Optional<LeagueItem> leagueItem = leagueItemRepository.findByRanking(startId+i);
-            if(leagueItem != null)
+        for (int i = 0; i < 50; i++) {
+            Optional<LeagueItem> leagueItem = leagueItemRepository.findByRanking(startId + i);
+            if (leagueItem != null)
                 leagueItems.add(leagueItem);
         }
         return leagueItems;
     }
 
     @Transactional
-    public void saveAll(ArrayList<LeagueItem> leagueItems){
-        for(LeagueItem leagueItem : leagueItems){
+    public void saveAll(ArrayList<LeagueItem> leagueItems) {
+        for (LeagueItem leagueItem : leagueItems) {
             leagueItemRepository.save(leagueItem);
         }
     }
 
     @Transactional
-    public void clearAll(){
+    public void clearAll() {
         leagueItemRepository.deleteAllInBatch();
     }
 }

@@ -11,21 +11,29 @@ import java.util.Optional;
 public class PostService {
     private final PostRepository postRepository;
 
-    public void save(Post post){
+    public void save(Post post) {
         postRepository.save(post);
     }
 
-    public Optional<Post> findPostById(Long id) { return postRepository.findById(id);}
+    public Optional<Post> findPostById(Long id) {
+        return postRepository.findById(id);
+    }
 
-    public List<Post> findAll(){ return postRepository.findAll(); }
+    public List<Post> findAll() {
+        return postRepository.findAll();
+    }
 
-    public List<Post> findAllByTag(PostEnum tag){ return postRepository.findAllByPostTag(tag); }
+    public List<Post> findAllByTag(PostEnum tag) {
+        return postRepository.findAllByPostTag(tag);
+    }
 
     public void update(Post post) {
 
         postRepository.save(post);
     }
 
-    public void deleteById(Long id) { postRepository.deleteById(id);}
+    public void deleteById(Long id) {
+        postRepository.deleteById(id);
+    }
 
 }

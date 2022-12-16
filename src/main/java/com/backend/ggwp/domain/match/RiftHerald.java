@@ -2,6 +2,7 @@
 package com.backend.ggwp.domain.match;
 
 import javax.annotation.Generated;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;

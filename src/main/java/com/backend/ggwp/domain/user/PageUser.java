@@ -31,7 +31,7 @@ public class PageUser {
     private Role role;
 
     @Builder
-    public PageUser(String name, String email, /*String nickname,*/ String picture, Role role){
+    public PageUser(String name, String email, /*String nickname,*/ String picture, Role role) {
         this.name = name;
         this.email = email;
         //this.nickname = nickname;
@@ -39,13 +39,13 @@ public class PageUser {
         this.role = role;
     }
 
-    public PageUser update(String name, String picture){
+    public PageUser update(String name, String picture) {
         this.name = name;
         this.picture = picture;
         return this;
     }
 
-    public String getRoleKey(){
+    public String getRoleKey() {
         return this.role.getKey();
     }
 }

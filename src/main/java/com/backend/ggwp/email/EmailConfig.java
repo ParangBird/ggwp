@@ -30,7 +30,7 @@ public class EmailConfig {
     private String password;
 
     @Bean
-    public JavaMailSender javaMailService(){
+    public JavaMailSender javaMailService() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setHost("smtp.gmail.com");
         javaMailSender.setUsername(id);
@@ -40,7 +40,8 @@ public class EmailConfig {
         javaMailSender.setDefaultEncoding("UTF-8");
         return javaMailSender;
     }
-    private Properties getMailProperties(){
+
+    private Properties getMailProperties() {
         Properties pt = new Properties();
         pt.put("mail.smtp.socketFactory.port", socketPort);
         pt.put("mail.smtp.auth", auth);

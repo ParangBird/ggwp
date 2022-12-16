@@ -9,9 +9,9 @@ import java.util.function.ToLongFunction;
 public class LeagueItemComparator implements Comparator<LeagueItem> {
     @Override
     public int compare(LeagueItem o1, LeagueItem o2) {
-        if(o1.getLeaguePoints() < o2.getLeaguePoints())
+        if (o1.getLeaguePoints() < o2.getLeaguePoints())
             return 1;
-        else if(o1.getLeaguePoints() > o2.getLeaguePoints())
+        else if (o1.getLeaguePoints() > o2.getLeaguePoints())
             return -1;
         return 0;
     }

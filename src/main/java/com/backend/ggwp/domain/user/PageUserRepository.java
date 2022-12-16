@@ -1,6 +1,5 @@
 package com.backend.ggwp.domain.user;
 
-import com.backend.ggwp.domain.user.PageUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

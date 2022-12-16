@@ -14,7 +14,7 @@ public class OauthUser implements Serializable, User {
     private String picture;
     private boolean emailAuth;
 
-    public OauthUser(PageUser user){
+    public OauthUser(PageUser user) {
         this.name = user.getName();
         this.email = user.getEmail();
         //this.nickname = user.getNickname();

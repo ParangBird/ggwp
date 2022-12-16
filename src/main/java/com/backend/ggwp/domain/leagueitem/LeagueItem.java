@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import javax.annotation.processing.Generated;
 import javax.persistence.*;
 

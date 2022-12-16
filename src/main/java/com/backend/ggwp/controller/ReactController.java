@@ -39,7 +39,7 @@ public class ReactController {
     private final MatchService matchService;
 
     @GetMapping("/reactSearch/{name}")
-    public SummonerDto index(@PathVariable(value = "name")String name){
+    public SummonerDto index(@PathVariable(value = "name") String name) {
         String summonerName = StringFormat.setApiString(name);
 
         AccountInfo accountInfo = restApiService.getAccountInfo(summonerName);
@@ -51,7 +51,7 @@ public class ReactController {
 
     //전적 갱신
     @GetMapping("/api/matches/update/{name}")
-    public void updateMatches(@PathVariable(value = "name")String name) throws UnsupportedEncodingException {
+    public void updateMatches(@PathVariable(value = "name") String name) throws UnsupportedEncodingException {
         String summonerName = StringFormat.setApiString(name);
         String encodedName = URLEncoder.encode(summonerName, "UTF-8");
         AccountInfo accountInfo = restApiService.getAccountInfo(summonerName);
@@ -64,7 +64,7 @@ public class ReactController {
     //솔랭, 일반, 자유랭 등 큐타입 선택해서 받는것도 추가해야할듯
     //전적검색 속도는 충분히 빠른것 같고 추가로 해당 전적의 상세정보 받아오는 것은 이전 방식으로 진행할것
     @GetMapping("/api/matches/{name}")
-    public ArrayList<MatchSummary> getMatches(@PathVariable(value = "name")String name) throws UnsupportedEncodingException {
+    public ArrayList<MatchSummary> getMatches(@PathVariable(value = "name") String name) throws UnsupportedEncodingException {
         String summonerName = StringFormat.setApiString(name);
         String encodedName = URLEncoder.encode(summonerName, "UTF-8");
         AccountInfo accountInfo = restApiService.getAccountInfo(summonerName);
@@ -74,7 +74,7 @@ public class ReactController {
     }
 
     @GetMapping("/api/matches/{name}/solo")
-    public ArrayList<MatchSummary> getSoloMatches(@PathVariable(value = "name")String name){
+    public ArrayList<MatchSummary> getSoloMatches(@PathVariable(value = "name") String name) {
         String summonerName = StringFormat.setApiString(name);
         AccountInfo accountInfo = restApiService.getAccountInfo(summonerName);
         ArrayList<MatchSummary> matchSummaries = matchService.get30SoloRankMatches(accountInfo);
@@ -82,15 +82,15 @@ public class ReactController {
     }
 
     @GetMapping("/api/rankBySummonerName/{name}")
-    public ArrayList<LeagueItem> rankBySummonerName(@PathVariable(value = "name")String name){
+    public ArrayList<LeagueItem> rankBySummonerName(@PathVariable(value = "name") String name) {
         ArrayList<Optional<LeagueItem>> rank50 = leagueItemService.findRank50BySummonerName(name);
         return getLeagueItems(rank50);
     }
 
     private ArrayList<LeagueItem> getLeagueItems(ArrayList<Optional<LeagueItem>> rank50) {
         ArrayList<LeagueItem> returnRank50 = new ArrayList<>();
-        for(int i=0;i<rank50.size();i++){
-            if(rank50.get(i).isPresent()) {
+        for (int i = 0; i < rank50.size(); i++) {
+            if (rank50.get(i).isPresent()) {
                 //System.out.println("rank50.get(i) = " + rank50.get(i).get().getSummonerName());
                 returnRank50.add(rank50.get(i).get());
             }
@@ -99,7 +99,7 @@ public class ReactController {
     }
 
     @GetMapping("/api/rank/{ranking}")
-    public ArrayList<LeagueItem> rank(@PathVariable(value = "ranking")String ranking){
+    public ArrayList<LeagueItem> rank(@PathVariable(value = "ranking") String ranking) {
         Long rank = Long.parseLong(ranking);
         ArrayList<Optional<LeagueItem>> rank50 = leagueItemService.findRank50(rank);
         return getLeagueItems(rank50);
@@ -107,8 +107,8 @@ public class ReactController {
 
 
     @PostMapping("/api/user/register")
-    public void register(GgwpUser ggwpUser){
-         if(userService.findByName(ggwpUser.getName()) != null)
+    public void register(GgwpUser ggwpUser) {
+        if (userService.findByName(ggwpUser.getName()) != null)
             userService.save(ggwpUser);
     }
 

@@ -10,14 +10,17 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+
     @Transactional
-    public void save(GgwpUser ggwpUser){
+    public void save(GgwpUser ggwpUser) {
         userRepository.save(ggwpUser);
     }
-    public Optional<GgwpUser> findByName(String username){
+
+    public Optional<GgwpUser> findByName(String username) {
         return userRepository.findByName(username);
     }
-    public Optional<GgwpUser> findByEmail(String email){
+
+    public Optional<GgwpUser> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 }

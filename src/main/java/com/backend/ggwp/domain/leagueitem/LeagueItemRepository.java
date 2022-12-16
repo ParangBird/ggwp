@@ -8,6 +8,7 @@ import java.util.Optional;
 @Repository
 public interface LeagueItemRepository extends JpaRepository<LeagueItem, Long> {
     Optional<LeagueItem> findByRanking(Long ranking);
+
     Optional<LeagueItem> findBySummonerName(String summonerName);
 
 }

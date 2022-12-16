@@ -25,7 +25,7 @@ public class Post {
     @Enumerated(EnumType.STRING)
     private PostEnum postTag;
 
-    public Post(String title, String author, String content, String authorEmail, PostEnum postTag){
+    public Post(String title, String author, String content, String authorEmail, PostEnum postTag) {
         this.title = title;
         this.author = author;
         this.content = content;

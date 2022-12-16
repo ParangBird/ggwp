@@ -30,10 +30,10 @@ public class PostController {
 
 
     @GetMapping("/bbs/write")
-    public String write(Model model){
+    public String write(Model model) {
         OauthUser user = (OauthUser) httpSession.getAttribute("user");
         Post post = new Post();
-        if(user != null) {
+        if (user != null) {
             post.setAuthor(user.getName());
         }
         model.addAttribute("post", post);
@@ -42,8 +42,8 @@ public class PostController {
 
     @PostMapping("/bbs/write")
     public String writePost(@Validated @ModelAttribute("post") Post post,
-                    BindingResult bindingResult){
-        if(bindingResult.hasErrors()) {
+                            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
             for (ObjectError allError : allErrors) {
                 log.info("Error = {}", allError);
@@ -57,9 +57,9 @@ public class PostController {
         return "redirect:http://localhost:8080/bbs";
     }
 
-    private void validAuthorCheck(Post post, HttpServletResponse response, OauthUser user){
-        if(user == null || post.getAuthorEmail() == null || user.getEmail() == null || !post.getAuthorEmail().equals(user.getEmail())){
-            try{
+    private void validAuthorCheck(Post post, HttpServletResponse response, OauthUser user) {
+        if (user == null || post.getAuthorEmail() == null || user.getEmail() == null || !post.getAuthorEmail().equals(user.getEmail())) {
+            try {
                 response.setContentType("text/html; charset=utf-8");
                 PrintWriter out = response.getWriter();
                 out.print("<script>alert('권한이 없습니다!'); location.href='/bbs';</script>");
@@ -70,10 +70,11 @@ public class PostController {
             }
         }
     }
-    private Post validPostCheck(String postId, HttpServletResponse response){
+
+    private Post validPostCheck(String postId, HttpServletResponse response) {
         Long id = Long.parseLong(postId);
         Optional<Post> post = postService.findPostById(id);
-        if(post.isEmpty()){
+        if (post.isEmpty()) {
             log.info("사용자가 존재하지 않는 페이지에 접근");
             response.setContentType("text/html;charset=UTF-8");
             try {
@@ -89,14 +90,14 @@ public class PostController {
     }
 
     @GetMapping("/bbs/read/{postId}")
-    public String readPost(@PathVariable String postId, HttpServletResponse response, Model model){
+    public String readPost(@PathVariable String postId, HttpServletResponse response, Model model) {
         Post post = validPostCheck(postId, response);
         model.addAttribute("post", post);
         return "bbs/read";
     }
 
     @GetMapping("/bbs/modify/{postId}")
-    public String showModifyPost(@PathVariable String postId, HttpServletRequest request, HttpServletResponse response, Model model){
+    public String showModifyPost(@PathVariable String postId, HttpServletRequest request, HttpServletResponse response, Model model) {
         Post post = validPostCheck(postId, response);
         HttpSession session = request.getSession();
         OauthUser user = (OauthUser) session.getAttribute("user");
@@ -108,10 +109,10 @@ public class PostController {
     @PostMapping("/bbs/modify/{postId}")
     public String modifyPost(@Validated @ModelAttribute("post") Post post,
                              BindingResult bindingResult, @PathVariable String postId,
-                             HttpServletResponse response, HttpSession session){
+                             HttpServletResponse response, HttpSession session) {
         OauthUser user = (OauthUser) session.getAttribute("user");
         validAuthorCheck(post, response, user);
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
             for (ObjectError allError : allErrors) {
                 log.info("Error = {}", allError);
@@ -130,7 +131,7 @@ public class PostController {
     }
 
     @PostMapping("/bbs/delete/{postId}")
-    public String deletePost(@PathVariable String postId, HttpServletResponse response, HttpSession session){
+    public String deletePost(@PathVariable String postId, HttpServletResponse response, HttpSession session) {
         Post post = validPostCheck(postId, response);
         OauthUser user = (OauthUser) session.getAttribute("user");
         validAuthorCheck(post, response, user);
