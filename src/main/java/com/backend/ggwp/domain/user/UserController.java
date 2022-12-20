@@ -40,7 +40,7 @@ public class UserController {
                 (user != null && (user.get().getPassword() == null ||
                         !passwordEncoder.matches(password, user.get().getPassword())))) {
             log.info("로그인 실패");
-            log.info("{}, {}", user.get().getPassword(), password);
+            //log.info("{}, {}", user.get().getPassword(), password);
             return "redirect:/bbs";
         }
         HttpSession session = request.getSession();
