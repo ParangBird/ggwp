@@ -7,30 +7,27 @@
 </head>
 <body>
 <div class="profile-container">
-    <img class="profileIcon" th:src="${'https://ddragon.leagueoflegends.com/cdn/'+version+'/img/profileicon/'+ account.profileIconId +'.png'}"/>
+    <img class="profileIcon"
+         th:src="${'https://ddragon.leagueoflegends.com/cdn/'+version+'/img/profileicon/'+ account.profileIconId +'.png'}"/>
     <h3 th:text="${gaming}"></h3>
     <span class="username" th:text="${summoner.summonerName}"> </span>
     <span class="box-1px-grey" th:text="'레벨: '+${account.summonerLevel}"></span>
     <br/><br/><br/>
 
-    <img class="emblemIcon" th:if="${summoner.tier == 'IRON'}" th:src="@{/image/emblem/Emblem_Iron.png}" />
-    <img class="emblemIcon" th:if="${summoner.tier == 'BRONZE'}" th:src="@{/image/emblem/Emblem_Bronze.png}" />
-    <img class="emblemIcon" th:if="${summoner.tier == 'SILVER'}" th:src="@{/image/emblem/Emblem_Silver.png}" />
-    <img class="emblemIcon" th:if="${summoner.tier == 'GOLD'}" th:src="@{/image/emblem/Emblem_Gold.png}" />
-    <img class="emblemIcon" th:if="${summoner.tier == 'PLATINUM'}" th:src="@{/image/emblem/Emblem_Platinum.png}" />
-    <img class="emblemIcon" th:if="${summoner.tier == 'DIAMOND'}" th:src="@{/image/emblem/Emblem_Diamond.png}" />
-    <img class="emblemIcon" th:if="${summoner.tier == 'MASTER'}" th:src="@{/image/emblem/Emblem_master.png}" />
-    <img class="emblemIcon" th:if="${summoner.tier == 'GRANDMASTER'}" th:src="@{/image/emblem/Emblem_Grandmaster.png}" />
-    <img class="emblemIcon" th:if="${summoner.tier == 'CHALLENGER'}" th:src="@{/image/emblem/Emblem_Challenger.png}" />
+    <img class="emblemIcon" th:if="${summoner.tier == 'IRON'}" th:src="@{/image/emblem/Emblem_Iron.png}"/>
+    <img class="emblemIcon" th:if="${summoner.tier == 'BRONZE'}" th:src="@{/image/emblem/Emblem_Bronze.png}"/>
+    <img class="emblemIcon" th:if="${summoner.tier == 'SILVER'}" th:src="@{/image/emblem/Emblem_Silver.png}"/>
+    <img class="emblemIcon" th:if="${summoner.tier == 'GOLD'}" th:src="@{/image/emblem/Emblem_Gold.png}"/>
+    <img class="emblemIcon" th:if="${summoner.tier == 'PLATINUM'}" th:src="@{/image/emblem/Emblem_Platinum.png}"/>
+    <img class="emblemIcon" th:if="${summoner.tier == 'DIAMOND'}" th:src="@{/image/emblem/Emblem_Diamond.png}"/>
+    <img class="emblemIcon" th:if="${summoner.tier == 'MASTER'}" th:src="@{/image/emblem/Emblem_master.png}"/>
+    <img class="emblemIcon" th:if="${summoner.tier == 'GRANDMASTER'}" th:src="@{/image/emblem/Emblem_Grandmaster.png}"/>
+    <img class="emblemIcon" th:if="${summoner.tier == 'CHALLENGER'}" th:src="@{/image/emblem/Emblem_Challenger.png}"/>
 
     <span th:text="'티어: '+${summoner.tier} +' '+ ${summoner.rank}"></span><br/>
     <span th:text="'점수: '+${summoner.leaguePoints}+'LP'"></span><br/>
     <span th:text="${summoner.wins + summoner.losses}+'전 '+${summoner.wins}+'승'+${summoner.losses}+'패'"></span>
 </div>
-
-
-
-
 
 
 </body>

@@ -19,7 +19,8 @@
     <div class="free-champions-row">
         <div class="img-div" th:each="championName, iter : ${freeChampionNames1}">
             <div class="">
-                <img class="champion-image" width="60px" height="60px" th:src="@{${'https://ddragon.leagueoflegends.com/cdn/' + version + '/img/champion/' + championName  + '.png'}}">
+                <img class="champion-image" width="60px" height="60px"
+                     th:src="@{${'https://ddragon.leagueoflegends.com/cdn/' + version + '/img/champion/' + championName  + '.png'}}">
                 <div class="champion-name" th:text="${championName}"></div>
             </div>
         </div>
@@ -28,7 +29,8 @@
     <div class="free-champions-row">
         <div class="img-div" th:each="championName, iter : ${freeChampionNames2}">
             <div class="">
-                <img width="60px" height="60px" th:src="@{${'https://ddragon.leagueoflegends.com/cdn/' + version + '/img/champion/' + championName  + '.png'}}">
+                <img width="60px" height="60px"
+                     th:src="@{${'https://ddragon.leagueoflegends.com/cdn/' + version + '/img/champion/' + championName  + '.png'}}">
                 <div class="champion-name" th:text="${championName}"></div>
             </div>
         </div>
