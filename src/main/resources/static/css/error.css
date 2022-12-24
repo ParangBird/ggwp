@@ -1,16 +1,33 @@
-.internal-error-div{
+.internal-error-div {
     margin-top: 60px;
     text-align: center;
 }
-.internal-error-text{
+
+.internal-error-text {
     color: black;
     margin-bottom: 30px;
 }
-.internal-error-sorry-text{
+
+.internal-error-sorry-text {
     color: slategrey;
 }
-.error-img{
+
+.error-img {
     margin-bottom: 30px;
     height: 300px;
     width: 300px;
+}
+
+.not-found-error-div {
+    margin-top: 60px;
+    text-align: center;
+}
+
+.not-found-error-text {
+    color: black;
+    margin-bottom: 30px;
+}
+
+.not-found-error-sorry-text {
+    color: slategrey;
 }

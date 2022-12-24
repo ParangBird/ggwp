@@ -8,6 +8,7 @@
           integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/css/index.css" th:href="@{/css/index.css}">
     <link rel="stylesheet" href="/static/css/chat.css" , th:href="@{/css/chat.css}">
+    <link rel="stylesheet" href="/static/css/error.css" , th:href="@{/css/error.css}">
     <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
@@ -15,6 +16,12 @@
 </head>
 <body>
 <div th:insert="~{fragments/header :: header}"></div>
-<h1>404 오류입니다</h1>
+<div class="not-found-error-div">
+    <img class="error-img" src="/static/images/error.png" th:src="@{/images/error.png}">
+    <h1 class="not-found-error-text">NOT FOUND ERROR</h1>
+    <h3 class="not-found-error-sorry-text">페이지의 주소가 잘못 입력되었거나,</h3>
+    <h3 class="not-found-error-sorry-text">주소가 변경 혹은 삭제되어 요청하신 페이지를 찾을 수 없습니다.</h3>
+    <a href="/bbs" class="btn btn-dark" role="button">메인으로</a>
+</div>
 </body>
 </html>
