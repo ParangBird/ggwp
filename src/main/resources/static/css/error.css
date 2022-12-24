@@ -1,0 +1,16 @@
+.internal-error-div{
+    margin-top: 60px;
+    text-align: center;
+}
+.internal-error-text{
+    color: black;
+    margin-bottom: 30px;
+}
+.internal-error-sorry-text{
+    color: slategrey;
+}
+.error-img{
+    margin-bottom: 30px;
+    height: 300px;
+    width: 300px;
+}
