@@ -1,5 +1,6 @@
 package com.backend.ggwp.config;
 
+import com.backend.ggwp.interceptor.EmailAuthInterceptor;
 import com.backend.ggwp.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -12,5 +13,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginInterceptor())
                 //.excludePathPatterns("/**")
                 .addPathPatterns("/chat", "/bbs/write");
+        registry.addInterceptor(new EmailAuthInterceptor())
+                .addPathPatterns("/bbs/write");
     }
 }
