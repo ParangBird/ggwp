@@ -54,6 +54,7 @@ public class SpringController {
         for (int i = 0; i < freeChampionIds.size(); i++) {
             freeChampionNames.add(changeChampionIdToName(freeChampionIds.get(i)));
         }
+        Collections.sort(freeChampionNames);
         model.addAttribute("freeChampionNames1", freeChampionNames.subList(0, 8));
         model.addAttribute("freeChampionNames2", freeChampionNames.subList(8, 16));
         model.addAttribute("version", API_INFO.getVersion());
