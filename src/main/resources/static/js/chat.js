@@ -1,6 +1,6 @@
 $(document).ready(function () {
     let username = $('#username').val();
-    if(username == null){
+    if (username == null) {
         username = "방문객" + Math.floor(Math.random() * 101);
     }
     console.log("username : " + username);
@@ -11,7 +11,7 @@ $(document).ready(function () {
         send();
     });
     $("#msg").on("keydown", (e) => {
-        if(e.keyCode == 13){
+        if (e.keyCode == 13) {
             e.preventDefault();
             send();
         }

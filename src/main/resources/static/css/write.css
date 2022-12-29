@@ -1,4 +1,4 @@
-.write-container{
+.write-container {
     border: 1px solid grey;
     border-radius: 30px;
     display: block;
@@ -9,29 +9,30 @@
     background-color: whitesmoke;
 }
 
-.write-form{
+.write-form {
     margin-top: 10px;
 }
 
-.title-div{
+.title-div {
     width: 60%;
     margin: 0 auto;
 }
 
-.author-div{
+.author-div {
     width: 60%;
     margin: 0 auto;
 }
 
-.content-textarea{
+.content-textarea {
     width: 60%;
-    margin: 0 auto;
+    margin: 10px auto;
+
 }
 
-.select-div{
+.select-div {
     width: 10%;
     margin: 0 auto 5px;
 }
 
-.hello{
+.hello {
 }
