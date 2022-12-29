@@ -55,6 +55,20 @@
             </div>
         </div>
     </form>
+    <div>
+        <hr>
+        <p class="reply-number-text">댓글 xx개</p>
+        <div class="reply-div">
+            <img class="reply-img" src="/static/images/logo.png" height="100px" width="100px">
+            <p class="reply-username">이름</p>
+            <p class="reply-content">내용</p>
+        </div>
+        <hr>
+        <form action="/hello" method="post">
+            <textarea placeholder="착한말 써요!!" class="form-control content-textarea" rows="3"></textarea>
+            <button type="submit" class="btn btn-outline-primary">댓글 등록</button>
+        </form>
+    </div>
 </div>
 </body>
 </html>

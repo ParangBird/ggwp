@@ -34,5 +34,27 @@
     margin: 0 auto 5px;
 }
 
-.hello {
+.reply-number-text {
+    color: black;
+    text-align: left;
+    margin-left: 100px;
+}
+
+.reply-div {
+    border: 1px solid black;
+    height: 100px;
+    margin: 5px;
+}
+
+.reply-img {
+    float: left;
+}
+
+.reply-username {
+    text-align: left;
+    margin-left: 100px;
+}
+
+.reply-content {
+    text-align: left;
 }
