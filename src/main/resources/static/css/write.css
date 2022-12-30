@@ -58,3 +58,13 @@
 .reply-content {
     text-align: left;
 }
+
+.reply-submit-content{
+    display: inline;
+}
+
+.reply-submit-btn {
+    display: inline;
+    margin-left: 30px;
+    margin-bottom: 100px;
+}
