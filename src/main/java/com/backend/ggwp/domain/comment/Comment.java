@@ -1,6 +1,5 @@
 package com.backend.ggwp.domain.comment;
 
-import com.backend.ggwp.domain.post.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
