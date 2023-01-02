@@ -19,7 +19,11 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         commentRepository.deleteById(id);
+    }
+
+    public Comment findById(Long id) {
+        return commentRepository.findById(id).get();
     }
 }
