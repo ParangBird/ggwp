@@ -21,7 +21,7 @@ public class Comment {
     private Long id;
 
     @Column(columnDefinition = "TEXT", nullable = false)
-    private String comment;
+    private String content;
 
     @Column(name = "created_date")
     @CreatedDate
