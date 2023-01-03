@@ -2,6 +2,7 @@ package com.backend.ggwp.domain.comment;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,11 +14,11 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/bbs/comment/write/test")
-    public String commentWriteTest(@RequestParam("content") String content, @RequestParam("author") String author) {
+    public String commentWriteTest(@ModelAttribute("commentWriteDto") CommentWriteDto commentWriteDto) {
         Comment comment = Comment.builder()
-                .content(content)
-                .postId(123L)
-                .postAuthor(author)
+                .content(commentWriteDto.getContent())
+                .postId(commentWriteDto.getPostId())
+                .postAuthor(commentWriteDto.getAuthor())
                 .build();
         commentService.save(comment);
         return "ok";
