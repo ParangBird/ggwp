@@ -22,3 +22,7 @@
 **application-oauth.properties**
 
 ![oauth-properties](./images/ggwp_oauth_properties.JPG)
+
+**application-email.properties**
+
+![email-properties](./images/ggwp_email_properties.JPG)
