@@ -1,8 +1,6 @@
 package com.backend.ggwp.domain.post;
 
 import com.backend.ggwp.auth.OauthUser;
-import com.backend.ggwp.domain.post.Post;
-import com.backend.ggwp.domain.post.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
