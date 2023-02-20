@@ -1,5 +1,6 @@
 package com.backend.ggwp.domain.post;
 
+import com.backend.ggwp.domain.time.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -7,12 +8,11 @@ import javax.validation.constraints.NotBlank;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "post")
 @Builder
-public class Post {
+public class Post extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
