@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "post")
 @Builder
 public class Post {
@@ -25,18 +26,5 @@ public class Post {
     private String authorEmail;
     @Enumerated(EnumType.STRING)
     private PostEnum postTag;
-
-
-
-
-/*
-    public Post(String title, String author, String content, String authorEmail, PostEnum postTag) {
-        this.title = title;
-        this.author = author;
-        this.content = content;
-        this.authorEmail = authorEmail;
-        this.postTag = postTag;
-    }
-*/
 
 }
