@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "post")
@@ -26,5 +27,4 @@ public class Post extends BaseTimeEntity {
     private String authorEmail;
     @Enumerated(EnumType.STRING)
     private PostEnum postTag;
-
 }
