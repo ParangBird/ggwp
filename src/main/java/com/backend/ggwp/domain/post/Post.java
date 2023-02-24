@@ -26,4 +26,10 @@ public class Post extends BaseTimeEntity {
     private String authorEmail;
     @Enumerated(EnumType.STRING)
     private PostEnum postTag;
+
+    public void update(PostDTO postDTO) {
+        this.title = postDTO.getTitle();
+        this.content = postDTO.getContent();
+        this.postTag = postDTO.getPostTag();
+    }
 }
