@@ -1,7 +1,7 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.1'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.6.1'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
 }
 
 group = 'com.example'
@@ -9,81 +9,82 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	implementation 'mysql:mysql-connector-java'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation 'mysql:mysql-connector-java'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	// security + oauth2
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	implementation 'com.google.code.gson:gson:2.8.5'
+    // security + oauth2
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'com.google.code.gson:gson:2.8.5'
 
-	// validation
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
+    // validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-	// websocket
-	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    // websocket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
-	// email
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
+    // email
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    // modelMapper
+    implementation 'org.modelmapper:modelmapper:2.4.2'
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 def frontendDir = "$projectDir/frontend"
 
 sourceSets {
-	main {
-		resources {
-			srcDirs = ["$projectDir/src/main/resources"]
-		}
-	}
+    main {
+        resources {
+            srcDirs = ["$projectDir/src/main/resources"]
+        }
+    }
 }
 processResources {
-	dependsOn "copyReactBuildFiles"
+    dependsOn "copyReactBuildFiles"
 }
 task installReact(type: Exec) {
-	workingDir "$frontendDir"
-	inputs.dir "$frontendDir"
-	group = BasePlugin.BUILD_GROUP
-	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-		commandLine "npm.cmd", "audit", "fix"
-		commandLine 'npm.cmd', 'install'
-	}
-	else {
-		commandLine "npm", "audit", "fix" commandLine 'npm', 'install'
-	}
+    workingDir "$frontendDir"
+    inputs.dir "$frontendDir"
+    group = BasePlugin.BUILD_GROUP
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine "npm.cmd", "audit", "fix"
+        commandLine 'npm.cmd', 'install'
+    } else {
+        commandLine "npm", "audit", "fix" commandLine 'npm', 'install'
+    }
 }
 task buildReact(type: Exec) {
-	dependsOn "installReact"
-	workingDir "$frontendDir"
-	inputs.dir "$frontendDir"
-	group = BasePlugin.BUILD_GROUP
-	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-		commandLine "npm.cmd", "run-script", "build"
-	}
-	else {
-		commandLine "npm", "run-script", "build"
-	}
+    dependsOn "installReact"
+    workingDir "$frontendDir"
+    inputs.dir "$frontendDir"
+    group = BasePlugin.BUILD_GROUP
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine "npm.cmd", "run-script", "build"
+    } else {
+        commandLine "npm", "run-script", "build"
+    }
 }
 task copyReactBuildFiles(type: Copy) {
-	dependsOn "buildReact" from "$frontendDir/build" into "$projectDir/src/main/resources/static"
+    dependsOn "buildReact" from "$frontendDir/build" into "$projectDir/src/main/resources/static"
 }
 
