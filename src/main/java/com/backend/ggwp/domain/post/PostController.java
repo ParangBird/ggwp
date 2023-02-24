@@ -1,22 +1,10 @@
 package com.backend.ggwp.domain.post;
 
-import com.backend.ggwp.auth.OauthUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -26,20 +14,17 @@ public class PostController {
     private final HttpSession httpSession;
     private final PostService postService;
 
-
+/*
     @GetMapping("/bbs/write")
     public String write(Model model) {
         OauthUser user = (OauthUser) httpSession.getAttribute("user");
-        Post post = new Post();
-        if (user != null) {
-            post.setAuthor(user.getName());
-        }
+        PostDTO post = PostDTO.builder().author(user.getName()).build();
         model.addAttribute("post", post);
         return "bbs/write";
     }
 
     @PostMapping("/bbs/write")
-    public String writePost(@Validated @ModelAttribute("post") Post post,
+    public String writePost(@Validated @ModelAttribute("post") PostDTO postDTO,
                             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
@@ -49,13 +34,13 @@ public class PostController {
             log.info("retry to write");
             return "bbs/write";
         }
-        log.info("Write Post : title {} , author {}, content {}, postTag {} ", post.getTitle(), post.getAuthor(), post.getContent(), post.getPostTag());
-        log.info("Writer email : {}", post.getAuthorEmail());
-        postService.save(post);
+        log.info("Write Post : title {} , author {}, content {}, postTag {} ", postDTO.getTitle(), postDTO.getAuthor(), postDTO.getContent(), post.getPostTag());
+        log.info("Writer email : {}", postDTO.getAuthorEmail());
+        postService.save(postDTO);
         return "redirect:http://localhost:8080/bbs";
     }
 
-    private void validAuthorCheck(Post post, HttpServletResponse response, OauthUser user) {
+    private void validAuthorCheck(PostDTO post, HttpServletResponse response, OauthUser user) {
         if (user == null || post.getAuthorEmail() == null || user.getEmail() == null || !post.getAuthorEmail().equals(user.getEmail())) {
             try {
                 response.setContentType("text/html; charset=utf-8");
@@ -105,11 +90,11 @@ public class PostController {
     }
 
     @PostMapping("/bbs/modify/{postId}")
-    public String modifyPost(@Validated @ModelAttribute("post") Post post,
+    public String modifyPost(@Validated @ModelAttribute("post") PostDTO postDTO,
                              BindingResult bindingResult, @PathVariable String postId,
                              HttpServletResponse response, HttpSession session) {
         OauthUser user = (OauthUser) session.getAttribute("user");
-        validAuthorCheck(post, response, user);
+        validAuthorCheck(postDTO, response, user);
         if (bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
             for (ObjectError allError : allErrors) {
@@ -118,13 +103,8 @@ public class PostController {
             log.info("retry to modify");
             return "bbs/modify";
         }
-        log.info("Modify Post : title {} , author {}, content {} ", post.getTitle(), post.getAuthor(), post.getContent());
-        Post updatePost = postService.findPostById(Long.parseLong(postId)).get();
-        updatePost.setTitle(post.getTitle());
-        updatePost.setContent(post.getContent());
-        updatePost.setAuthor(post.getAuthor());
-        updatePost.setPostTag(post.getPostTag());
-        postService.update(updatePost);
+        log.info("Modify Post : title {} , author {}, content {} ", postDTO.getTitle(), postDTO.getAuthor(), postDTO.getContent());
+        postService.update(Long.parseLong(postId), postDTO);
         return "redirect:/bbs";
     }
 
@@ -136,6 +116,7 @@ public class PostController {
         postService.deleteById(post.getId());
         return "redirect:/bbs";
     }
+*/
 
 
 }
