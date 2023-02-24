@@ -8,7 +8,6 @@ import javax.validation.constraints.NotBlank;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "post")
