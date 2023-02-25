@@ -3,6 +3,7 @@ package com.backend.ggwp;
 import com.backend.ggwp.domain.post.Post;
 import com.backend.ggwp.domain.post.PostDTO;
 import com.backend.ggwp.domain.post.PostEnum;
+import com.backend.ggwp.domain.user.dto.GgwpUserDTO;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,11 @@ public class ModelMapperTest {
 
     @Test
     void modelMapperTest() {
+        GgwpUserDTO userDTO = GgwpUserDTO.builder().build();
         PostDTO postDTO = PostDTO.builder()
-                .author("작성자")
+                .userDTO(userDTO)
                 .content("내용")
                 .title("제목")
-                .authorEmail("이메일")
                 .postTag(PostEnum.ADC)
                 .build();
         Post map = modelMapper.map(postDTO, Post.class);

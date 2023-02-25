@@ -23,7 +23,6 @@
 <div th:insert="~{fragments/header :: header}"></div>
 <div class="write-container">
     <form class="write-form" action th:object="${post}" method="post">
-        <!--<input type="hidden" th:value="${session.user.email}" name="authorEmail" id="authorEmail">-->
         <label for="postTag">글 분류</label>
         <select class="form-select select-div" th:field="*{postTag}" id="postTag" name="postTag">
             <option value="FREE">자유</option>
@@ -41,12 +40,9 @@
             <input type="text" th:field="*{title}" id="title" name="title" placeholder="제목을 입력하세요"
                    class="form-control" aria-label="Sizing example input" aria-describedby="form-title">
         </div>
-        <div class="field-error" th:errors="*{author}">
-            글쓴이 오류
-        </div>
         <div class="input-group mb-3 author-div">
             <span class="input-group-text" id="form-title">글쓴이</span>
-            <input type="text" th:field="*{author}" id="author" name="author"
+            <input type="text" th:field="*{userDTO.name}" id="author" name="author"
                    class="form-control" aria-label="Sizing example input" readonly aria-describedby="form-title">
         </div>
         <div class="field-error" th:errors="*{content}">
