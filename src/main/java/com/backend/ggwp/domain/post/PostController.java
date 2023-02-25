@@ -3,6 +3,8 @@ package com.backend.ggwp.domain.post;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,15 +16,15 @@ public class PostController {
     private final HttpSession httpSession;
     private final PostService postService;
 
-/*
+
     @GetMapping("/bbs/write")
     public String write(Model model) {
-        OauthUser user = (OauthUser) httpSession.getAttribute("user");
-        PostDTO post = PostDTO.builder().author(user.getName()).build();
+        //OauthUser user = (OauthUser) httpSession.getAttribute("user");
+        PostDTO post = PostDTO.builder().build();
         model.addAttribute("post", post);
         return "bbs/write";
     }
-
+/*
     @PostMapping("/bbs/write")
     public String writePost(@Validated @ModelAttribute("post") PostDTO postDTO,
                             BindingResult bindingResult) {

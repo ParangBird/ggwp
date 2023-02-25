@@ -68,5 +68,7 @@ class PostServiceTest {
         assertThat(updatedPost.getTitle()).isEqualTo(updateTitle);
         assertThat(updatedPost.getContent()).isEqualTo(updateContent);
         assertThat(updatedPost.getPostTag()).isEqualTo(updatedTag);
+
+        postService.deleteById(saveId);
     }
 }
