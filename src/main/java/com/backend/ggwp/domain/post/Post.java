@@ -1,6 +1,7 @@
 package com.backend.ggwp.domain.post;
 
 import com.backend.ggwp.domain.time.BaseTimeEntity;
+import com.backend.ggwp.domain.user.GgwpUser;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,12 +19,10 @@ public class Post extends BaseTimeEntity {
     private Long id;
     @NotBlank
     private String title;
-    @NotBlank
-    private String author;
+    @ManyToOne
+    private GgwpUser user;
     @NotBlank
     private String content;
-    @NotBlank
-    private String authorEmail;
     @Enumerated(EnumType.STRING)
     private PostEnum postTag;
 

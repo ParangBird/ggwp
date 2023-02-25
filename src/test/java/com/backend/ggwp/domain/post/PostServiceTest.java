@@ -12,9 +12,7 @@ class PostServiceTest {
     PostService postService;
 
     String title = "title";
-    String author = "author";
     String content = "content";
-    String authorEmail = "email@naver.com";
     PostEnum tag = PostEnum.ADC;
 
     String updateTitle = "u_title";
@@ -22,12 +20,10 @@ class PostServiceTest {
     PostEnum updatedTag = PostEnum.JUG;
 
 
-    PostDTO testDTO(String title, String author, String content, String authorEmail, PostEnum tag) {
+    PostDTO testDTO(String title, String content, PostEnum tag) {
         return PostDTO.builder()
                 .title(title)
-                .author(author)
                 .content(content)
-                .authorEmail(authorEmail)
                 .postTag(tag)
                 .build();
     }
@@ -35,13 +31,12 @@ class PostServiceTest {
     @Test
     void saveTest() {
 
-        Long saveId = postService.save(testDTO(title, author, content, authorEmail, tag));
+
+        Long saveId = postService.save(testDTO(title, content, tag));
         Post post = postService.findPostById(saveId).orElseThrow();
 
         assertThat(post.getTitle()).isEqualTo(title);
-        assertThat(post.getAuthor()).isEqualTo(author);
         assertThat(post.getContent()).isEqualTo(content);
-        assertThat(post.getAuthorEmail()).isEqualTo(authorEmail);
         assertThat(post.getPostTag()).isEqualTo(tag);
 
         postService.deleteById(saveId);
@@ -50,7 +45,7 @@ class PostServiceTest {
 
     @Test
     void updateTest() {
-        PostDTO postDTO = testDTO(title, content, author, authorEmail, tag);
+        PostDTO postDTO = testDTO(title, content, tag);
         Long saveId = postService.save(postDTO);
         Post post = postService.findPostById(saveId).orElseThrow();
 

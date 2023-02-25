@@ -1,18 +1,16 @@
 package com.backend.ggwp.domain.user;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.backend.ggwp.domain.post.Post;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class GgwpUser implements User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +19,9 @@ public class GgwpUser implements User {
     private String password;
     private String email;
     private boolean emailAuth;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Post> posts = new ArrayList<>();
 
     @Builder
     public GgwpUser(String name, String password, String email) {

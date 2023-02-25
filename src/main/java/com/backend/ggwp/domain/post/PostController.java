@@ -4,9 +4,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -24,7 +30,7 @@ public class PostController {
         model.addAttribute("post", post);
         return "bbs/write";
     }
-/*
+
     @PostMapping("/bbs/write")
     public String writePost(@Validated @ModelAttribute("post") PostDTO postDTO,
                             BindingResult bindingResult) {
@@ -36,11 +42,13 @@ public class PostController {
             log.info("retry to write");
             return "bbs/write";
         }
-        log.info("Write Post : title {} , author {}, content {}, postTag {} ", postDTO.getTitle(), postDTO.getAuthor(), postDTO.getContent(), post.getPostTag());
+        log.info("Write Post : title {} , author {}, content {}, postTag {} ", postDTO.getTitle(), postDTO.getAuthor(), postDTO.getContent(), postDTO.getPostTag());
         log.info("Writer email : {}", postDTO.getAuthorEmail());
         postService.save(postDTO);
         return "redirect:http://localhost:8080/bbs";
     }
+
+    /*
 
     private void validAuthorCheck(PostDTO post, HttpServletResponse response, OauthUser user) {
         if (user == null || post.getAuthorEmail() == null || user.getEmail() == null || !post.getAuthorEmail().equals(user.getEmail())) {
