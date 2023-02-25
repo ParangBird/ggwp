@@ -21,6 +21,13 @@ public class PostService {
         return post.getId();
     }
 
+    @Transactional
+    public void update(Long id, PostDTO updatePostDTO) {
+        Post updatePost = findPostById(id).get();
+        updatePost.update(updatePostDTO);
+        postRepository.save(updatePost);
+    }
+
     public Optional<Post> findPostById(Long id) {
         return postRepository.findById(id);
     }
@@ -31,12 +38,6 @@ public class PostService {
 
     public List<Post> findAllByTag(PostEnum tag) {
         return postRepository.findAllByPostTag(tag);
-    }
-
-    public void update(Long id, PostDTO updatePostDTO) {
-        Post updatePost = findPostById(id).get();
-        updatePost.update(updatePostDTO);
-        postRepository.save(updatePost);
     }
 
     public void deleteById(Long id) {
