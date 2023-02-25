@@ -1,5 +1,7 @@
 package com.backend.ggwp.domain.post;
 
+import com.backend.ggwp.domain.user.UserService;
+import com.backend.ggwp.domain.user.dto.GgwpUserDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -21,19 +24,25 @@ public class PostController {
 
     private final HttpSession httpSession;
     private final PostService postService;
-
+    private final UserService userService;
 
     @GetMapping("/bbs/write")
     public String write(Model model) {
         //OauthUser user = (OauthUser) httpSession.getAttribute("user");
-        PostDTO post = PostDTO.builder().build();
+        GgwpUserDTO ggwpUserDTO = GgwpUserDTO.builder()
+                .name("임시유저")
+                .email("이메일")
+                .build();
+        PostDTO post = PostDTO.builder()
+                .userDTO(ggwpUserDTO)
+                .build();
         model.addAttribute("post", post);
         return "bbs/write";
     }
 
     @PostMapping("/bbs/write")
     public String writePost(@Validated @ModelAttribute("post") PostDTO postDTO,
-                            BindingResult bindingResult) {
+                            BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
             for (ObjectError allError : allErrors) {
@@ -42,8 +51,8 @@ public class PostController {
             log.info("retry to write");
             return "bbs/write";
         }
-        log.info("Write Post : title {} , author {}, content {}, postTag {} ", postDTO.getTitle(), postDTO.getAuthor(), postDTO.getContent(), postDTO.getPostTag());
-        log.info("Writer email : {}", postDTO.getAuthorEmail());
+        log.info("Write Post : title {} , author {}, content {}, postTag {} ", postDTO.getTitle(), postDTO.getUserDTO().getName(), postDTO.getContent(), postDTO.getPostTag());
+        log.info("Writer email : {}", postDTO.getUserDTO().getEmail());
         postService.save(postDTO);
         return "redirect:http://localhost:8080/bbs";
     }

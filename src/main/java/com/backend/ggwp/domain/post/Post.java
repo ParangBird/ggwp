@@ -19,7 +19,7 @@ public class Post extends BaseTimeEntity {
     private Long id;
     @NotBlank
     private String title;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private GgwpUser user;
     @NotBlank
     private String content;
