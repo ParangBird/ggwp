@@ -9,14 +9,16 @@ import javax.validation.constraints.NotNull;
 
 @Builder
 @AllArgsConstructor
+@Setter
+@NoArgsConstructor
 @Getter
 @ToString
 public class PostDTO {
+    private Long id;
     @NotBlank
     private String title;
     @NotBlank
     private String content;
-    @Setter
     private GgwpUserDTO userDTO;
     @NotNull
     private PostEnum postTag;

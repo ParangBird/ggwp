@@ -4,6 +4,7 @@ import com.backend.ggwp.domain.user.UserService;
 import com.backend.ggwp.domain.user.dto.GgwpUserDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,8 +12,10 @@ import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -24,6 +27,7 @@ public class PostController {
     private final HttpSession httpSession;
     private final PostService postService;
     private final UserService userService;
+    private final ModelMapper modelMapper;
 
     @GetMapping("/bbs/write")
     public String write(Model model) {
@@ -56,6 +60,16 @@ public class PostController {
         postService.save(postDTO);
         return "redirect:http://localhost:8080/bbs";
     }
+
+    @GetMapping("/bbs/read/{postId}")
+    public String readPost(@PathVariable String postId, HttpServletResponse response, Model model) throws Exception {
+        Post post = postService.findPostById(Long.parseLong(postId))
+                .orElseThrow(() -> new Exception(""));
+        PostDTO postDTO = modelMapper.map(post, PostDTO.class);
+        model.addAttribute("post", postDTO);
+        return "bbs/read";
+    }
+
 
     /*
 
@@ -90,14 +104,6 @@ public class PostController {
         }
         return post.get();
     }
-
-    @GetMapping("/bbs/read/{postId}")
-    public String readPost(@PathVariable String postId, HttpServletResponse response, Model model) {
-        Post post = validPostCheck(postId, response);
-        model.addAttribute("post", post);
-        return "bbs/read";
-    }
-
     @GetMapping("/bbs/modify/{postId}")
     public String showModifyPost(@PathVariable String postId, HttpServletRequest request, HttpServletResponse response, Model model) {
         Post post = validPostCheck(postId, response);
