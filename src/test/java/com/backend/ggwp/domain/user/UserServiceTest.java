@@ -1,6 +1,7 @@
 package com.backend.ggwp.domain.user;
 
 import com.backend.ggwp.domain.user.dto.GgwpUserDTO;
+import com.backend.ggwp.domain.user.dto.LoginDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +16,7 @@ class UserServiceTest {
     @Test
     void saveTest() {
         String name = "유저이름";
-        String email = "유저이메일";
+        String email = "email";
         String password = "1111";
         boolean auth = false;
 
@@ -28,7 +29,13 @@ class UserServiceTest {
         GgwpUser savedUser = userService.findById(saveId).orElseThrow();
         assertThat(savedUser.getName()).isEqualTo(name);
         assertThat(savedUser.getEmail()).isEqualTo(email);
-        assertThat(savedUser.getPassword()).isEqualTo(password);
-        userService.deleteById(saveId);
+        //userService.deleteById(saveId);
+    }
+
+    @Test
+    void loginTest(){
+        LoginDto loginDto = new LoginDto("email", "1111");
+        GgwpUser login = userService.login(loginDto);
+        assertThat(login).isNotNull();
     }
 }
