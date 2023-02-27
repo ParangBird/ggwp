@@ -1,5 +1,6 @@
 package com.backend.ggwp.domain.user;
 
+import com.backend.ggwp.domain.user.dto.GgwpUserDTO;
 import com.backend.ggwp.domain.user.dto.LoginDto;
 import com.backend.ggwp.domain.user.dto.RegisterDto;
 import com.backend.ggwp.domain.user.dto.ResetPasswordDto;
@@ -93,7 +94,7 @@ public class UserController {
         String encodedPassword = passwordEncoder.encode(password);
         String email = registerDto.getEmail();
 
-        GgwpUser newGgwpUser = GgwpUser.
+        GgwpUserDTO newGgwpUser = GgwpUserDTO.
                 builder().
                 name(userName).
                 password(encodedPassword).

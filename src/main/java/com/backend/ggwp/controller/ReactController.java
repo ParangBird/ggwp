@@ -1,23 +1,21 @@
 package com.backend.ggwp.controller;
 
 import com.backend.ggwp.config.ApiInfo;
-import com.backend.ggwp.domain.summoner.AccountInfo;
+import com.backend.ggwp.domain.leagueitem.LeagueItem;
 import com.backend.ggwp.domain.leagueitem.LeagueItemService;
 import com.backend.ggwp.domain.match.MatchService;
+import com.backend.ggwp.domain.match.MatchSummary;
+import com.backend.ggwp.domain.summoner.AccountInfo;
 import com.backend.ggwp.domain.summoner.SummonerDto;
 import com.backend.ggwp.domain.summoner.SummonerLeagueInfo;
 import com.backend.ggwp.domain.summoner.SummonerService;
-import com.backend.ggwp.utils.StringFormat;
-import com.backend.ggwp.domain.leagueitem.LeagueItem;
-import com.backend.ggwp.domain.match.MatchSummary;
-import com.backend.ggwp.domain.user.GgwpUser;
 import com.backend.ggwp.domain.user.UserService;
-import com.backend.ggwp.restapi.*;
+import com.backend.ggwp.restapi.RestApiService;
+import com.backend.ggwp.utils.StringFormat;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
@@ -105,11 +103,5 @@ public class ReactController {
         return getLeagueItems(rank50);
     }
 
-
-    @PostMapping("/api/user/register")
-    public void register(GgwpUser ggwpUser) {
-        if (userService.findByName(ggwpUser.getName()) != null)
-            userService.save(ggwpUser);
-    }
 
 }

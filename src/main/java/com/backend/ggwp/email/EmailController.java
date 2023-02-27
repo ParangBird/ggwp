@@ -78,7 +78,7 @@ public class EmailController {
         return "email/email-auth";
     }
 
-    @PostMapping("/bbs/email/auth")
+/*    @PostMapping("/bbs/email/auth")
     public String emailAuth(@RequestParam("userAuthString") String userAuthString,
                             HttpServletResponse response,
                             Model model, HttpSession session) throws IOException {
@@ -100,5 +100,5 @@ public class EmailController {
         userService.save(authedUser);
         log.info("인증 성공 !! ! !");
         return "redirect:/bbs";
-    }
+    }*/
 }
