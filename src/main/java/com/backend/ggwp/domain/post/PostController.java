@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -42,7 +41,7 @@ public class PostController {
 
     @PostMapping("/bbs/write")
     public String writePost(@Validated @ModelAttribute("post") PostDTO postDTO,
-                            BindingResult bindingResult, HttpServletRequest request) {
+                            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
             for (ObjectError allError : allErrors) {
@@ -53,6 +52,7 @@ public class PostController {
         }
         log.info("Write Post : title {} , author {}, content {}, postTag {} ", postDTO.getTitle(), postDTO.getUserDTO().getName(), postDTO.getContent(), postDTO.getPostTag());
         log.info("Writer email : {}", postDTO.getUserDTO().getEmail());
+
         postService.save(postDTO);
         return "redirect:http://localhost:8080/bbs";
     }
