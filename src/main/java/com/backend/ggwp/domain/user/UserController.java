@@ -12,11 +12,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,24 +32,22 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/bbs/login")
-    public String login(@Validated @ModelAttribute("loginDto") LoginDto loginDto,
-                        HttpServletRequest request, HttpServletResponse response) {
-        String email = loginDto.getEmail();
-        System.out.println("email = " + email);
-        String password = loginDto.getPassword();
-        System.out.println("password = " + password);
-        Optional<GgwpUser> user = userService.findByEmail(email);
-        // .matches(평문의 오리지널 패스워드, 암호화된 패스워드)
-        if (user.isEmpty() ||
-                (user != null && (user.get().getPassword() == null ||
-                        !passwordEncoder.matches(password, user.get().getPassword())))) {
+    public String login(@ModelAttribute("loginDto") LoginDto loginDto, HttpSession session, HttpServletResponse response) {
+        GgwpUser loginUser = userService.login(loginDto);
+        if (loginUser == null) {
             log.info("로그인 실패");
-            //log.info("{}, {}", user.get().getPassword(), password);
+            try {
+                response.setContentType("text/html; charset=utf-8");
+                PrintWriter out = response.getWriter();
+                out.print("<script>alert('회원 정보를 확인해주세요!'); location.href='/bbs';</script>");
+                out.flush();
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return "redirect:/bbs";
         }
-        HttpSession session = request.getSession();
-        session.setAttribute("ggwpUser", user.get());
-        System.out.println("user.get().getUserName() = " + user.get().getName());
+        session.setAttribute("ggwpUser", loginUser);
         return "redirect:/bbs";
     }
 
