@@ -1,12 +1,15 @@
 package com.backend.ggwp.domain.user;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.servlet.http.HttpSession;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -17,8 +20,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerTest {
     @Autowired
     MockMvc mock;
-    @MockBean
+    @Mock
     UserService userService;
+
+    @Test
+    void loginTest() throws Exception {
+        String url = "/bbs/login";
+        HttpSession session = mock.perform(
+                post(url)
+                        .param("email", "test@naver.com")
+                        .param("password", "123456")
+                ).andReturn().getRequest().getSession();
+        assertThat(session.getAttribute("ggwpUser")).isNotNull();
+    }
 
     @Test
     void registerGetTest() throws Exception {
