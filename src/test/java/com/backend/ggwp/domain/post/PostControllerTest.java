@@ -39,4 +39,11 @@ class PostControllerTest {
                 .andExpect(status().is3xxRedirection());
     }
 
+    @Test
+    void noSuchPostTest() throws Exception {
+        String url = "/bbs/write/12345";
+        mvc.perform(get(url))
+                .andExpect(status().isNotFound());
+    }
+
 }
