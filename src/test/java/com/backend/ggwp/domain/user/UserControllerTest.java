@@ -30,7 +30,7 @@ class UserControllerTest {
                 post(url)
                         .param("email", "test@naver.com")
                         .param("password", "123456")
-                ).andReturn().getRequest().getSession();
+        ).andReturn().getRequest().getSession();
         assertThat(session.getAttribute("ggwpUser")).isNotNull();
     }
 
@@ -53,5 +53,16 @@ class UserControllerTest {
                                 .param("passwordCheck", "hellopwd")
                 )
                 .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    void resetPasswordGetTest() throws Exception {
+        String url = "/bbs/reset-password";
+        mock.perform(
+                        get(url)
+                )
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("resetPasswordDto"));
+
     }
 }
