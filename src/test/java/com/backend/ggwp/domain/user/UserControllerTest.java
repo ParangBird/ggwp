@@ -8,6 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -25,5 +26,18 @@ class UserControllerTest {
         mock.perform(get(url))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("registerDto"));
+    }
+
+    @Test
+    void registerPostTest() throws Exception {
+        String url = "/bbs/register";
+        mock.perform(
+                        post(url)
+                                .param("email", "hello@naver.com")
+                                .param("userName", "hello")
+                                .param("password", "hellopwd")
+                                .param("passwordCheck", "hellopwd")
+                )
+                .andExpect(status().is3xxRedirection());
     }
 }
