@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Slf4j
@@ -33,7 +34,12 @@ public class UserService {
     public GgwpUser login(LoginDto loginDto) {
         String email = loginDto.getEmail();
         String password = loginDto.getPassword();
-        GgwpUser user = findByEmail(email).orElseThrow();
+        GgwpUser user = null;
+        try {
+            user = findByEmail(email).get();
+        } catch (NoSuchElementException e) {
+            return null;
+        }
         // .matches(평문의 오리지널 패스워드, 암호화된 패스워드)
         if (!passwordEncoder.matches(password, user.getPassword())) {
             return null;
