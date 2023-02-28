@@ -36,8 +36,8 @@ class UserServiceTest {
     @Test
     void loginTest() {
         LoginDto loginDto = new LoginDto("test@naver.com", "123456");
-        GgwpUser login = userService.login(loginDto);
-        assertThat(login).isNotNull();
+        GgwpUserDTO userDTO = userService.login(loginDto);
+        assertThat(userDTO).isNotNull();
     }
 
     @Test

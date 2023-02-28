@@ -31,7 +31,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public GgwpUser login(LoginDto loginDto) {
+    public GgwpUserDTO login(LoginDto loginDto) {
         String email = loginDto.getEmail();
         String password = loginDto.getPassword();
         GgwpUser user = null;
@@ -44,7 +44,7 @@ public class UserService {
         if (!passwordEncoder.matches(password, user.getPassword())) {
             return null;
         }
-        return user;
+        return modelMapper.map(user, GgwpUserDTO.class);
 
     }
 

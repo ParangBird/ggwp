@@ -1,5 +1,6 @@
 package com.backend.ggwp.domain.user;
 
+import com.backend.ggwp.domain.user.dto.GgwpUserDTO;
 import com.backend.ggwp.domain.user.dto.LoginDto;
 import com.backend.ggwp.domain.user.dto.RegisterDto;
 import com.backend.ggwp.domain.user.dto.ResetPasswordDto;
@@ -30,7 +31,7 @@ public class UserController {
 
     @PostMapping("/bbs/login")
     public String login(@ModelAttribute("loginDto") LoginDto loginDto, HttpSession session, HttpServletResponse response) {
-        GgwpUser loginUser = userService.login(loginDto);
+        GgwpUserDTO loginUser = userService.login(loginDto);
         if (loginUser == null) {
             log.info("로그인 실패");
             try {
@@ -96,6 +97,7 @@ public class UserController {
         return "bbs/reset-password";
     }
 
+    // TODO: 2023-02-28 추후 이메일 보낼때 같이 수정
     @PostMapping("/bbs/reset-password")
     public String resetPassword(@Validated @ModelAttribute("resetPasswordDto")
                                         ResetPasswordDto resetPasswordDto,

@@ -1,5 +1,6 @@
 package com.backend.ggwp.domain.post;
 
+import com.backend.ggwp.domain.exception.NoSuchPostFoundException;
 import com.backend.ggwp.domain.user.UserService;
 import com.backend.ggwp.domain.user.dto.GgwpUserDTO;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -32,12 +32,9 @@ public class PostController {
     @GetMapping("/bbs/write")
     public String write(Model model) {
         //OauthUser user = (OauthUser) httpSession.getAttribute("user");
-        GgwpUserDTO ggwpUserDTO = GgwpUserDTO.builder()
-                .name("임시유저")
-                .email("이메일")
-                .build();
+        GgwpUserDTO user = (GgwpUserDTO) httpSession.getAttribute("ggwpUser");
         PostDTO post = PostDTO.builder()
-                .userDTO(ggwpUserDTO)
+                .userDTO(user)
                 .build();
         model.addAttribute("post", post);
         return "bbs/write";
@@ -62,9 +59,9 @@ public class PostController {
     }
 
     @GetMapping("/bbs/read/{postId}")
-    public String readPost(@PathVariable String postId, HttpServletResponse response, Model model) throws Exception {
+    public String readPost(@PathVariable String postId, Model model) throws Exception {
         Post post = postService.findPostById(Long.parseLong(postId))
-                .orElseThrow(() -> new Exception(""));
+                .orElseThrow(() -> new NoSuchPostFoundException("해당 게시글 없음"));
         PostDTO postDTO = modelMapper.map(post, PostDTO.class);
         model.addAttribute("post", postDTO);
         return "bbs/read";
