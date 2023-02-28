@@ -11,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.io.IOException;
+
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
@@ -34,12 +36,18 @@ public class SecurityConfig {
                 .antMatchers("/api/v1/**").hasRole(Role.USER.name())
                 .anyRequest().authenticated()
                 .and()
-                .logout().logoutSuccessUrl("/bbs")
+                .logout().logoutUrl("/bbs/logout").addLogoutHandler((req, res, auth) -> {
+                    if (req.getSession() != null) req.getSession().invalidate();
+                    try {
+                        res.sendRedirect("/bbs");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                })
                 .and()
                 .oauth2Login()
                 .userInfoEndpoint()
                 .userService(customOAuth2UserService);
-
         return http.build();
     }
 }

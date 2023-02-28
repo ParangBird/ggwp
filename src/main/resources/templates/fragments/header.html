@@ -38,7 +38,7 @@
             <span class="search-text">반갑습니다, <span th:text="${user.name}">ㅇㅇㅇ</span> 님!</span>
             <div class="userinfo-buttons" th:unless="${user.emailAuth}">
                 <a class="btn btn-primary active" href="/bbs/email/send" th:href="@{/bbs/email/send}">이메일 인증하기</a>
-                <a href="/logout" class="btn btn-secondary active" role="button">Logout</a>
+                <a href="/bbs/logout" class="btn btn-secondary active" role="button">Logout</a>
             </div>
         </div>
         <div class="logo-div">

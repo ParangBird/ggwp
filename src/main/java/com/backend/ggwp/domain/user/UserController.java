@@ -90,11 +90,6 @@ public class UserController {
         return "redirect:/bbs";
     }
 
-    @GetMapping("/logout")
-    public String logout() {
-        return "bbs/index";
-    }
-
     @GetMapping("/bbs/reset-password")
     public String resetPasswordPage(Model model) {
         model.addAttribute("resetPasswordDto", new ResetPasswordDto());
