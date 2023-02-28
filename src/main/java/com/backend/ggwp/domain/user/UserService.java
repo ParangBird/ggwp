@@ -2,6 +2,7 @@ package com.backend.ggwp.domain.user;
 
 import com.backend.ggwp.domain.user.dto.GgwpUserDTO;
 import com.backend.ggwp.domain.user.dto.LoginDto;
+import com.backend.ggwp.domain.user.dto.RegisterDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -39,6 +40,24 @@ public class UserService {
             return null;
         }
         return user;
+
+    }
+
+    @Transactional
+    public void registerUser(RegisterDto registerDto){
+        String userName = registerDto.getUserName();
+        String password = registerDto.getPassword();
+        String encodedPassword = passwordEncoder.encode(password);
+        String email = registerDto.getEmail();
+
+        GgwpUserDTO newGgwpUser = GgwpUserDTO.
+                builder().
+                name(userName).
+                password(encodedPassword).
+                email(email).
+                build();
+
+        save(newGgwpUser);
 
     }
 

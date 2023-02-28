@@ -1,6 +1,5 @@
 package com.backend.ggwp.domain.user;
 
-import com.backend.ggwp.domain.user.dto.GgwpUserDTO;
 import com.backend.ggwp.domain.user.dto.LoginDto;
 import com.backend.ggwp.domain.user.dto.RegisterDto;
 import com.backend.ggwp.domain.user.dto.ResetPasswordDto;
@@ -79,30 +78,17 @@ public class UserController {
 
         Optional<GgwpUser> userNameDup = userService.findByName(registerDto.getUserName());
         Optional<GgwpUser> emailDup = userService.findByEmail(registerDto.getEmail());
-        if (userNameDup != null && userNameDup.isPresent()) {
-            log.info("userName duplicated");
-            bindingResult.rejectValue("userName", "다른 닉네임을 입력해주세요", "다른 닉네임을 입력해주세요");
-            return "bbs/register";
-        }
-        if (emailDup != null && emailDup.isPresent()) {
+        if (emailDup.isPresent()) {
             log.info("email duplicated");
             bindingResult.rejectValue("email", "이미 가입된 이메일입니다", "이미 가입된 이메일입니다");
             return "bbs/register";
         }
-
-        String userName = registerDto.getUserName();
-        String password = registerDto.getPassword();
-        String encodedPassword = passwordEncoder.encode(password);
-        String email = registerDto.getEmail();
-
-        GgwpUserDTO newGgwpUser = GgwpUserDTO.
-                builder().
-                name(userName).
-                password(encodedPassword).
-                email(email).
-                build();
-
-        userService.save(newGgwpUser);
+        if (userNameDup.isPresent()) {
+            log.info("userName duplicated");
+            bindingResult.rejectValue("userName", "다른 닉네임을 입력해주세요", "다른 닉네임을 입력해주세요");
+            return "bbs/register";
+        }
+        userService.registerUser(registerDto);
         return "redirect:/bbs";
     }
 
