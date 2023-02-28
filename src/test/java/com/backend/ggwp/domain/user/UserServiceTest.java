@@ -29,13 +29,14 @@ class UserServiceTest {
         GgwpUser savedUser = userService.findById(saveId).orElseThrow();
         assertThat(savedUser.getName()).isEqualTo(name);
         assertThat(savedUser.getEmail()).isEqualTo(email);
-        //userService.deleteById(saveId);
+        userService.deleteById(saveId);
     }
 
     @Test
-    void loginTest(){
+    void loginTest() {
         LoginDto loginDto = new LoginDto("email", "1111");
         GgwpUser login = userService.login(loginDto);
         assertThat(login).isNotNull();
     }
+
 }
