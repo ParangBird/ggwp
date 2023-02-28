@@ -5,7 +5,6 @@ import com.backend.ggwp.domain.user.dto.RegisterDto;
 import com.backend.ggwp.domain.user.dto.ResetPasswordDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,7 +27,6 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/bbs/login")
     public String login(@ModelAttribute("loginDto") LoginDto loginDto, HttpSession session, HttpServletResponse response) {

@@ -35,8 +35,8 @@ public class UserService {
         String password = loginDto.getPassword();
         GgwpUser user = findByEmail(email).orElseThrow();
         // .matches(평문의 오리지널 패스워드, 암호화된 패스워드)
-        if (user.getPassword() == null ||
-                !passwordEncoder.matches(password, user.getPassword())) {
+        log.info("password : {} vs user.getPassword : {}", password, user.getPassword());
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             return null;
         }
         return user;
@@ -44,16 +44,15 @@ public class UserService {
     }
 
     @Transactional
-    public void registerUser(RegisterDto registerDto){
+    public void registerUser(RegisterDto registerDto) {
         String userName = registerDto.getUserName();
         String password = registerDto.getPassword();
-        String encodedPassword = passwordEncoder.encode(password);
         String email = registerDto.getEmail();
 
         GgwpUserDTO newGgwpUser = GgwpUserDTO.
                 builder().
                 name(userName).
-                password(encodedPassword).
+                password(password).
                 email(email).
                 build();
 
