@@ -2,6 +2,7 @@ package com.backend.ggwp.domain.user;
 
 import com.backend.ggwp.domain.user.dto.GgwpUserDTO;
 import com.backend.ggwp.domain.user.dto.LoginDto;
+import com.backend.ggwp.domain.user.dto.RegisterDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,9 +35,17 @@ class UserServiceTest {
 
     @Test
     void loginTest() {
-        LoginDto loginDto = new LoginDto("test1@naver.com", "123456");
+        LoginDto loginDto = new LoginDto("test@naver.com", "123456");
         GgwpUser login = userService.login(loginDto);
         assertThat(login).isNotNull();
     }
 
+    @Test
+    void registerTest() {
+        String newUserEmail = "testEmail@naver.com";
+        RegisterDto registerDto = new RegisterDto(newUserEmail, "TESTUSER", "123456", "123456");
+        userService.registerUser(registerDto);
+        GgwpUser ggwpUser = userService.findByEmail(newUserEmail).orElseThrow();
+        userService.deleteById(ggwpUser.getId());
+    }
 }
