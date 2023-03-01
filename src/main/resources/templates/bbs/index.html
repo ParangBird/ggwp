@@ -76,7 +76,7 @@
             <td th:text="${post.postTag}"></td>
             <td><a th:text="${post.id}" th:href="@{/bbs/read/{id}(id = ${post.id})}"></a></td>
             <td th:text="${post.title}"></td>
-            <td th:text="${post.author}"></td>
+            <td th:text="${post.user.name}"></td>
         </tr>
     </table>
 </div>

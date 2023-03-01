@@ -42,7 +42,7 @@
         </div>
         <div class="input-group mb-3 author-div">
             <span class="input-group-text" id="form-title">글쓴이</span>
-            <input type="text" th:field="*{userDTO.name}" id="author" name="author"
+            <input type="text" th:field="*{user.name}" id="author" name="author"
                    class="form-control" aria-label="Sizing example input" readonly aria-describedby="form-title">
         </div>
         <div class="field-error" th:errors="*{content}">

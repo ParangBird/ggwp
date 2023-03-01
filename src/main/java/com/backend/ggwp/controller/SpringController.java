@@ -4,6 +4,7 @@ import com.backend.ggwp.auth.OauthUser;
 import com.backend.ggwp.config.ApiInfo;
 import com.backend.ggwp.domain.currentGame.CurrentGameInfo;
 import com.backend.ggwp.domain.post.Post;
+import com.backend.ggwp.domain.post.PostDTO;
 import com.backend.ggwp.domain.post.PostEnum;
 import com.backend.ggwp.domain.post.PostService;
 import com.backend.ggwp.domain.summoner.AccountInfo;
@@ -12,6 +13,8 @@ import com.backend.ggwp.domain.user.dto.GgwpUserDTO;
 import com.backend.ggwp.restapi.RestApiService;
 import com.backend.ggwp.restapi.RotationInfo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class SpringController {
@@ -30,6 +34,7 @@ public class SpringController {
     private final RestApiService restApiService;
     private final HttpSession httpSession;
     private final PostService postService;
+    private final ModelMapper modelMapper;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -64,9 +69,14 @@ public class SpringController {
         else {
             allPost = postService.findAllByTag(PostEnum.valueOf(postTag));
         }
-        if (allPost != null) {
-            Collections.reverse(allPost);
-            model.addAttribute("posts", allPost);
+        List<PostDTO> postDTOs = new ArrayList<>();
+        for (Post post : allPost) {
+            PostDTO postDTO = modelMapper.map(post, PostDTO.class);
+            postDTOs.add(postDTO);
+        }
+        if (postDTOs != null) {
+            Collections.reverse(postDTOs);
+            model.addAttribute("posts", postDTOs);
         }
         return "bbs/index";
     }

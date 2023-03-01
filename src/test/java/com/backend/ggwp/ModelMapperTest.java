@@ -20,7 +20,7 @@ public class ModelMapperTest {
     void modelMapperTest() {
         GgwpUserDTO userDTO = GgwpUserDTO.builder().build();
         PostDTO postDTO = PostDTO.builder()
-                .userDTO(userDTO)
+                .user(userDTO)
                 .content("내용")
                 .title("제목")
                 .postTag(PostEnum.ADC)

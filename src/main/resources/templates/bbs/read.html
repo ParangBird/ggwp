@@ -41,20 +41,20 @@
         </div>
         <div class="input-group mb-3 author-div">
             <span class="input-group-text" id="form-title">글쓴이</span>
-            <input type="text" th:field="*{userDTO.name}" id="author" name="author"
+            <input type="text" th:field="*{user.name}" id="author" name="author"
                    class="form-control" aria-label="Sizing example input" readonly aria-describedby="form-title">
         </div>
         <textarea th:field="*{content}" id="content" name="content" placeholder="내용을 입력하세요" readonly
                   class="form-control content-textarea" rows="5"></textarea>
-<!--
+
         <div th:if="${session.ggwpUser != null}">
-            <div th:if="${post.userDTO.name == session.ggwpUser.name}">
+            <div th:if="${post.getUser.name == session.ggwpUser.name}">
                 <a th:href="@{/bbs/modify/{id}(id = ${post.id})}" href="/bbs/modify/id" class="btn btn-info"
                    role="button">수정하기</a>
                 <input type="submit" value="삭제하기" class="btn btn-secondary"/>
             </div>
         </div>
--->
+
     </form>
     <div>
         <hr>

@@ -19,7 +19,7 @@ public class PostDTO {
     private String title;
     @NotBlank
     private String content;
-    private GgwpUserDTO userDTO;
+    private GgwpUserDTO user;
     @NotNull
     private PostEnum postTag;
 }
