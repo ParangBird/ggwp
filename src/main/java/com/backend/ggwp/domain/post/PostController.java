@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 @Slf4j
@@ -34,7 +37,7 @@ public class PostController {
         //OauthUser user = (OauthUser) httpSession.getAttribute("user");
         GgwpUserDTO user = (GgwpUserDTO) httpSession.getAttribute("ggwpUser");
         PostDTO post = PostDTO.builder()
-                .userDTO(user)
+                .user(user)
                 .build();
         model.addAttribute("post", post);
         return "bbs/write";
@@ -51,8 +54,8 @@ public class PostController {
             log.info("retry to write");
             return "bbs/write";
         }
-        log.info("Write Post : title {} , author {}, content {}, postTag {} ", postDTO.getTitle(), postDTO.getUserDTO().getName(), postDTO.getContent(), postDTO.getPostTag());
-        log.info("Writer email : {}", postDTO.getUserDTO().getEmail());
+        log.info("Write Post : title {} , author {}, content {}, postTag {} ", postDTO.getTitle(), postDTO.getUser().getName(), postDTO.getContent(), postDTO.getPostTag());
+        log.info("Writer email : {}", postDTO.getUser().getEmail());
 
         postService.save(postDTO);
         return "redirect:http://localhost:8080/bbs";
@@ -67,6 +70,30 @@ public class PostController {
         return "bbs/read";
     }
 
+    @GetMapping("/bbs/modify/{postId}")
+    public String showModifyPost(@PathVariable String postId, Model model, HttpServletResponse response) {
+        Post post = postService.findPostById(Long.parseLong(postId))
+                .orElseThrow(() -> new NoSuchPostFoundException("해당 게시글 없음"));
+        validAuthorCheck(httpSession, post, response);
+        PostDTO postDTO = modelMapper.map(post, PostDTO.class);
+        model.addAttribute("post", postDTO);
+        return "bbs/modify";
+    }
+
+    private void validAuthorCheck(HttpSession httpSession, Post post, HttpServletResponse response) {
+        GgwpUserDTO user = (GgwpUserDTO) httpSession.getAttribute("ggwpUser");
+        if (user == null || !user.getName().equals(post.getUser().getName())) {
+            try {
+                response.setContentType("text/html; charset=utf-8");
+                PrintWriter out = response.getWriter();
+                out.print("<script>alert('권한이 없습니다!'); location.href='/bbs';</script>");
+                out.flush();
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     /*
 
@@ -101,15 +128,7 @@ public class PostController {
         }
         return post.get();
     }
-    @GetMapping("/bbs/modify/{postId}")
-    public String showModifyPost(@PathVariable String postId, HttpServletRequest request, HttpServletResponse response, Model model) {
-        Post post = validPostCheck(postId, response);
-        HttpSession session = request.getSession();
-        OauthUser user = (OauthUser) session.getAttribute("user");
-        validAuthorCheck(post, response, user);
-        model.addAttribute("post", post);
-        return "bbs/modify";
-    }
+
 
     @PostMapping("/bbs/modify/{postId}")
     public String modifyPost(@Validated @ModelAttribute("post") PostDTO postDTO,
