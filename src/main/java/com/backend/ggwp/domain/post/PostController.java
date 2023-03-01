@@ -74,8 +74,8 @@ public class PostController {
     public String showModifyPost(@PathVariable String postId, Model model, HttpServletResponse response) {
         Post post = postService.findPostById(Long.parseLong(postId))
                 .orElseThrow(() -> new NoSuchPostFoundException("해당 게시글 없음"));
-        validAuthorCheck(httpSession, post, response);
         PostDTO postDTO = modelMapper.map(post, PostDTO.class);
+        validAuthorCheck(httpSession, post, response);
         model.addAttribute("post", postDTO);
         return "bbs/modify";
     }
@@ -94,6 +94,27 @@ public class PostController {
             }
         }
     }
+
+    @PostMapping("/bbs/modify/{postId}")
+    public String modifyPost(@Validated @ModelAttribute("post") PostDTO postDTO,
+                             BindingResult bindingResult, @PathVariable String postId,
+                             HttpServletResponse response) {
+        if (bindingResult.hasErrors()) {
+            List<ObjectError> allErrors = bindingResult.getAllErrors();
+            for (ObjectError allError : allErrors) {
+                log.info("Error = {}", allError);
+            }
+            log.info("retry to modify");
+            return "bbs/modify";
+        }
+        Post post = postService.findPostById(Long.parseLong(postId))
+                .orElseThrow(() -> new NoSuchPostFoundException("해당 게시글 없음"));
+        validAuthorCheck(httpSession, post, response);
+        //log.info("Modify Post : title {} , author {}, content {} ", postDTO.getTitle(), postDTO.getAuthor(), postDTO.getContent());
+        postService.update(Long.parseLong(postId), postDTO);
+        return "redirect:/bbs";
+    }
+
 
     /*
 
@@ -127,26 +148,6 @@ public class PostController {
             }
         }
         return post.get();
-    }
-
-
-    @PostMapping("/bbs/modify/{postId}")
-    public String modifyPost(@Validated @ModelAttribute("post") PostDTO postDTO,
-                             BindingResult bindingResult, @PathVariable String postId,
-                             HttpServletResponse response, HttpSession session) {
-        OauthUser user = (OauthUser) session.getAttribute("user");
-        validAuthorCheck(postDTO, response, user);
-        if (bindingResult.hasErrors()) {
-            List<ObjectError> allErrors = bindingResult.getAllErrors();
-            for (ObjectError allError : allErrors) {
-                log.info("Error = {}", allError);
-            }
-            log.info("retry to modify");
-            return "bbs/modify";
-        }
-        log.info("Modify Post : title {} , author {}, content {} ", postDTO.getTitle(), postDTO.getAuthor(), postDTO.getContent());
-        postService.update(Long.parseLong(postId), postDTO);
-        return "redirect:/bbs";
     }
 
     @PostMapping("/bbs/delete/{postId}")
