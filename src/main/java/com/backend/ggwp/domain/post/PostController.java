@@ -115,50 +115,14 @@ public class PostController {
         return "redirect:/bbs";
     }
 
-
-    /*
-
-    private void validAuthorCheck(PostDTO post, HttpServletResponse response, OauthUser user) {
-        if (user == null || post.getAuthorEmail() == null || user.getEmail() == null || !post.getAuthorEmail().equals(user.getEmail())) {
-            try {
-                response.setContentType("text/html; charset=utf-8");
-                PrintWriter out = response.getWriter();
-                out.print("<script>alert('권한이 없습니다!'); location.href='/bbs';</script>");
-                out.flush();
-                out.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private Post validPostCheck(String postId, HttpServletResponse response) {
-        Long id = Long.parseLong(postId);
-        Optional<Post> post = postService.findPostById(id);
-        if (post.isEmpty()) {
-            log.info("사용자가 존재하지 않는 페이지에 접근");
-            response.setContentType("text/html;charset=UTF-8");
-            try {
-                PrintWriter out = null;
-                out = response.getWriter();
-                out.println("<script>alert('해당 게시글이 존재하지 않습니다.'); location.href='/bbs';</script>");
-                out.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return post.get();
-    }
-
     @PostMapping("/bbs/delete/{postId}")
-    public String deletePost(@PathVariable String postId, HttpServletResponse response, HttpSession session) {
-        Post post = validPostCheck(postId, response);
-        OauthUser user = (OauthUser) session.getAttribute("user");
-        validAuthorCheck(post, response, user);
+    public String deletePost(@PathVariable String postId, HttpServletResponse response) {
+        Post post = postService.findPostById(Long.parseLong(postId))
+                .orElseThrow(() -> new NoSuchPostFoundException("해당 게시글 없음"));
+        validAuthorCheck(httpSession, post, response);
         postService.deleteById(post.getId());
         return "redirect:/bbs";
     }
-*/
 
 
 }
