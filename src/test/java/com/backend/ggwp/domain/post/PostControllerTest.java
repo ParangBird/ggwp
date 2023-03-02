@@ -75,4 +75,20 @@ class PostControllerTest {
                 .andExpect(model().attributeExists("post"));
     }
 
+    @Test
+    void deleteTest() throws Exception {
+        GgwpUser ggwpUser = GgwpUser.builder()
+                .name("donchipong")
+                .email("donchipong@naver.com")
+                .password("12345")
+                .build();
+        given(postService.findPostById(1L)).willReturn(
+                java.util.Optional.of(new Post(1L, "333", ggwpUser, "333", PostEnum.ADC))
+        );
+        String url = "/bbs/delete/1";
+        GgwpUserDTO userDTO = GgwpUserDTO.builder().name("donchipong").build();
+        mvc.perform(post(url).sessionAttr("ggwpUser", userDTO))
+                .andExpect(status().is3xxRedirection());
+    }
+
 }

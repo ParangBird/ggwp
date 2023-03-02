@@ -80,21 +80,6 @@ public class PostController {
         return "bbs/modify";
     }
 
-    private void validAuthorCheck(HttpSession httpSession, Post post, HttpServletResponse response) {
-        GgwpUserDTO user = (GgwpUserDTO) httpSession.getAttribute("ggwpUser");
-        if (user == null || !user.getName().equals(post.getUser().getName())) {
-            try {
-                response.setContentType("text/html; charset=utf-8");
-                PrintWriter out = response.getWriter();
-                out.print("<script>alert('권한이 없습니다!'); location.href='/bbs';</script>");
-                out.flush();
-                out.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     @PostMapping("/bbs/modify/{postId}")
     public String modifyPost(@Validated @ModelAttribute("post") PostDTO postDTO,
                              BindingResult bindingResult, @PathVariable String postId,
@@ -110,7 +95,7 @@ public class PostController {
         Post post = postService.findPostById(Long.parseLong(postId))
                 .orElseThrow(() -> new NoSuchPostFoundException("해당 게시글 없음"));
         validAuthorCheck(httpSession, post, response);
-        //log.info("Modify Post : title {} , author {}, content {} ", postDTO.getTitle(), postDTO.getAuthor(), postDTO.getContent());
+        log.info("Modify Post : title {} , author {}, content {} ", postDTO.getTitle(), postDTO.getUser().getName(), postDTO.getContent());
         postService.update(Long.parseLong(postId), postDTO);
         return "redirect:/bbs";
     }
@@ -124,5 +109,18 @@ public class PostController {
         return "redirect:/bbs";
     }
 
-
+    private void validAuthorCheck(HttpSession httpSession, Post post, HttpServletResponse response) {
+        GgwpUserDTO user = (GgwpUserDTO) httpSession.getAttribute("ggwpUser");
+        if (user == null || !user.getName().equals(post.getUser().getName())) {
+            try {
+                response.setContentType("text/html; charset=utf-8");
+                PrintWriter out = response.getWriter();
+                out.print("<script>alert('권한이 없습니다!'); location.href='/bbs';</script>");
+                out.flush();
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
