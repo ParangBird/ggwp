@@ -76,6 +76,29 @@ class PostControllerTest {
     }
 
     @Test
+    void modifyPostTest() throws Exception {
+        GgwpUser ggwpUser = GgwpUser.builder()
+                .name("donchipong")
+                .email("donchipong@naver.com")
+                .password("12345")
+                .build();
+        given(postService.findPostById(1L)).willReturn(
+                java.util.Optional.of(new Post(1L, "333", ggwpUser, "333", PostEnum.ADC))
+        );
+        String url = "/bbs/modify/1";
+        GgwpUserDTO userDTO = GgwpUserDTO.builder().name("donchipong").build();
+        mvc.perform(post(url)
+                        .sessionAttr("ggwpUser", userDTO)
+                        .param("title", "444")
+                        .param("content", "444")
+                        .param("postTag", PostEnum.ADC.tag())
+                        .param("user.name", "donchipong")
+                        .param("user.email", "donchipong@naver.com"))
+                .andExpect(status().is3xxRedirection());
+    }
+
+
+    @Test
     void deleteTest() throws Exception {
         GgwpUser ggwpUser = GgwpUser.builder()
                 .name("donchipong")
