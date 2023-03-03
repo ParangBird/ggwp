@@ -3,6 +3,7 @@ package com.backend.ggwp.controller;
 import com.backend.ggwp.auth.OauthUser;
 import com.backend.ggwp.config.ApiInfo;
 import com.backend.ggwp.domain.currentGame.CurrentGameInfo;
+import com.backend.ggwp.domain.exception.ApiKeyExpiredException;
 import com.backend.ggwp.domain.post.Post;
 import com.backend.ggwp.domain.post.PostDTO;
 import com.backend.ggwp.domain.post.PostEnum;
@@ -54,6 +55,9 @@ public class SpringController {
         }
         RotationInfo rotationInfo = restApiService.getRotationInfo();
         List<Integer> freeChampionIds = rotationInfo.getFreeChampionIds();
+        if(freeChampionIds == null) {
+            throw new ApiKeyExpiredException("invalid api key");
+        }
         ArrayList<String> freeChampionNames = new ArrayList<>();
 
         for (int i = 0; i < freeChampionIds.size(); i++) {
