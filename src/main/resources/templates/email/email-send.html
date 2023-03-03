@@ -23,7 +23,7 @@
 <div class="reset-password-div-form">
     <p class="reset-password-text">이메일 인증하기</p>
     <p class="reset-password-info-text">가입하신 이메일을 입력해주세요.</p>
-    <form th:object="${emailAuthDto}" class="login-form" method="post" th:action="@{/bbs/email/send}">
+    <form th:object="${emailAuthDTO}" class="login-form" method="post" th:action="@{/bbs/email/send}">
         <div class="field-error" th:errors="*{email}">
             이메일 오류
         </div>

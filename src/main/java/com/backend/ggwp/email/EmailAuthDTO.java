@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmailAuthDto {
+public class EmailAuthDTO {
     @Email
     @NotBlank
     private String email;
