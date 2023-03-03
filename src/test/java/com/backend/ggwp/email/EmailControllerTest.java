@@ -12,8 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -42,5 +41,12 @@ class EmailControllerTest {
 
         mock.perform(post(url).param("email", "donchipong@naver.com"))
                 .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    void emailAuthPageTest() throws Exception {
+        String url = "/bbs/email/auth";
+        mock.perform(get(url))
+                .andExpect(status().isOk());
     }
 }
