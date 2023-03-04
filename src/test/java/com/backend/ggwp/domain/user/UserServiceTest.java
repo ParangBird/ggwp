@@ -27,7 +27,7 @@ class UserServiceTest {
                 .emailAuth(auth)
                 .build();
         Long saveId = userService.save(ggwpUserDTO);
-        GgwpUser savedUser = userService.findById(saveId).orElseThrow();
+        GgwpUserDTO savedUser = userService.findById(saveId);
         assertThat(savedUser.getName()).isEqualTo(name);
         assertThat(savedUser.getEmail()).isEqualTo(email);
         userService.deleteById(saveId);
@@ -44,8 +44,9 @@ class UserServiceTest {
     void registerTest() {
         String newUserEmail = "testEmail@naver.com";
         RegisterDto registerDto = new RegisterDto(newUserEmail, "TESTUSER", "123456", "123456");
-        userService.registerUser(registerDto);
-        GgwpUser ggwpUser = userService.findByEmail(newUserEmail).orElseThrow();
-        userService.deleteById(ggwpUser.getId());
+        Long id = userService.registerUser(registerDto);
+        GgwpUserDTO ggwpUser = userService.findByEmail(newUserEmail);
+        assertThat(ggwpUser).isNotNull();
+        userService.deleteById(id);
     }
 }

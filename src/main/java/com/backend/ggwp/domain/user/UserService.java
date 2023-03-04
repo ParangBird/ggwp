@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -34,9 +33,9 @@ public class UserService {
     public GgwpUserDTO login(LoginDto loginDto) {
         String email = loginDto.getEmail();
         String password = loginDto.getPassword();
-        GgwpUser user = null;
+        GgwpUserDTO user = null;
         try {
-            user = findByEmail(email).get();
+            user = findByEmail(email);
         } catch (NoSuchElementException e) {
             return null;
         }
@@ -44,12 +43,11 @@ public class UserService {
         if (!passwordEncoder.matches(password, user.getPassword())) {
             return null;
         }
-        return modelMapper.map(user, GgwpUserDTO.class);
-
+        return user;
     }
 
     @Transactional
-    public void registerUser(RegisterDto registerDto) {
+    public Long registerUser(RegisterDto registerDto) {
         String userName = registerDto.getUserName();
         String password = registerDto.getPassword();
         String email = registerDto.getEmail();
@@ -61,23 +59,53 @@ public class UserService {
                 email(email).
                 build();
 
-        save(newGgwpUser);
-
+        return save(newGgwpUser);
     }
 
-    public Optional<GgwpUser> findByName(String username) {
-        return userRepository.findByName(username);
+    @Transactional(readOnly = true)
+    public GgwpUserDTO findByName(String username) {
+        GgwpUser ggwpUser = userRepository.findByName(username).orElseThrow();
+        GgwpUserDTO dto = modelMapper.map(ggwpUser, GgwpUserDTO.class);
+        return dto;
     }
 
-    public Optional<GgwpUser> findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    @Transactional(readOnly = true)
+    public GgwpUserDTO findByEmail(String email) {
+        GgwpUser ggwpUser = userRepository.findByEmail(email).orElseThrow();
+        GgwpUserDTO dto = modelMapper.map(ggwpUser, GgwpUserDTO.class);
+        return dto;
     }
 
-    public Optional<GgwpUser> findById(Long id) {
-        return userRepository.findById(id);
+    @Transactional(readOnly = true)
+    public GgwpUserDTO findById(Long id) {
+        GgwpUser ggwpUser = userRepository.findById(id).orElseThrow();
+        GgwpUserDTO dto = modelMapper.map(ggwpUser, GgwpUserDTO.class);
+        return dto;
     }
 
+    @Transactional
     public void deleteById(Long id) {
+        try {
+            userRepository.findById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
         userRepository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public int checkDuplicateUser(String userName, String email) {
+        try {
+            GgwpUserDTO byName = findByName(userName);
+        } catch (Exception e) {
+            return 1;
+        }
+        try {
+            GgwpUserDTO byEmail = findByEmail(email);
+        } catch (Exception e) {
+            return 2;
+        }
+        return 0;
     }
 }

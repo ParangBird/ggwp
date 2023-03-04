@@ -1,7 +1,7 @@
 package com.backend.ggwp.email;
 
-import com.backend.ggwp.domain.user.GgwpUser;
 import com.backend.ggwp.domain.user.UserService;
+import com.backend.ggwp.domain.user.dto.GgwpUserDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,7 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -36,9 +37,8 @@ class EmailControllerTest {
     void emailSendTest() throws Exception {
         String url = "/bbs/email/send";
         given(userService.findByEmail("donchipong@naver.com")).willReturn(
-                java.util.Optional.of(new GgwpUser("donchipong", "1111", "donchipong@naver.com"))
+                new GgwpUserDTO("donchipong", "1111", "donchipong@naver.com", true)
         );
-
         mock.perform(post(url).param("email", "donchipong@naver.com"))
                 .andExpect(status().is3xxRedirection());
     }

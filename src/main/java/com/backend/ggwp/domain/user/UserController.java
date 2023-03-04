@@ -20,7 +20,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -75,14 +74,13 @@ public class UserController {
             return "bbs/register";
         }
 
-        Optional<GgwpUser> userNameDup = userService.findByName(registerDto.getUserName());
-        Optional<GgwpUser> emailDup = userService.findByEmail(registerDto.getEmail());
-        if (emailDup.isPresent()) {
+        int duplicateNumber = userService.checkDuplicateUser(registerDto.getUserName(), registerDto.getEmail());
+
+        if (duplicateNumber == 1) {
             log.info("email duplicated");
             bindingResult.rejectValue("email", "이미 가입된 이메일입니다", "이미 가입된 이메일입니다");
             return "bbs/register";
-        }
-        if (userNameDup.isPresent()) {
+        } else if (duplicateNumber == 2) {
             log.info("userName duplicated");
             bindingResult.rejectValue("userName", "다른 닉네임을 입력해주세요", "다른 닉네임을 입력해주세요");
             return "bbs/register";
@@ -111,8 +109,10 @@ public class UserController {
             log.info("retry to reset-password");
             return "bbs/reset-password";
         }
-        Optional<GgwpUser> byEmail = userService.findByEmail(resetPasswordDto.getEmail());
-        if (byEmail == null || byEmail.isEmpty()) {
+        GgwpUserDTO byEmail = null;
+        try {
+            byEmail = userService.findByEmail(resetPasswordDto.getEmail());
+        } catch (Exception e) {
             bindingResult.rejectValue("email", "", "회원정보에 해당 이메일이 존재하지 않습니다.");
             return "bbs/reset-password";
         }
