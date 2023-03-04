@@ -12,8 +12,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +29,7 @@ import java.util.Optional;
 public class EmailController {
     private final EmailServiceImpl emailService;
     private final UserService userService;
+    private final HttpSession session;
 
     @GetMapping("/bbs/email/send")
     public String emailSendPage(Model model) {
@@ -48,9 +54,9 @@ public class EmailController {
             return "email/email-send";
         }
         log.info("email to {}", email);
-        String authString = emailService.sendSimpleMessage(email);
+        String authString =  "test";//emailService.sendSimpleMessage(email);
         emailAuthDTO.setAuthString(authString);
-        ra.addFlashAttribute("emailAuthDTO", emailAuthDTO);
+        session.setAttribute("emailAuthDTO", emailAuthDTO);
         return "redirect:/bbs/email/auth";
     }
 
@@ -68,43 +74,28 @@ public class EmailController {
         return email;
     }
 
-    /*
-
-    @ResponseBody
-    @PostMapping("/emailTest")
-    public String emailTest(@RequestParam String email) throws Exception {
-        log.info("email to {}", email);
-        String confirm = emailService.sendSimpleMessage(email);
-        return confirm;
-    }
-
     @GetMapping("/bbs/email/auth")
-    public String emailAuthPage(@ModelAttribute("emailAuthDto") EmailAuthDTO emailAuthDto, HttpSession session) {
-        session.setAttribute("emailAuthDto", emailAuthDto);
+    public String emailAuthPage() {
         return "email/email-auth";
     }
 
     @PostMapping("/bbs/email/auth")
     public String emailAuth(@RequestParam("userAuthString") String userAuthString,
-                            HttpServletResponse response,
-                            Model model, HttpSession session) throws IOException {
-        EmailAuthDto emailAuthDto = (EmailAuthDto) session.getAttribute("emailAuthDto");
-        String authString = emailAuthDto.getAuthString();
-        log.info("유저 입력 {} vs 정답 {}", userAuthString, authString);
+                            HttpServletResponse response, Model model) throws IOException {
+        EmailAuthDTO emailAuthDTO = (EmailAuthDTO) session.getAttribute("emailAuthDTO");
+        String authString = emailAuthDTO.getAuthString();
         if (!authString.equals(userAuthString)) {
-            log.info("정답 : {} 인데, 제출 {}", authString, userAuthString);
-            model.addAttribute("emailAuthDto", emailAuthDto);
-            // 이때 contentType을 먼저하지 않으면, 한글이 깨질 수 있습니다.
+            model.addAttribute("emailAuthDTO", emailAuthDTO);
             response.setContentType("text/html; charset=euc-kr");
             PrintWriter out = response.getWriter();
             out.println("<script>alert('인증번호가 틀립니다'); </script>");
             out.flush();
             return "email/email-auth";
         }
-        GgwpUser authedUser = userService.findByEmail(emailAuthDto.getEmail()).get();
+        GgwpUser authedUser = userService.findByEmail(emailAuthDTO.getEmail()).orElseThrow();
         authedUser.setEmailAuth(true);
-        userService.save(authedUser);
+        //userService.save(authedUser);
         log.info("인증 성공 !! ! !");
         return "redirect:/bbs";
-    }*/
+    }
 }
