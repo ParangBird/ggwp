@@ -1,6 +1,5 @@
 package com.backend.ggwp.domain.post;
 
-import com.backend.ggwp.domain.user.GgwpUser;
 import com.backend.ggwp.domain.user.UserService;
 import com.backend.ggwp.domain.user.dto.GgwpUserDTO;
 import org.junit.jupiter.api.Test;
@@ -60,13 +59,13 @@ class PostControllerTest {
 
     @Test
     void modifyGetTest() throws Exception {
-        GgwpUser ggwpUser = GgwpUser.builder()
+        GgwpUserDTO ggwpUser = GgwpUserDTO.builder()
                 .name("donchipong")
                 .email("donchipong@naver.com")
                 .password("12345")
                 .build();
         given(postService.findPostById(1L)).willReturn(
-                java.util.Optional.of(new Post(1L, "333", ggwpUser, "333", PostEnum.ADC))
+                new PostDTO(1L, "333", "3333", ggwpUser, PostEnum.ADC)
         );
         String url = "/bbs/modify/1";
         GgwpUserDTO userDTO = GgwpUserDTO.builder().name("donchipong").build();
@@ -77,13 +76,13 @@ class PostControllerTest {
 
     @Test
     void modifyPostTest() throws Exception {
-        GgwpUser ggwpUser = GgwpUser.builder()
+        GgwpUserDTO ggwpUser = GgwpUserDTO.builder()
                 .name("donchipong")
                 .email("donchipong@naver.com")
                 .password("12345")
                 .build();
         given(postService.findPostById(1L)).willReturn(
-                java.util.Optional.of(new Post(1L, "333", ggwpUser, "333", PostEnum.ADC))
+                new PostDTO(1L, "333", "3333", ggwpUser, PostEnum.ADC)
         );
         String url = "/bbs/modify/1";
         GgwpUserDTO userDTO = GgwpUserDTO.builder().name("donchipong").build();
@@ -100,13 +99,13 @@ class PostControllerTest {
 
     @Test
     void deleteTest() throws Exception {
-        GgwpUser ggwpUser = GgwpUser.builder()
+        GgwpUserDTO ggwpUser = GgwpUserDTO.builder()
                 .name("donchipong")
                 .email("donchipong@naver.com")
                 .password("12345")
                 .build();
         given(postService.findPostById(1L)).willReturn(
-                java.util.Optional.of(new Post(1L, "333", ggwpUser, "333", PostEnum.ADC))
+                new PostDTO(1L, "333", "3333", ggwpUser, PostEnum.ADC)
         );
         String url = "/bbs/delete/1";
         GgwpUserDTO userDTO = GgwpUserDTO.builder().name("donchipong").build();

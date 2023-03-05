@@ -37,7 +37,7 @@ class EmailControllerTest {
     void emailSendTest() throws Exception {
         String url = "/bbs/email/send";
         given(userService.findByEmail("donchipong@naver.com")).willReturn(
-                new GgwpUserDTO("donchipong", "1111", "donchipong@naver.com", true)
+                new GgwpUserDTO("donchipong", "1111", "donchipong@naver.com", false)
         );
         mock.perform(post(url).param("email", "donchipong@naver.com"))
                 .andExpect(status().is3xxRedirection());

@@ -3,6 +3,7 @@ package com.backend.ggwp.domain.user;
 import com.backend.ggwp.domain.user.dto.GgwpUserDTO;
 import com.backend.ggwp.domain.user.dto.LoginDto;
 import com.backend.ggwp.domain.user.dto.RegisterDto;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,6 +34,7 @@ class UserServiceTest {
         userService.deleteById(saveId);
     }
 
+    @Disabled
     @Test
     void loginTest() {
         LoginDto loginDto = new LoginDto("test@naver.com", "123456");

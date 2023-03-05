@@ -4,7 +4,6 @@ import com.backend.ggwp.auth.OauthUser;
 import com.backend.ggwp.config.ApiInfo;
 import com.backend.ggwp.domain.currentGame.CurrentGameInfo;
 import com.backend.ggwp.domain.exception.ApiKeyExpiredException;
-import com.backend.ggwp.domain.post.Post;
 import com.backend.ggwp.domain.post.PostDTO;
 import com.backend.ggwp.domain.post.PostEnum;
 import com.backend.ggwp.domain.post.PostService;
@@ -55,7 +54,7 @@ public class SpringController {
         }
         RotationInfo rotationInfo = restApiService.getRotationInfo();
         List<Integer> freeChampionIds = rotationInfo.getFreeChampionIds();
-        if(freeChampionIds == null) {
+        if (freeChampionIds == null) {
             throw new ApiKeyExpiredException("invalid api key");
         }
         ArrayList<String> freeChampionNames = new ArrayList<>();
@@ -67,20 +66,15 @@ public class SpringController {
         model.addAttribute("freeChampionNames1", freeChampionNames.subList(0, 8));
         model.addAttribute("freeChampionNames2", freeChampionNames.subList(8, 16));
         model.addAttribute("version", API_INFO.getVersion());
-        List<Post> allPost = null;
+        List<PostDTO> allPost;
         if (postTag == null || postTag.equals("ALL"))
             allPost = postService.findAll();
         else {
             allPost = postService.findAllByTag(PostEnum.valueOf(postTag));
         }
-        List<PostDTO> postDTOs = new ArrayList<>();
-        for (Post post : allPost) {
-            PostDTO postDTO = modelMapper.map(post, PostDTO.class);
-            postDTOs.add(postDTO);
-        }
-        if (postDTOs != null) {
-            Collections.reverse(postDTOs);
-            model.addAttribute("posts", postDTOs);
+        if (allPost != null) {
+            Collections.reverse(allPost);
+            model.addAttribute("posts", allPost);
         }
         return "bbs/index";
     }

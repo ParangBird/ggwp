@@ -1,12 +1,13 @@
 package com.backend.ggwp.domain.post;
 
+import com.backend.ggwp.domain.exception.NoSuchPostFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,21 +24,36 @@ public class PostService {
 
     @Transactional
     public void update(Long id, PostDTO updatePostDTO) {
-        Post updatePost = findPostById(id).get();
+        Post updatePost = postRepository.findById(id).orElseThrow();
         updatePost.update(updatePostDTO);
         postRepository.save(updatePost);
     }
 
-    public Optional<Post> findPostById(Long id) {
-        return postRepository.findById(id);
+    @Transactional(readOnly = true)
+    public PostDTO findPostById(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new NoSuchPostFoundException("해당 게시글 없음"));
+        PostDTO dto = modelMapper.map(post, PostDTO.class);
+        return dto;
     }
 
-    public List<Post> findAll() {
-        return postRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<PostDTO> findAll() {
+        List<Post> all = postRepository.findAll();
+        List<PostDTO> postDTOList = new ArrayList<>();
+        for (Post post : all) {
+            postDTOList.add(modelMapper.map(post, PostDTO.class));
+        }
+        return postDTOList;
     }
 
-    public List<Post> findAllByTag(PostEnum tag) {
-        return postRepository.findAllByPostTag(tag);
+    @Transactional(readOnly = true)
+    public List<PostDTO> findAllByTag(PostEnum tag) {
+        List<Post> allByPostTag = postRepository.findAllByPostTag(tag);
+        List<PostDTO> postDTOList = new ArrayList<>();
+        for (Post post : allByPostTag) {
+            postDTOList.add(modelMapper.map(post, PostDTO.class));
+        }
+        return postDTOList;
     }
 
     public void deleteById(Long id) {

@@ -1,6 +1,5 @@
 package com.backend.ggwp.domain.post;
 
-import com.backend.ggwp.domain.exception.NoSuchPostFoundException;
 import com.backend.ggwp.domain.user.UserService;
 import com.backend.ggwp.domain.user.dto.GgwpUserDTO;
 import lombok.RequiredArgsConstructor;
@@ -63,25 +62,21 @@ public class PostController {
 
     @GetMapping("/bbs/read/{postId}")
     public String readPost(@PathVariable String postId, Model model) throws Exception {
-        Post post = postService.findPostById(Long.parseLong(postId))
-                .orElseThrow(() -> new NoSuchPostFoundException("해당 게시글 없음"));
-        PostDTO postDTO = modelMapper.map(post, PostDTO.class);
-        model.addAttribute("post", postDTO);
+        PostDTO post = postService.findPostById(Long.parseLong(postId));
+        model.addAttribute("post", post);
         return "bbs/read";
     }
 
     @GetMapping("/bbs/modify/{postId}")
     public String showModifyPost(@PathVariable String postId, Model model, HttpServletResponse response) {
-        Post post = postService.findPostById(Long.parseLong(postId))
-                .orElseThrow(() -> new NoSuchPostFoundException("해당 게시글 없음"));
-        PostDTO postDTO = modelMapper.map(post, PostDTO.class);
-        validAuthorCheck(httpSession, post, response);
+        PostDTO postDTO = postService.findPostById(Long.parseLong(postId));
+        validAuthorCheck(httpSession, postDTO, response);
         model.addAttribute("post", postDTO);
         return "bbs/modify";
     }
 
     @PostMapping("/bbs/modify/{postId}")
-    public String modifyPost(@Validated @ModelAttribute("post") PostDTO postDTO,
+    public String modifyPost(@Validated @ModelAttribute("post") PostDTO updateDTO,
                              BindingResult bindingResult, @PathVariable String postId,
                              HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
@@ -92,24 +87,22 @@ public class PostController {
             log.info("retry to modify");
             return "bbs/modify";
         }
-        Post post = postService.findPostById(Long.parseLong(postId))
-                .orElseThrow(() -> new NoSuchPostFoundException("해당 게시글 없음"));
-        validAuthorCheck(httpSession, post, response);
-        log.info("Modify Post : title {} , author {}, content {} ", postDTO.getTitle(), postDTO.getUser().getName(), postDTO.getContent());
-        postService.update(Long.parseLong(postId), postDTO);
+        PostDTO postDTO = postService.findPostById(Long.parseLong(postId));
+        validAuthorCheck(httpSession, postDTO, response);
+        log.info("Modify Post : title {} , author {}, content {} ", updateDTO.getTitle(), updateDTO.getUser().getName(), updateDTO.getContent());
+        postService.update(Long.parseLong(postId), updateDTO);
         return "redirect:/bbs";
     }
 
     @PostMapping("/bbs/delete/{postId}")
     public String deletePost(@PathVariable String postId, HttpServletResponse response) {
-        Post post = postService.findPostById(Long.parseLong(postId))
-                .orElseThrow(() -> new NoSuchPostFoundException("해당 게시글 없음"));
-        validAuthorCheck(httpSession, post, response);
-        postService.deleteById(post.getId());
+        PostDTO postDTO = postService.findPostById(Long.parseLong(postId));
+        validAuthorCheck(httpSession, postDTO, response);
+        postService.deleteById(postDTO.getId());
         return "redirect:/bbs";
     }
 
-    private void validAuthorCheck(HttpSession httpSession, Post post, HttpServletResponse response) {
+    private void validAuthorCheck(HttpSession httpSession, PostDTO post, HttpServletResponse response) {
         GgwpUserDTO user = (GgwpUserDTO) httpSession.getAttribute("ggwpUser");
         if (user == null || !user.getName().equals(post.getUser().getName())) {
             try {

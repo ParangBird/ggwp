@@ -33,7 +33,7 @@ class PostServiceTest {
 
 
         Long saveId = postService.save(testDTO(title, content, tag));
-        Post post = postService.findPostById(saveId).orElseThrow();
+        PostDTO post = postService.findPostById(saveId);
 
         assertThat(post.getTitle()).isEqualTo(title);
         assertThat(post.getContent()).isEqualTo(content);
@@ -47,7 +47,6 @@ class PostServiceTest {
     void updateTest() {
         PostDTO postDTO = testDTO(title, content, tag);
         Long saveId = postService.save(postDTO);
-        Post post = postService.findPostById(saveId).orElseThrow();
 
         PostDTO updateDTO =
                 PostDTO.builder()
@@ -58,7 +57,7 @@ class PostServiceTest {
 
         postService.update(saveId, updateDTO);
 
-        Post updatedPost = postService.findPostById(saveId).orElseThrow();
+        PostDTO updatedPost = postService.findPostById(saveId);
 
         assertThat(updatedPost.getTitle()).isEqualTo(updateTitle);
         assertThat(updatedPost.getContent()).isEqualTo(updateContent);

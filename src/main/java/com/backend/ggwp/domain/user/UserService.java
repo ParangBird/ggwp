@@ -36,11 +36,13 @@ public class UserService {
         GgwpUserDTO user = null;
         try {
             user = findByEmail(email);
+            log.info("해당 이메일 없음");
         } catch (NoSuchElementException e) {
             return null;
         }
         // .matches(평문의 오리지널 패스워드, 암호화된 패스워드)
         if (!passwordEncoder.matches(password, user.getPassword())) {
+            log.info("비밀번호 다름");
             return null;
         }
         return user;

@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 @Slf4j
@@ -33,7 +31,7 @@ public class UserController {
         GgwpUserDTO loginUser = userService.login(loginDto);
         if (loginUser == null) {
             log.info("로그인 실패");
-            try {
+/*            try {
                 response.setContentType("text/html; charset=utf-8");
                 PrintWriter out = response.getWriter();
                 out.print("<script>alert('회원 정보를 확인해주세요!'); location.href='/bbs';</script>");
@@ -41,7 +39,7 @@ public class UserController {
                 out.close();
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
             return "redirect:/bbs";
         }
         session.setAttribute("ggwpUser", loginUser);
@@ -116,6 +114,7 @@ public class UserController {
             bindingResult.rejectValue("email", "", "회원정보에 해당 이메일이 존재하지 않습니다.");
             return "bbs/reset-password";
         }
+
         log.info("이메일 보냄");
         return "redirect:/bbs";
     }
