@@ -1,4 +1,4 @@
-package com.backend.ggwp.domain.game;
+package com.backend.ggwp.domain.game.rotationinfo;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

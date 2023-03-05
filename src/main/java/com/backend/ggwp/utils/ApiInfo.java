@@ -1,4 +1,4 @@
-package com.backend.ggwp.config;
+package com.backend.ggwp.utils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;

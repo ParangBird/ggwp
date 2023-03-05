@@ -1,20 +1,20 @@
-package com.backend.ggwp.controller;
+package com.backend.ggwp.domain.bbs;
 
 import com.backend.ggwp.auth.OauthUser;
-import com.backend.ggwp.config.ApiInfo;
-import com.backend.ggwp.domain.game.currentGame.model.CurrentGameInfo;
-import com.backend.ggwp.exception.ApiKeyExpiredException;
+import com.backend.ggwp.domain.game.rotationinfo.RotationInfoService;
+import com.backend.ggwp.utils.ApiInfo;
 import com.backend.ggwp.domain.bbs.post.PostDTO;
 import com.backend.ggwp.domain.bbs.post.PostEnum;
 import com.backend.ggwp.domain.bbs.post.PostService;
-import com.backend.ggwp.domain.game.summoner.model.AccountInfo;
-import com.backend.ggwp.domain.game.summoner.model.SummonerLeagueInfo;
 import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
 import com.backend.ggwp.domain.game.RestApiService;
-import com.backend.ggwp.domain.game.RotationInfo;
+import com.backend.ggwp.domain.game.rotationinfo.RotationInfo;
+import com.backend.ggwp.domain.game.currentGame.model.CurrentGameInfo;
+import com.backend.ggwp.domain.game.summoner.model.AccountInfo;
+import com.backend.ggwp.domain.game.summoner.model.SummonerLeagueInfo;
+import com.backend.ggwp.exception.ApiKeyExpiredException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,16 +29,15 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-public class SpringController {
+public class BbsController {
     private final ApiInfo API_INFO;
     private final RestApiService restApiService;
+    private final RotationInfoService rotationInfoService;
     private final HttpSession httpSession;
     private final PostService postService;
-    private final ModelMapper modelMapper;
 
     @GetMapping("/")
-    public String index(Model model) {
-
+    public String index() {
         return "redirect:http://localhost:8080/bbs";
     }
 
@@ -52,7 +51,7 @@ public class SpringController {
             System.out.println("set ggwpUser");
             model.addAttribute("user", ggwpUser);
         }
-        RotationInfo rotationInfo = restApiService.getRotationInfo();
+        RotationInfo rotationInfo = rotationInfoService.getRotationInfo();
         List<Integer> freeChampionIds = rotationInfo.getFreeChampionIds();
         if (freeChampionIds == null) {
             throw new ApiKeyExpiredException("invalid api key");

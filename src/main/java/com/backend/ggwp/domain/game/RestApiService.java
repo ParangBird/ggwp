@@ -1,12 +1,12 @@
 package com.backend.ggwp.domain.game;
 
-import com.backend.ggwp.config.ApiInfo;
-import com.backend.ggwp.domain.game.summoner.model.AccountInfo;
-import com.backend.ggwp.domain.game.summoner.model.SummonerLeagueInfo;
 import com.backend.ggwp.domain.game.currentGame.model.CurrentGameInfo;
 import com.backend.ggwp.domain.game.leagueitem.model.LeagueItem;
 import com.backend.ggwp.domain.game.leagueitem.model.LeagueList;
 import com.backend.ggwp.domain.game.match.model.Match;
+import com.backend.ggwp.domain.game.summoner.model.AccountInfo;
+import com.backend.ggwp.domain.game.summoner.model.SummonerLeagueInfo;
+import com.backend.ggwp.utils.ApiInfo;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
@@ -26,12 +26,6 @@ public class RestApiService {
 
     public RestApiService(ApiInfo api_info) {
         API_INFO = api_info;
-    }
-
-    public RotationInfo getRotationInfo() {
-        String apiURL = "https://kr.api.riotgames.com/lol/platform/v3/champion-rotations?api_key=" + API_INFO.getApiKey();
-        StringBuffer result = restApi(apiURL);
-        return new Gson().fromJson(result.toString(), RotationInfo.class);
     }
 
     public AccountInfo getAccountInfo(String summonerName) {

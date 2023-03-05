@@ -1,17 +1,38 @@
 package com.backend.ggwp.domain.game.summoner;
 
-import com.backend.ggwp.config.ApiInfo;
+import com.backend.ggwp.domain.game.rotationinfo.RotationInfo;
+import com.backend.ggwp.utils.ApiInfo;
 import com.backend.ggwp.domain.game.summoner.model.AccountInfo;
 import com.backend.ggwp.domain.game.summoner.model.SummonerDto;
 import com.backend.ggwp.domain.game.summoner.model.SummonerLeagueInfo;
+import com.google.gson.Gson;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
+import static com.backend.ggwp.utils.RestAPI.restApi;
+
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class SummonerService {
+
+    private final ApiInfo API_INFO;
+
+    public RotationInfo getRotationInfo() {
+        String apiURL = "https://kr.api.riotgames.com/lol/platform/v3/champion-rotations?api_key=" + API_INFO.getApiKey();
+        StringBuffer result = restApi(apiURL);
+        return new Gson().fromJson(result.toString(), RotationInfo.class);
+    }
+
+    public AccountInfo getAccountInfo(String summonerName) {
+        String apiURL = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + summonerName + "?api_key=" + API_INFO.getApiKey();
+        StringBuffer result = restApi(apiURL);
+        return new Gson().fromJson(result.toString(), AccountInfo.class);
+    }
+
     public SummonerDto getSummonerDto(AccountInfo accountInfo, ArrayList<SummonerLeagueInfo> leagueInfos, ApiInfo apiInfo) {
 
         SummonerLeagueInfo soloRank = new SummonerLeagueInfo();

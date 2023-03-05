@@ -1,16 +1,15 @@
-package com.backend.ggwp.controller;
+package com.backend.ggwp.domain.game;
 
-import com.backend.ggwp.config.ApiInfo;
-import com.backend.ggwp.domain.game.leagueitem.model.LeagueItem;
+import com.backend.ggwp.utils.ApiInfo;
+import com.backend.ggwp.domain.bbs.user.UserService;
 import com.backend.ggwp.domain.game.leagueitem.LeagueItemService;
+import com.backend.ggwp.domain.game.leagueitem.model.LeagueItem;
 import com.backend.ggwp.domain.game.match.MatchService;
 import com.backend.ggwp.domain.game.match.MatchSummary;
+import com.backend.ggwp.domain.game.summoner.SummonerService;
 import com.backend.ggwp.domain.game.summoner.model.AccountInfo;
 import com.backend.ggwp.domain.game.summoner.model.SummonerDto;
 import com.backend.ggwp.domain.game.summoner.model.SummonerLeagueInfo;
-import com.backend.ggwp.domain.game.summoner.SummonerService;
-import com.backend.ggwp.domain.bbs.user.UserService;
-import com.backend.ggwp.domain.game.RestApiService;
 import com.backend.ggwp.utils.StringFormat;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
