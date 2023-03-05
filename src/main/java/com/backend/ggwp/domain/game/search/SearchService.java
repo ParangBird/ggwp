@@ -1,10 +1,11 @@
-package com.backend.ggwp.domain.game;
+package com.backend.ggwp.domain.game.search;
 
-import com.backend.ggwp.domain.game.currentGame.model.CurrentGameInfo;
+import com.backend.ggwp.domain.game.currentgame.model.CurrentGameInfo;
 import com.backend.ggwp.domain.game.leagueitem.model.LeagueItem;
 import com.backend.ggwp.domain.game.leagueitem.model.LeagueList;
 import com.backend.ggwp.domain.game.match.model.Match;
 import com.backend.ggwp.domain.game.summoner.model.AccountInfo;
+import com.backend.ggwp.domain.game.summoner.model.LeagueEntrySummonerList;
 import com.backend.ggwp.domain.game.summoner.model.SummonerLeagueInfo;
 import com.backend.ggwp.utils.ApiInfo;
 import com.google.gson.Gson;
@@ -12,19 +13,17 @@ import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
+
+import static com.backend.ggwp.utils.RestAPI.restApi;
 
 @Slf4j
 @Service
-public class RestApiService {
+public class SearchService {
 
     private final ApiInfo API_INFO;
 
-    public RestApiService(ApiInfo api_info) {
+    public SearchService(ApiInfo api_info) {
         API_INFO = api_info;
     }
 
@@ -129,30 +128,4 @@ public class RestApiService {
         }
         return challengerList;
     }
-
-    public StringBuffer restApi(String apiURL) {
-        StringBuffer result = new StringBuffer();
-        try {
-            StringBuilder urlBuilder = new StringBuilder(apiURL);
-            URL url = new URL(urlBuilder.toString());
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            BufferedReader rd;
-            if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-                rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            } else {
-                rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-            }
-            String line;
-            while ((line = rd.readLine()) != null) {
-                result.append(line + "\n");
-            }
-            rd.close();
-            conn.disconnect();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
 }

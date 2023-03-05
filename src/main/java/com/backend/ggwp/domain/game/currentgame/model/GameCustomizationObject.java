@@ -1,4 +1,4 @@
-package com.backend.ggwp.domain.game.currentGame.model;
+package com.backend.ggwp.domain.game.currentgame.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BannedChampion {
-    private Integer pickTurn;
-    private Long championId;
-    private Long teamId;
+public class GameCustomizationObject {
+    private String category;
+    private String content;
 }

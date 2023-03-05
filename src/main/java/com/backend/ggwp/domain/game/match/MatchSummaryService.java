@@ -3,7 +3,7 @@ package com.backend.ggwp.domain.game.match;
 import com.backend.ggwp.domain.game.match.model.Match;
 import com.backend.ggwp.domain.game.match.model.Participant;
 import com.backend.ggwp.domain.game.summoner.model.AccountInfo;
-import com.backend.ggwp.domain.game.RestApiService;
+import com.backend.ggwp.domain.game.search.SearchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +15,11 @@ import java.util.List;
 @Slf4j
 public class MatchSummaryService {
     private final MatchSummaryRepository matchSummaryRepository;
-    private final RestApiService restApiService;
+    private final SearchService searchService;
 
-    public MatchSummaryService(MatchSummaryRepository matchSummaryRepository, RestApiService restApiService) {
+    public MatchSummaryService(MatchSummaryRepository matchSummaryRepository, SearchService searchService) {
         this.matchSummaryRepository = matchSummaryRepository;
-        this.restApiService = restApiService;
+        this.searchService = searchService;
     }
 
     public Boolean matchExist(String name, String matchId) {
@@ -44,13 +44,13 @@ public class MatchSummaryService {
     }
 
     public void updateMatchSummary(AccountInfo accountInfo) {
-        ArrayList<String> matches = restApiService.getMatchIds(accountInfo.getPuuid());
-        matches.addAll(restApiService.getSoloMatchIds(accountInfo.getPuuid()));
+        ArrayList<String> matches = searchService.getMatchIds(accountInfo.getPuuid());
+        matches.addAll(searchService.getSoloMatchIds(accountInfo.getPuuid()));
         String summonerName = accountInfo.getName();
         //log.info(" UPDATE MATCH SUMMARY ---");
         for (String s : matches) {
             if (matchExist(summonerName, s)) continue;
-            Match match = restApiService.getMatchInfo(s);
+            Match match = searchService.getMatchInfo(s);
 
             Participant my = new Participant();
             int myNumber = 0;

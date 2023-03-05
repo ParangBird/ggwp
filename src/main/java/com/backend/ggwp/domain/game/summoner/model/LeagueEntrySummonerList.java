@@ -1,4 +1,4 @@
-package com.backend.ggwp.domain.game;
+package com.backend.ggwp.domain.game.summoner.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -1,4 +1,4 @@
-package com.backend.ggwp.domain.game.currentGame.model;
+package com.backend.ggwp.domain.game.currentgame.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

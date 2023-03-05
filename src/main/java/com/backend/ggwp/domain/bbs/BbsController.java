@@ -7,9 +7,9 @@ import com.backend.ggwp.domain.bbs.post.PostDTO;
 import com.backend.ggwp.domain.bbs.post.PostEnum;
 import com.backend.ggwp.domain.bbs.post.PostService;
 import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
-import com.backend.ggwp.domain.game.RestApiService;
+import com.backend.ggwp.domain.game.search.SearchService;
 import com.backend.ggwp.domain.game.rotationinfo.RotationInfo;
-import com.backend.ggwp.domain.game.currentGame.model.CurrentGameInfo;
+import com.backend.ggwp.domain.game.currentgame.model.CurrentGameInfo;
 import com.backend.ggwp.domain.game.summoner.model.AccountInfo;
 import com.backend.ggwp.domain.game.summoner.model.SummonerLeagueInfo;
 import com.backend.ggwp.exception.ApiKeyExpiredException;
@@ -31,7 +31,7 @@ import java.util.List;
 @Controller
 public class BbsController {
     private final ApiInfo API_INFO;
-    private final RestApiService restApiService;
+    private final SearchService searchService;
     private final RotationInfoService rotationInfoService;
     private final HttpSession httpSession;
     private final PostService postService;
@@ -584,13 +584,13 @@ public class BbsController {
     public String search(Model model, @PathVariable("summonerName") String summonerName) throws UnsupportedEncodingException {
         summonerName = summonerName.replace(" ", "");
         String encodedName = URLEncoder.encode(summonerName, "UTF-8");
-        AccountInfo accountInfo = restApiService.getAccountInfo(encodedName);
+        AccountInfo accountInfo = searchService.getAccountInfo(encodedName);
 
         if (accountInfo.getId() == null)
             return "none";
 
         String encryptedId = accountInfo.getId();
-        ArrayList<SummonerLeagueInfo> summoner = restApiService.getAllSummonerLeagueInfo(encryptedId);
+        ArrayList<SummonerLeagueInfo> summoner = searchService.getAllSummonerLeagueInfo(encryptedId);
 
         SummonerLeagueInfo soloQueue = null;
         for (int i = 0; i < summoner.size(); i++) {
@@ -602,7 +602,7 @@ public class BbsController {
         if (soloQueue == null)
             return "none";
 
-        CurrentGameInfo currentGameInfo = restApiService.getCurrentGame(encryptedId);
+        CurrentGameInfo currentGameInfo = searchService.getCurrentGame(encryptedId);
         if (currentGameInfo.getGameId() == null)
             model.addAttribute("gaming", 0);
         else
