@@ -13,11 +13,11 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class MatchService {
+public class MatchSummaryService {
     private final MatchSummaryRepository matchSummaryRepository;
     private final RestApiService restApiService;
 
-    public MatchService(MatchSummaryRepository matchSummaryRepository, RestApiService restApiService) {
+    public MatchSummaryService(MatchSummaryRepository matchSummaryRepository, RestApiService restApiService) {
         this.matchSummaryRepository = matchSummaryRepository;
         this.restApiService = restApiService;
     }
