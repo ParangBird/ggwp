@@ -1,7 +1,7 @@
 package com.backend.ggwp.email;
 
-import com.backend.ggwp.domain.user.UserService;
-import com.backend.ggwp.domain.user.dto.GgwpUserDTO;
+import com.backend.ggwp.domain.bbs.user.UserService;
+import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

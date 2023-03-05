@@ -1,7 +1,7 @@
 package com.backend.ggwp.auth;
 
-import com.backend.ggwp.domain.user.PageUserRepository;
-import com.backend.ggwp.domain.user.PageUser;
+import com.backend.ggwp.domain.bbs.user.PageUserRepository;
+import com.backend.ggwp.domain.bbs.user.PageUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

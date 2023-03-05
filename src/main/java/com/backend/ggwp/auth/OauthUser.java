@@ -1,7 +1,7 @@
 package com.backend.ggwp.auth;
 
-import com.backend.ggwp.domain.user.PageUser;
-import com.backend.ggwp.domain.user.User;
+import com.backend.ggwp.domain.bbs.user.PageUser;
+import com.backend.ggwp.domain.bbs.user.User;
 import lombok.Getter;
 
 import java.io.Serializable;

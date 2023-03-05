@@ -1,9 +1,9 @@
 package com.backend.ggwp;
 
-import com.backend.ggwp.domain.post.Post;
-import com.backend.ggwp.domain.post.PostDTO;
-import com.backend.ggwp.domain.post.PostEnum;
-import com.backend.ggwp.domain.user.dto.GgwpUserDTO;
+import com.backend.ggwp.domain.bbs.post.Post;
+import com.backend.ggwp.domain.bbs.post.PostDTO;
+import com.backend.ggwp.domain.bbs.post.PostEnum;
+import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

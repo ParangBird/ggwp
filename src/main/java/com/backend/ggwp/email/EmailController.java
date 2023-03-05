@@ -1,7 +1,7 @@
 package com.backend.ggwp.email;
 
-import com.backend.ggwp.domain.user.UserService;
-import com.backend.ggwp.domain.user.dto.GgwpUserDTO;
+import com.backend.ggwp.domain.bbs.user.UserService;
+import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
