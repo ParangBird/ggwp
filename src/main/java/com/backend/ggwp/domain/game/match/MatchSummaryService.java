@@ -4,6 +4,10 @@ import com.backend.ggwp.domain.game.match.model.Match;
 import com.backend.ggwp.domain.game.match.model.Participant;
 import com.backend.ggwp.domain.game.summoner.model.AccountInfo;
 import com.backend.ggwp.domain.game.search.SearchService;
+import com.backend.ggwp.utils.ApiInfo;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -11,16 +15,14 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.backend.ggwp.utils.RestAPI.restApi;
+
+@AllArgsConstructor
 @Service
 @Slf4j
 public class MatchSummaryService {
     private final MatchSummaryRepository matchSummaryRepository;
-    private final SearchService searchService;
-
-    public MatchSummaryService(MatchSummaryRepository matchSummaryRepository, SearchService searchService) {
-        this.matchSummaryRepository = matchSummaryRepository;
-        this.searchService = searchService;
-    }
+    private final ApiInfo API_INFO;
 
     public Boolean matchExist(String name, String matchId) {
         ArrayList<MatchSummary> matchSummary = matchSummaryRepository.findByMatchId(matchId);
@@ -43,14 +45,37 @@ public class MatchSummaryService {
         return matchSummaries;
     }
 
+    public ArrayList<String> getMatchIds(String puuid) {
+        String apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids?start=0&count=30&api_key=" + API_INFO.getApiKey();
+        //log.info("GET RECENT MATCH API : {}", apiURL);
+        StringBuffer result = restApi(apiURL);
+        return new Gson().fromJson(result.toString(), new TypeToken<ArrayList<String>>() {
+        }.getType());
+    }
+
+    public ArrayList<String> getSoloMatchIds(String puuid) {
+        String apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids?queue=420&start=0&count=30&api_key=" + API_INFO.getApiKey();
+        StringBuffer result = restApi(apiURL);
+        return new Gson().fromJson(result.toString(), new TypeToken<ArrayList<String>>() {
+        }.getType());
+    }
+
+    public Match getMatchInfo(String matchId) {
+        String apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/" + matchId + "?api_key=" + API_INFO.getApiKey();
+        StringBuffer result = restApi(apiURL);
+        //log.info("MATCH INFO : {}", result.toString());
+        Match match = new Gson().fromJson(result.toString(), Match.class);
+        return match;
+    }
+
     public void updateMatchSummary(AccountInfo accountInfo) {
-        ArrayList<String> matches = searchService.getMatchIds(accountInfo.getPuuid());
-        matches.addAll(searchService.getSoloMatchIds(accountInfo.getPuuid()));
+        ArrayList<String> matches = getMatchIds(accountInfo.getPuuid());
+        matches.addAll(getSoloMatchIds(accountInfo.getPuuid()));
         String summonerName = accountInfo.getName();
         //log.info(" UPDATE MATCH SUMMARY ---");
         for (String s : matches) {
             if (matchExist(summonerName, s)) continue;
-            Match match = searchService.getMatchInfo(s);
+            Match match = getMatchInfo(s);
 
             Participant my = new Participant();
             int myNumber = 0;

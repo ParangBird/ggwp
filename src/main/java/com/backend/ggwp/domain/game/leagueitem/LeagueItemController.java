@@ -23,9 +23,9 @@ public class LeagueItemController {
     @GetMapping("/api/rankinfo")
     public ArrayList<LeagueItem> getC2MInfo() {
         // 챌린저 ~ 마스터 정보 받아옴
-        LeagueList challengerLeagueList = searchService.getChallengerList();
-        LeagueList gmLeagueList = searchService.getGrandMasterList();
-        LeagueList masterLeagueList = searchService.getMasterList();
+        LeagueList challengerLeagueList = leagueItemService.getChallengerList();
+        LeagueList gmLeagueList = leagueItemService.getGrandMasterList();
+        LeagueList masterLeagueList = leagueItemService.getMasterList();
 
         // 챌린저 ~ 마스터 각각 점수순 정렬
         ArrayList<LeagueItem> challengerList = challengerLeagueList.getEntries();

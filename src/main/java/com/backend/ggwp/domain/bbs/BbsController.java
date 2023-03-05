@@ -1,7 +1,9 @@
 package com.backend.ggwp.domain.bbs;
 
 import com.backend.ggwp.auth.OauthUser;
+import com.backend.ggwp.domain.game.currentgame.CurrentGameService;
 import com.backend.ggwp.domain.game.rotationinfo.RotationInfoService;
+import com.backend.ggwp.domain.game.summoner.SummonerService;
 import com.backend.ggwp.utils.ApiInfo;
 import com.backend.ggwp.domain.bbs.post.PostDTO;
 import com.backend.ggwp.domain.bbs.post.PostEnum;
@@ -32,7 +34,9 @@ import java.util.List;
 public class BbsController {
     private final ApiInfo API_INFO;
     private final SearchService searchService;
+    private final SummonerService summonerService;
     private final RotationInfoService rotationInfoService;
+    private final CurrentGameService currentGameService;
     private final HttpSession httpSession;
     private final PostService postService;
 
@@ -584,13 +588,13 @@ public class BbsController {
     public String search(Model model, @PathVariable("summonerName") String summonerName) throws UnsupportedEncodingException {
         summonerName = summonerName.replace(" ", "");
         String encodedName = URLEncoder.encode(summonerName, "UTF-8");
-        AccountInfo accountInfo = searchService.getAccountInfo(encodedName);
+        AccountInfo accountInfo = summonerService.getAccountInfo(encodedName);
 
         if (accountInfo.getId() == null)
             return "none";
 
         String encryptedId = accountInfo.getId();
-        ArrayList<SummonerLeagueInfo> summoner = searchService.getAllSummonerLeagueInfo(encryptedId);
+        ArrayList<SummonerLeagueInfo> summoner = summonerService.getAllSummonerLeagueInfo(encryptedId);
 
         SummonerLeagueInfo soloQueue = null;
         for (int i = 0; i < summoner.size(); i++) {
@@ -602,7 +606,7 @@ public class BbsController {
         if (soloQueue == null)
             return "none";
 
-        CurrentGameInfo currentGameInfo = searchService.getCurrentGame(encryptedId);
+        CurrentGameInfo currentGameInfo = currentGameService.getCurrentGame(encryptedId);
         if (currentGameInfo.getGameId() == null)
             model.addAttribute("gaming", 0);
         else
