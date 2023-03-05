@@ -53,7 +53,7 @@ public class EmailController {
             return "email/email-send";
         }
         log.info("email to {}", email);
-        String authString = "test";//emailService.sendSimpleMessage(email);
+        String authString = emailService.sendSimpleMessage(email);
         emailAuthDTO.setAuthString(authString);
         session.setAttribute("emailAuthDTO", emailAuthDTO);
         return "redirect:/bbs/email/auth";
@@ -95,7 +95,7 @@ public class EmailController {
         }
         GgwpUserDTO authedUser = userService.findByEmail(emailAuthDTO.getEmail());
         authedUser.setEmailAuth(true);
-        //userService.save(authedUser);
+        userService.save(authedUser);
         log.info("인증 성공 !! ! !");
         return "redirect:/bbs";
     }
