@@ -33,7 +33,6 @@ public class RestAPI {
         } catch (Exception e) {
             throw new InvalidApiKeyException("invalid api key2");
         }
-        log.info("rest api result : {} ", result.toString());
         return result;
     }
 }
