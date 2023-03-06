@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 
 import static com.backend.ggwp.utils.RestAPI.restApi;
@@ -46,6 +47,34 @@ public class LeagueItemService {
         return leagueItems;
     }
 
+    public ArrayList<LeagueItem> getC2MList() {
+        // 챌린저 ~ 마스터 정보 받아옴
+        LeagueList challengerLeagueList = getChallengerList();
+        LeagueList gmLeagueList = getGrandMasterList();
+        LeagueList masterLeagueList = getMasterList();
+        // 챌린저 ~ 마스터 각각 점수순 정렬
+        ArrayList<LeagueItem> challengerList = challengerLeagueList.getEntries();
+        ArrayList<LeagueItem> gmList = gmLeagueList.getEntries();
+        ArrayList<LeagueItem> masterList = masterLeagueList.getEntries();
+
+        ArrayList<LeagueItem> challenger2MasterList = new ArrayList<>();
+        for (LeagueItem c : challengerList)
+            challenger2MasterList.add(c);
+        for (LeagueItem gm : gmList)
+            challenger2MasterList.add(gm);
+        for (LeagueItem m : masterList)
+            challenger2MasterList.add(m);
+
+        Collections.sort(challenger2MasterList, new LeagueItemComparator());
+
+        for (long i = 0; i < challenger2MasterList.size(); i++) {
+            challenger2MasterList.get((int) i).setRanking(i + 1);
+        }
+
+        return challenger2MasterList;
+
+    }
+
     public LeagueList getChallengerList() {
         String apiURL = "https://kr.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/RANKED_SOLO_5x5?api_key=" + API_INFO.getApiKey();
         StringBuffer result = restApi(apiURL);
@@ -75,6 +104,25 @@ public class LeagueItemService {
 
     }
 
+
+    @Transactional
+    public void updateAllV1(ArrayList<LeagueItem> challenger2MasterList) {
+        clearAll();
+        saveAll(challenger2MasterList);
+    }
+
+    @Transactional
+    public void updateAllV2(ArrayList<LeagueItem> challenger2MasterList) {
+        for (LeagueItem newItem : challenger2MasterList) {
+            Optional<LeagueItem> byRanking = leagueItemRepository.findByRanking(newItem.getRanking());
+            if (byRanking.isPresent()) {
+                LeagueItem oldItem = byRanking.get();
+                oldItem = newItem;
+            } else {
+                leagueItemRepository.save(newItem);
+            }
+        }
+    }
 
     @Transactional
     public void saveAll(ArrayList<LeagueItem> leagueItems) {
