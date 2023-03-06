@@ -10,6 +10,7 @@ import javax.annotation.processing.Generated;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "league_item", indexes = @Index(name = "idx_ranking", columnList = "ranking", unique = true))
 @Getter
 @Setter
 @NoArgsConstructor

@@ -15,6 +15,7 @@ public class LogAspect {
     @Around("@annotation(LogExecutionTime)")
     public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
         StopWatch stopWatch = new StopWatch();
+        log.info("stopwatch start");
         stopWatch.start();
         Object proceed = joinPoint.proceed();
         stopWatch.stop();

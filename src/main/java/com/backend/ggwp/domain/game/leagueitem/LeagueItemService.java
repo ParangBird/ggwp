@@ -1,10 +1,12 @@
 package com.backend.ggwp.domain.game.leagueitem;
 
+import com.backend.ggwp.aop.LogExecutionTime;
 import com.backend.ggwp.domain.game.leagueitem.model.LeagueItem;
 import com.backend.ggwp.domain.game.leagueitem.model.LeagueList;
 import com.backend.ggwp.utils.ApiInfo;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -14,6 +16,7 @@ import java.util.Optional;
 
 import static com.backend.ggwp.utils.RestAPI.restApi;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class LeagueItemService {
@@ -47,15 +50,11 @@ public class LeagueItemService {
         return leagueItems;
     }
 
+    @LogExecutionTime
     public ArrayList<LeagueItem> getC2MList() {
-        // 챌린저 ~ 마스터 정보 받아옴
-        LeagueList challengerLeagueList = getChallengerList();
-        LeagueList gmLeagueList = getGrandMasterList();
-        LeagueList masterLeagueList = getMasterList();
-        // 챌린저 ~ 마스터 각각 점수순 정렬
-        ArrayList<LeagueItem> challengerList = challengerLeagueList.getEntries();
-        ArrayList<LeagueItem> gmList = gmLeagueList.getEntries();
-        ArrayList<LeagueItem> masterList = masterLeagueList.getEntries();
+        ArrayList<LeagueItem> challengerList = getChallengerList();
+        ArrayList<LeagueItem> gmList = getGrandMasterList();
+        ArrayList<LeagueItem> masterList = getMasterList();
 
         ArrayList<LeagueItem> challenger2MasterList = new ArrayList<>();
         for (LeagueItem c : challengerList)
@@ -70,12 +69,26 @@ public class LeagueItemService {
         for (long i = 0; i < challenger2MasterList.size(); i++) {
             challenger2MasterList.get((int) i).setRanking(i + 1);
         }
-
         return challenger2MasterList;
 
     }
 
-    public LeagueList getChallengerList() {
+    public ArrayList<LeagueItem> getChallengerList() {
+        LeagueList challengerList = getChallengerLeague();
+        return challengerList.getEntries();
+    }
+
+    public ArrayList<LeagueItem> getGrandMasterList() {
+        LeagueList grandMasterList = getGrandMasterLeague();
+        return grandMasterList.getEntries();
+    }
+
+    public ArrayList<LeagueItem> getMasterList() {
+        LeagueList masterList = getMasterLeague();
+        return masterList.getEntries();
+    }
+
+    public LeagueList getChallengerLeague() {
         String apiURL = "https://kr.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/RANKED_SOLO_5x5?api_key=" + API_INFO.getApiKey();
         StringBuffer result = restApi(apiURL);
         LeagueList challengerList = new Gson().fromJson(result.toString(), LeagueList.class);
@@ -84,7 +97,7 @@ public class LeagueItemService {
         return challengerList;
     }
 
-    public LeagueList getGrandMasterList() {
+    public LeagueList getGrandMasterLeague() {
         String apiURL = "https://kr.api.riotgames.com/lol/league/v4/grandmasterleagues/by-queue/RANKED_SOLO_5x5?api_key=" + API_INFO.getApiKey();
         StringBuffer result = restApi(apiURL);
         LeagueList grandMasterList = new Gson().fromJson(result.toString(), LeagueList.class);
@@ -94,7 +107,7 @@ public class LeagueItemService {
     }
 
 
-    public LeagueList getMasterList() {
+    public LeagueList getMasterLeague() {
         String apiURL = "https://kr.api.riotgames.com/lol/league/v4/masterleagues/by-queue/RANKED_SOLO_5x5?api_key=" + API_INFO.getApiKey();
         StringBuffer result = restApi(apiURL);
         LeagueList masterList = new Gson().fromJson(result.toString(), LeagueList.class);
@@ -104,33 +117,18 @@ public class LeagueItemService {
 
     }
 
-
     @Transactional
-    public void updateAllV1(ArrayList<LeagueItem> challenger2MasterList) {
+    public void updateAll(ArrayList<LeagueItem> challenger2MasterList) {
         clearAll();
         saveAll(challenger2MasterList);
     }
 
     @Transactional
-    public void updateAllV2(ArrayList<LeagueItem> challenger2MasterList) {
-        for (LeagueItem newItem : challenger2MasterList) {
-            Optional<LeagueItem> byRanking = leagueItemRepository.findByRanking(newItem.getRanking());
-            if (byRanking.isPresent()) {
-                LeagueItem oldItem = byRanking.get();
-                oldItem = newItem;
-            } else {
-                leagueItemRepository.save(newItem);
-            }
-        }
-    }
-
-    @Transactional
     public void saveAll(ArrayList<LeagueItem> leagueItems) {
-        for (LeagueItem leagueItem : leagueItems) {
-            leagueItemRepository.save(leagueItem);
-        }
+        leagueItemRepository.saveAll(leagueItems);
     }
 
+    @LogExecutionTime
     @Transactional
     public void clearAll() {
         leagueItemRepository.deleteAllInBatch();

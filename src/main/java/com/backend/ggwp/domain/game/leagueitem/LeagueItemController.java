@@ -20,7 +20,7 @@ public class LeagueItemController {
     public ArrayList<LeagueItem> getC2MInfo() {
         // 각각 정렬한 친구들을 챌-그마-마 순서로 합침
         ArrayList<LeagueItem> challenger2MasterList = leagueItemService.getC2MList();
-        leagueItemService.updateAllV1(challenger2MasterList);
+        leagueItemService.updateAll(challenger2MasterList);
         return challenger2MasterList;
     }
 
@@ -34,7 +34,6 @@ public class LeagueItemController {
         ArrayList<LeagueItem> returnRank50 = new ArrayList<>();
         for (int i = 0; i < rank50.size(); i++) {
             if (rank50.get(i).isPresent()) {
-                //System.out.println("rank50.get(i) = " + rank50.get(i).get().getSummonerName());
                 returnRank50.add(rank50.get(i).get());
             }
         }
