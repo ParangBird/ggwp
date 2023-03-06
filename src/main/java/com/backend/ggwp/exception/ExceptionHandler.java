@@ -12,7 +12,7 @@ public class ExceptionHandler {
         return "error/404";
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(ApiKeyExpiredException.class)
+    @org.springframework.web.bind.annotation.ExceptionHandler(InvalidApiKeyException.class)
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
     public String invalidApiKey() {
         return "error/503";

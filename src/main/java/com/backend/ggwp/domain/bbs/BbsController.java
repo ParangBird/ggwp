@@ -14,7 +14,7 @@ import com.backend.ggwp.domain.game.rotationinfo.RotationInfo;
 import com.backend.ggwp.domain.game.currentgame.model.CurrentGameInfo;
 import com.backend.ggwp.domain.game.summoner.model.AccountInfo;
 import com.backend.ggwp.domain.game.summoner.model.SummonerLeagueInfo;
-import com.backend.ggwp.exception.ApiKeyExpiredException;
+import com.backend.ggwp.exception.InvalidApiKeyException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -58,7 +58,7 @@ public class BbsController {
         RotationInfo rotationInfo = rotationInfoService.getRotationInfo();
         List<Integer> freeChampionIds = rotationInfo.getFreeChampionIds();
         if (freeChampionIds == null) {
-            throw new ApiKeyExpiredException("invalid api key");
+            throw new InvalidApiKeyException("invalid api key");
         }
         ArrayList<String> freeChampionNames = new ArrayList<>();
 
