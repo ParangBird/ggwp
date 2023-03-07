@@ -1,6 +1,6 @@
 package com.backend.ggwp.domain.game.search;
 
-import com.backend.ggwp.domain.game.summoner.model.SummonerDTO;
+import com.backend.ggwp.domain.game.summoner.model.SummonerInfoDTO;
 import com.backend.ggwp.utils.StringFormat;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ public class SearchController {
     private final SearchService searchService;
 
     @GetMapping("/reactSearch/{name}")
-    public SummonerDTO summonerDTO(@PathVariable(value = "name") String name) {
+    public SummonerInfoDTO summonerDTO(@PathVariable(value = "name") String name) {
         String summonerName = StringFormat.setApiString(name);
         return searchService.search(summonerName);
     }

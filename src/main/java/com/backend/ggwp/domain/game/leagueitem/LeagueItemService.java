@@ -128,7 +128,6 @@ public class LeagueItemService {
         leagueItemRepository.saveAll(leagueItems);
     }
 
-    @LogExecutionTime
     @Transactional
     public void clearAll() {
         leagueItemRepository.deleteAllInBatch();

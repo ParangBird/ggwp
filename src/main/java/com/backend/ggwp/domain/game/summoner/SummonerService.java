@@ -1,8 +1,8 @@
 package com.backend.ggwp.domain.game.summoner;
 
-import com.backend.ggwp.domain.game.summoner.model.AccountInfo;
+import com.backend.ggwp.domain.game.summoner.model.SummonerInfo;
 import com.backend.ggwp.domain.game.summoner.model.LeagueEntrySummonerList;
-import com.backend.ggwp.domain.game.summoner.model.SummonerDTO;
+import com.backend.ggwp.domain.game.summoner.model.SummonerInfoDTO;
 import com.backend.ggwp.domain.game.summoner.model.SummonerLeagueInfo;
 import com.backend.ggwp.utils.ApiInfo;
 import com.google.gson.Gson;
@@ -22,10 +22,10 @@ public class SummonerService {
 
     private final ApiInfo API_INFO;
 
-    public AccountInfo getAccountInfo(String summonerName) {
+    public SummonerInfo getSummonerInfo(String summonerName) {
         String apiURL = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + summonerName + "?api_key=" + API_INFO.getApiKey();
         StringBuffer result = restApi(apiURL);
-        return new Gson().fromJson(result.toString(), AccountInfo.class);
+        return new Gson().fromJson(result.toString(), SummonerInfo.class);
     }
 
     public ArrayList<SummonerLeagueInfo> getAllSummonerLeagueInfo(String encryptedId) {
@@ -35,7 +35,7 @@ public class SummonerService {
         }.getType());
     }
 
-    public SummonerDTO getSummonerDto(AccountInfo accountInfo, ArrayList<SummonerLeagueInfo> leagueInfos, ApiInfo apiInfo) {
+    public SummonerInfoDTO getSummonerInfoDTO(SummonerInfo summonerInfo, ArrayList<SummonerLeagueInfo> leagueInfos, ApiInfo apiInfo) {
 
         SummonerLeagueInfo soloRank = new SummonerLeagueInfo();
         SummonerLeagueInfo flexRank = new SummonerLeagueInfo();
@@ -50,17 +50,17 @@ public class SummonerService {
             }
         }
 
-        SummonerDTO summonerDto = SummonerDTO.builder()
-                .id(accountInfo.getId())
-                .name(accountInfo.getName())
+        SummonerInfoDTO summonerInfoDto = SummonerInfoDTO.builder()
+                .id(summonerInfo.getId())
+                .name(summonerInfo.getName())
                 .profileIconUrl("https://ddragon.leagueoflegends.com/cdn/" + apiInfo.getVersion() +
-                        "/img/profileicon/" + accountInfo.getProfileIconId() + ".png")
-                .summonerLevel(accountInfo.getSummonerLevel())
+                        "/img/profileicon/" + summonerInfo.getProfileIconId() + ".png")
+                .summonerLevel(summonerInfo.getSummonerLevel())
                 .soloRank(soloRank)
                 .flexRank(flexRank)
                 .build();
 
-        return summonerDto;
+        return summonerInfoDto;
     }
 
     public ArrayList<LeagueEntrySummonerList> getChallengerListSortedByScore() {

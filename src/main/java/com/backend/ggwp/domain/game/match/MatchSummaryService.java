@@ -2,8 +2,7 @@ package com.backend.ggwp.domain.game.match;
 
 import com.backend.ggwp.domain.game.match.model.Match;
 import com.backend.ggwp.domain.game.match.model.Participant;
-import com.backend.ggwp.domain.game.summoner.model.AccountInfo;
-import com.backend.ggwp.domain.game.search.SearchService;
+import com.backend.ggwp.domain.game.summoner.model.SummonerInfo;
 import com.backend.ggwp.utils.ApiInfo;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -33,15 +32,15 @@ public class MatchSummaryService {
         return false;
     }
 
-    public ArrayList<MatchSummary> getAll30Matches(AccountInfo accountInfo) throws UnsupportedEncodingException {
-        String summonerName = accountInfo.getName();
+    public ArrayList<MatchSummary> getAll30Matches(SummonerInfo summonerInfo) throws UnsupportedEncodingException {
+        String summonerName = summonerInfo.getName();
         //String encodedName = URLEncoder.encode(summonerName, "UTF-8");
         ArrayList<MatchSummary> matchSummaries = matchSummaryRepository.find30ByName(summonerName);
         return matchSummaries;
     }
 
-    public ArrayList<MatchSummary> get30SoloRankMatches(AccountInfo accountInfo) {
-        ArrayList<MatchSummary> matchSummaries = matchSummaryRepository.find30SoloRankByName(accountInfo.getName(), "420");
+    public ArrayList<MatchSummary> get30SoloRankMatches(SummonerInfo summonerInfo) {
+        ArrayList<MatchSummary> matchSummaries = matchSummaryRepository.find30SoloRankByName(summonerInfo.getName(), "420");
         return matchSummaries;
     }
 
@@ -68,10 +67,10 @@ public class MatchSummaryService {
         return match;
     }
 
-    public void updateMatchSummary(AccountInfo accountInfo) {
-        ArrayList<String> matches = getMatchIds(accountInfo.getPuuid());
-        matches.addAll(getSoloMatchIds(accountInfo.getPuuid()));
-        String summonerName = accountInfo.getName();
+    public void updateMatchSummary(SummonerInfo summonerInfo) {
+        ArrayList<String> matches = getMatchIds(summonerInfo.getPuuid());
+        matches.addAll(getSoloMatchIds(summonerInfo.getPuuid()));
+        String summonerName = summonerInfo.getName();
         //log.info(" UPDATE MATCH SUMMARY ---");
         for (String s : matches) {
             if (matchExist(summonerName, s)) continue;
@@ -88,7 +87,7 @@ public class MatchSummaryService {
                 myNumber++;
                 champList.add(p.getChampionName());
                 nameList.add(p.getSummonerName());
-                if (p.getSummonerName().equals(accountInfo.getName())) {
+                if (p.getSummonerName().equals(summonerInfo.getName())) {
                     my = p;
                     if (myNumber > 5) myTeam = 1;
                 }

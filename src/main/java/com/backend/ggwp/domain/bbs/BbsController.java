@@ -12,7 +12,7 @@ import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
 import com.backend.ggwp.domain.game.search.SearchService;
 import com.backend.ggwp.domain.game.rotationinfo.RotationInfo;
 import com.backend.ggwp.domain.game.currentgame.model.CurrentGameInfo;
-import com.backend.ggwp.domain.game.summoner.model.AccountInfo;
+import com.backend.ggwp.domain.game.summoner.model.SummonerInfo;
 import com.backend.ggwp.domain.game.summoner.model.SummonerLeagueInfo;
 import com.backend.ggwp.exception.InvalidApiKeyException;
 import lombok.RequiredArgsConstructor;
@@ -588,12 +588,12 @@ public class BbsController {
     public String search(Model model, @PathVariable("summonerName") String summonerName) throws UnsupportedEncodingException {
         summonerName = summonerName.replace(" ", "");
         String encodedName = URLEncoder.encode(summonerName, "UTF-8");
-        AccountInfo accountInfo = summonerService.getAccountInfo(encodedName);
+        SummonerInfo summonerInfo = summonerService.getSummonerInfo(encodedName);
 
-        if (accountInfo.getId() == null)
+        if (summonerInfo.getId() == null)
             return "none";
 
-        String encryptedId = accountInfo.getId();
+        String encryptedId = summonerInfo.getId();
         ArrayList<SummonerLeagueInfo> summoner = summonerService.getAllSummonerLeagueInfo(encryptedId);
 
         SummonerLeagueInfo soloQueue = null;
@@ -613,7 +613,7 @@ public class BbsController {
             model.addAttribute("gaming", 1);
 
         model.addAttribute("summoner", soloQueue);
-        model.addAttribute("account", accountInfo);
+        model.addAttribute("account", summonerInfo);
         model.addAttribute("currentGame", currentGameInfo);
         model.addAttribute("version", API_INFO.getVersion());
 

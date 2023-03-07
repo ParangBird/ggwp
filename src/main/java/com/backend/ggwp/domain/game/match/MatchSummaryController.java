@@ -1,7 +1,7 @@
 package com.backend.ggwp.domain.game.match;
 
 import com.backend.ggwp.domain.game.summoner.SummonerService;
-import com.backend.ggwp.domain.game.summoner.model.AccountInfo;
+import com.backend.ggwp.domain.game.summoner.model.SummonerInfo;
 import com.backend.ggwp.utils.StringFormat;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +25,9 @@ public class MatchSummaryController {
     public void updateMatches(@PathVariable(value = "name") String name) throws UnsupportedEncodingException {
         String summonerName = StringFormat.setApiString(name);
         //String encodedName = URLEncoder.encode(summonerName, "UTF-8");
-        AccountInfo accountInfo = summonerService.getAccountInfo(summonerName);
+        SummonerInfo summonerInfo = summonerService.getSummonerInfo(summonerName);
         //log.info(accountInfo.toString());
-        matchSummaryService.updateMatchSummary(accountInfo);
+        matchSummaryService.updateMatchSummary(summonerInfo);
     }
 
     //디비에 저장된 전적 정보 가져와서 반환
@@ -38,16 +38,16 @@ public class MatchSummaryController {
     public ArrayList<MatchSummary> getMatches(@PathVariable(value = "name") String name) throws UnsupportedEncodingException {
         String summonerName = StringFormat.setApiString(name);
         //String encodedName = URLEncoder.encode(summonerName, "UTF-8");
-        AccountInfo accountInfo = summonerService.getAccountInfo(summonerName);
-        ArrayList<MatchSummary> matchSummaries = matchSummaryService.getAll30Matches(accountInfo);
+        SummonerInfo summonerInfo = summonerService.getSummonerInfo(summonerName);
+        ArrayList<MatchSummary> matchSummaries = matchSummaryService.getAll30Matches(summonerInfo);
         return matchSummaries;
     }
 
     @GetMapping("/api/matches/{name}/solo")
     public ArrayList<MatchSummary> getSoloMatches(@PathVariable(value = "name") String name) {
         String summonerName = StringFormat.setApiString(name);
-        AccountInfo accountInfo = summonerService.getAccountInfo(summonerName);
-        ArrayList<MatchSummary> matchSummaries = matchSummaryService.get30SoloRankMatches(accountInfo);
+        SummonerInfo summonerInfo = summonerService.getSummonerInfo(summonerName);
+        ArrayList<MatchSummary> matchSummaries = matchSummaryService.get30SoloRankMatches(summonerInfo);
         return matchSummaries;
     }
 }

@@ -1,8 +1,8 @@
 package com.backend.ggwp.domain.game.search;
 
 import com.backend.ggwp.domain.game.summoner.SummonerService;
-import com.backend.ggwp.domain.game.summoner.model.AccountInfo;
-import com.backend.ggwp.domain.game.summoner.model.SummonerDTO;
+import com.backend.ggwp.domain.game.summoner.model.SummonerInfo;
+import com.backend.ggwp.domain.game.summoner.model.SummonerInfoDTO;
 import com.backend.ggwp.domain.game.summoner.model.SummonerLeagueInfo;
 import com.backend.ggwp.utils.ApiInfo;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +19,10 @@ public class SearchService {
     private final ApiInfo API_INFO;
     private final SummonerService summonerService;
 
-    public SummonerDTO search(String summonerName) {
-        AccountInfo accountInfo = summonerService.getAccountInfo(summonerName);
-        ArrayList<SummonerLeagueInfo> leagueInfos = summonerService.getAllSummonerLeagueInfo(accountInfo.getId());
-        SummonerDTO summonerDto = summonerService.getSummonerDto(accountInfo, leagueInfos, API_INFO);
-        return summonerDto;
+    public SummonerInfoDTO search(String summonerName) {
+        SummonerInfo summonerInfo = summonerService.getSummonerInfo(summonerName);
+        ArrayList<SummonerLeagueInfo> leagueInfos = summonerService.getAllSummonerLeagueInfo(summonerInfo.getId());
+        SummonerInfoDTO summonerInfoDto = summonerService.getSummonerInfoDTO(summonerInfo, leagueInfos, API_INFO);
+        return summonerInfoDto;
     }
 }

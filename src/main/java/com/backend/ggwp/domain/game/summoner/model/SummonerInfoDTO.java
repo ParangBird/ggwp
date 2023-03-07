@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @Getter
 @NoArgsConstructor
-public class SummonerDTO {
+public class SummonerInfoDTO {
     private String id;
     private String name;
     private String profileIconUrl;
@@ -15,7 +15,7 @@ public class SummonerDTO {
     private SummonerLeagueInfo flexRank;
 
     @Builder
-    public SummonerDTO(String id, String name, String profileIconUrl, Integer summonerLevel, SummonerLeagueInfo soloRank, SummonerLeagueInfo flexRank) {
+    public SummonerInfoDTO(String id, String name, String profileIconUrl, Integer summonerLevel, SummonerLeagueInfo soloRank, SummonerLeagueInfo flexRank) {
         this.id = id;
         this.name = name;
         this.profileIconUrl = profileIconUrl;
