@@ -1,5 +1,6 @@
 package com.backend.ggwp.domain.game.summoner.model;
 
+import com.backend.ggwp.domain.time.BaseTimeEntity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.*;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class SummonerInfo {
+public class SummonerInfo extends BaseTimeEntity {
 
     @Expose(serialize = false, deserialize = false)
     @Id

@@ -1,4 +1,4 @@
-package com.backend.ggwp.domain.bbs.time;
+package com.backend.ggwp.domain.time;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

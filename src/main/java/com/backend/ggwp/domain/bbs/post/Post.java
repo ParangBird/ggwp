@@ -1,6 +1,6 @@
 package com.backend.ggwp.domain.bbs.post;
 
-import com.backend.ggwp.domain.bbs.time.BaseTimeEntity;
+import com.backend.ggwp.domain.time.BaseTimeEntity;
 import com.backend.ggwp.domain.bbs.user.GgwpUser;
 import lombok.*;
 

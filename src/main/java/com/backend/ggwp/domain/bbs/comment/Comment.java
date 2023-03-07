@@ -1,6 +1,6 @@
 package com.backend.ggwp.domain.bbs.comment;
 
-import com.backend.ggwp.domain.bbs.time.BaseTimeEntity;
+import com.backend.ggwp.domain.time.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
