@@ -1,9 +1,7 @@
-package com.backend.ggwp.domain.game.summoner;
+package com.backend.ggwp.domain.game.summoner.summonerinfo;
 
-import com.backend.ggwp.domain.game.summoner.model.LeagueEntrySummonerList;
-import com.backend.ggwp.domain.game.summoner.model.SummonerInfo;
-import com.backend.ggwp.domain.game.summoner.model.SummonerInfoDTO;
-import com.backend.ggwp.domain.game.summoner.model.SummonerLeagueInfo;
+import com.backend.ggwp.domain.game.summoner.leagueentry.LeagueEntry;
+import com.backend.ggwp.domain.game.summoner.summonerleagueinfo.SummonerLeagueInfo;
 import com.backend.ggwp.utils.ApiInfo;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -21,7 +19,7 @@ import static com.backend.ggwp.utils.RestAPI.restApi;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class SummonerService {
+public class SummonerInfoService {
 
     private final ApiInfo API_INFO;
     private final SummonerInfoRepository summonerInfoRepository;
@@ -48,6 +46,20 @@ public class SummonerService {
         SummonerInfo summonerInfo = new Gson().fromJson(result.toString(), SummonerInfo.class);
         summonerInfoRepository.save(summonerInfo);
         return summonerInfo;
+    }
+
+
+
+    @Transactional
+    public String getPuuidBySummonerName(String summonerName) {
+        String apiURL = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + summonerName + "?api_key=" + API_INFO.getApiKey();
+        StringBuffer result = restApi(apiURL);
+        SummonerInfo summonerInfo = new Gson().fromJson(result.toString(), SummonerInfo.class);
+        SummonerInfo summonerInfo1 = summonerInfoRepository.findByName(summonerName).orElseThrow();
+        if (!summonerInfo1.getPuuid().equals(summonerInfo1.getPuuid())) {
+        }
+
+        return summonerInfo.getPuuid();
     }
 
     public ArrayList<SummonerLeagueInfo> getAllSummonerLeagueInfo(String encryptedId) {
@@ -85,9 +97,9 @@ public class SummonerService {
         return summonerInfoDto;
     }
 
-    public ArrayList<LeagueEntrySummonerList> getChallengerListSortedByScore() {
+    public ArrayList<LeagueEntry> getChallengerListSortedByScore() {
 
-        ArrayList<ArrayList<LeagueEntrySummonerList>> challengerListAll = new ArrayList<>();
+        ArrayList<ArrayList<LeagueEntry>> challengerListAll = new ArrayList<>();
 
         int page = 1;
         while (true) {
@@ -98,12 +110,12 @@ public class SummonerService {
             if (result == null || result.length() == 0 || result.length() == 3) {
                 break;
             }
-            ArrayList<LeagueEntrySummonerList> challengerList = new Gson().fromJson(result.toString(), new TypeToken<ArrayList<LeagueEntrySummonerList>>() {
+            ArrayList<LeagueEntry> challengerList = new Gson().fromJson(result.toString(), new TypeToken<ArrayList<LeagueEntry>>() {
             }.getType());
             challengerListAll.add(challengerList);
         }
 
-        ArrayList<LeagueEntrySummonerList> challengerList = new ArrayList<>();
+        ArrayList<LeagueEntry> challengerList = new ArrayList<>();
 
         for (int i = 0; i < challengerListAll.size(); i++) {
             for (int j = 0; j < challengerListAll.get(i).size(); j++) {

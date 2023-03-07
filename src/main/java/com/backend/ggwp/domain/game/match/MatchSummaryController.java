@@ -1,7 +1,7 @@
 package com.backend.ggwp.domain.game.match;
 
-import com.backend.ggwp.domain.game.summoner.SummonerService;
-import com.backend.ggwp.domain.game.summoner.model.SummonerInfo;
+import com.backend.ggwp.domain.game.summoner.summonerinfo.SummonerInfoService;
+import com.backend.ggwp.domain.game.summoner.summonerinfo.SummonerInfo;
 import com.backend.ggwp.utils.StringFormat;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,14 +18,14 @@ import java.util.ArrayList;
 public class MatchSummaryController {
 
     private final MatchSummaryService matchSummaryService;
-    private final SummonerService summonerService;
+    private final SummonerInfoService summonerInfoService;
 
     //전적 갱신
     @GetMapping("/api/matches/update/{name}")
     public void updateMatches(@PathVariable(value = "name") String name) throws UnsupportedEncodingException {
         String summonerName = StringFormat.setApiString(name);
         //String encodedName = URLEncoder.encode(summonerName, "UTF-8");
-        SummonerInfo summonerInfo = summonerService.getSummonerInfo(summonerName);
+        SummonerInfo summonerInfo = summonerInfoService.getSummonerInfo(summonerName);
         //log.info(accountInfo.toString());
         matchSummaryService.updateMatchSummary(summonerInfo);
     }
@@ -38,7 +38,7 @@ public class MatchSummaryController {
     public ArrayList<MatchSummary> getMatches(@PathVariable(value = "name") String name) throws UnsupportedEncodingException {
         String summonerName = StringFormat.setApiString(name);
         //String encodedName = URLEncoder.encode(summonerName, "UTF-8");
-        SummonerInfo summonerInfo = summonerService.getSummonerInfo(summonerName);
+        SummonerInfo summonerInfo = summonerInfoService.getSummonerInfo(summonerName);
         ArrayList<MatchSummary> matchSummaries = matchSummaryService.getAll30Matches(summonerInfo);
         return matchSummaries;
     }
@@ -46,7 +46,7 @@ public class MatchSummaryController {
     @GetMapping("/api/matches/{name}/solo")
     public ArrayList<MatchSummary> getSoloMatches(@PathVariable(value = "name") String name) {
         String summonerName = StringFormat.setApiString(name);
-        SummonerInfo summonerInfo = summonerService.getSummonerInfo(summonerName);
+        SummonerInfo summonerInfo = summonerInfoService.getSummonerInfo(summonerName);
         ArrayList<MatchSummary> matchSummaries = matchSummaryService.get30SoloRankMatches(summonerInfo);
         return matchSummaries;
     }

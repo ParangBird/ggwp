@@ -1,9 +1,9 @@
 package com.backend.ggwp.domain.game.search;
 
-import com.backend.ggwp.domain.game.summoner.SummonerService;
-import com.backend.ggwp.domain.game.summoner.model.SummonerInfo;
-import com.backend.ggwp.domain.game.summoner.model.SummonerInfoDTO;
-import com.backend.ggwp.domain.game.summoner.model.SummonerLeagueInfo;
+import com.backend.ggwp.domain.game.summoner.summonerinfo.SummonerInfoService;
+import com.backend.ggwp.domain.game.summoner.summonerinfo.SummonerInfo;
+import com.backend.ggwp.domain.game.summoner.summonerinfo.SummonerInfoDTO;
+import com.backend.ggwp.domain.game.summoner.summonerleagueinfo.SummonerLeagueInfo;
 import com.backend.ggwp.utils.ApiInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,12 +17,12 @@ import java.util.ArrayList;
 public class SearchService {
 
     private final ApiInfo API_INFO;
-    private final SummonerService summonerService;
+    private final SummonerInfoService summonerInfoService;
 
     public SummonerInfoDTO search(String summonerName) {
-        SummonerInfo summonerInfo = summonerService.getSummonerInfo(summonerName);
-        ArrayList<SummonerLeagueInfo> leagueInfos = summonerService.getAllSummonerLeagueInfo(summonerInfo.getSummonerId());
-        SummonerInfoDTO summonerInfoDto = summonerService.getSummonerInfoDTO(summonerInfo, leagueInfos, API_INFO);
+        SummonerInfo summonerInfo = summonerInfoService.getSummonerInfo(summonerName);
+        ArrayList<SummonerLeagueInfo> leagueInfos = summonerInfoService.getAllSummonerLeagueInfo(summonerInfo.getSummonerId());
+        SummonerInfoDTO summonerInfoDto = summonerInfoService.getSummonerInfoDTO(summonerInfo, leagueInfos, API_INFO);
         return summonerInfoDto;
     }
 }

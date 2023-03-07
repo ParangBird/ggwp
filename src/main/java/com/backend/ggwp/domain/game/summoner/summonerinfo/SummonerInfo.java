@@ -1,4 +1,4 @@
-package com.backend.ggwp.domain.game.summoner.model;
+package com.backend.ggwp.domain.game.summoner.summonerinfo;
 
 import com.backend.ggwp.domain.time.BaseTimeEntity;
 import com.google.gson.annotations.Expose;

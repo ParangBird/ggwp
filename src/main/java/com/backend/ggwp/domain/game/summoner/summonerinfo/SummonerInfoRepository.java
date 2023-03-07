@@ -1,6 +1,5 @@
-package com.backend.ggwp.domain.game.summoner;
+package com.backend.ggwp.domain.game.summoner.summonerinfo;
 
-import com.backend.ggwp.domain.game.summoner.model.SummonerInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

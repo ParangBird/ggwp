@@ -1,6 +1,6 @@
 package com.backend.ggwp.domain.game.search;
 
-import com.backend.ggwp.domain.game.summoner.model.SummonerInfoDTO;
+import com.backend.ggwp.domain.game.summoner.summonerinfo.SummonerInfoDTO;
 import com.backend.ggwp.utils.StringFormat;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

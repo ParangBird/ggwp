@@ -1,4 +1,4 @@
-package com.backend.ggwp.domain.game.summoner.model;
+package com.backend.ggwp.domain.game.summoner.leagueentry;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -12,7 +12,7 @@ import javax.annotation.processing.Generated;
 @Setter
 @NoArgsConstructor
 @Generated("jsonschema2pojo")
-public class LeagueEntrySummonerList {
+public class LeagueEntry {
     @SerializedName("leagueId")
     @Expose
     private String leagueId;

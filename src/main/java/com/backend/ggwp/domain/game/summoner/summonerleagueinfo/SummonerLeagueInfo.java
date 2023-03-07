@@ -1,4 +1,4 @@
-package com.backend.ggwp.domain.game.summoner.model;
+package com.backend.ggwp.domain.game.summoner.summonerleagueinfo;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

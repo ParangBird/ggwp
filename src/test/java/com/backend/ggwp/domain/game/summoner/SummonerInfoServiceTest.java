@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SummonerServiceTest {
+class SummonerInfoServiceTest {
 
     @Test
     void dateTest() {

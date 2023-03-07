@@ -3,7 +3,7 @@ package com.backend.ggwp.domain.bbs;
 import com.backend.ggwp.auth.OauthUser;
 import com.backend.ggwp.domain.game.currentgame.CurrentGameService;
 import com.backend.ggwp.domain.game.rotationinfo.RotationInfoService;
-import com.backend.ggwp.domain.game.summoner.SummonerService;
+import com.backend.ggwp.domain.game.summoner.summonerinfo.SummonerInfoService;
 import com.backend.ggwp.utils.ApiInfo;
 import com.backend.ggwp.domain.bbs.post.PostDTO;
 import com.backend.ggwp.domain.bbs.post.PostEnum;
@@ -12,8 +12,8 @@ import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
 import com.backend.ggwp.domain.game.search.SearchService;
 import com.backend.ggwp.domain.game.rotationinfo.RotationInfo;
 import com.backend.ggwp.domain.game.currentgame.model.CurrentGameInfo;
-import com.backend.ggwp.domain.game.summoner.model.SummonerInfo;
-import com.backend.ggwp.domain.game.summoner.model.SummonerLeagueInfo;
+import com.backend.ggwp.domain.game.summoner.summonerinfo.SummonerInfo;
+import com.backend.ggwp.domain.game.summoner.summonerleagueinfo.SummonerLeagueInfo;
 import com.backend.ggwp.exception.InvalidApiKeyException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ import java.util.List;
 public class BbsController {
     private final ApiInfo API_INFO;
     private final SearchService searchService;
-    private final SummonerService summonerService;
+    private final SummonerInfoService summonerInfoService;
     private final RotationInfoService rotationInfoService;
     private final CurrentGameService currentGameService;
     private final HttpSession httpSession;
@@ -588,13 +588,13 @@ public class BbsController {
     public String search(Model model, @PathVariable("summonerName") String summonerName) throws UnsupportedEncodingException {
         summonerName = summonerName.replace(" ", "");
         String encodedName = URLEncoder.encode(summonerName, "UTF-8");
-        SummonerInfo summonerInfo = summonerService.getSummonerInfo(encodedName);
+        SummonerInfo summonerInfo = summonerInfoService.getSummonerInfo(encodedName);
 
         if (summonerInfo.getSummonerId() == null)
             return "none";
 
         String encryptedId = summonerInfo.getSummonerId();
-        ArrayList<SummonerLeagueInfo> summoner = summonerService.getAllSummonerLeagueInfo(encryptedId);
+        ArrayList<SummonerLeagueInfo> summoner = summonerInfoService.getAllSummonerLeagueInfo(encryptedId);
 
         SummonerLeagueInfo soloQueue = null;
         for (int i = 0; i < summoner.size(); i++) {

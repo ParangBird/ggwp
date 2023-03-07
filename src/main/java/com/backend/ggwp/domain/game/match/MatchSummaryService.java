@@ -2,7 +2,7 @@ package com.backend.ggwp.domain.game.match;
 
 import com.backend.ggwp.domain.game.match.model.Match;
 import com.backend.ggwp.domain.game.match.model.Participant;
-import com.backend.ggwp.domain.game.summoner.model.SummonerInfo;
+import com.backend.ggwp.domain.game.summoner.summonerinfo.SummonerInfo;
 import com.backend.ggwp.utils.ApiInfo;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
