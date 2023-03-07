@@ -1,7 +1,7 @@
 package com.backend.ggwp.domain.game.summoner;
 
-import com.backend.ggwp.domain.game.summoner.model.SummonerInfo;
 import com.backend.ggwp.domain.game.summoner.model.LeagueEntrySummonerList;
+import com.backend.ggwp.domain.game.summoner.model.SummonerInfo;
 import com.backend.ggwp.domain.game.summoner.model.SummonerInfoDTO;
 import com.backend.ggwp.domain.game.summoner.model.SummonerLeagueInfo;
 import com.backend.ggwp.utils.ApiInfo;
@@ -10,8 +10,11 @@ import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static com.backend.ggwp.utils.RestAPI.restApi;
 
@@ -21,11 +24,30 @@ import static com.backend.ggwp.utils.RestAPI.restApi;
 public class SummonerService {
 
     private final ApiInfo API_INFO;
+    private final SummonerInfoRepository summonerInfoRepository;
 
+    @Transactional
     public SummonerInfo getSummonerInfo(String summonerName) {
+        Optional<SummonerInfo> byName = summonerInfoRepository.findByName(summonerName);
+        if (byName.isPresent()) {
+            SummonerInfo summonerInfo = byName.get();
+            // 업데이트 시간이 24시간 이내면 그대로 반환
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime modifiedDate = summonerInfo.getModifiedDate();
+            if (now.isBefore(modifiedDate.plusDays(1))) {
+                return summonerInfo;
+            }
+        }
+        return updateSummonerInfo(summonerName);
+    }
+
+    @Transactional
+    public SummonerInfo updateSummonerInfo(String summonerName) {
         String apiURL = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + summonerName + "?api_key=" + API_INFO.getApiKey();
         StringBuffer result = restApi(apiURL);
-        return new Gson().fromJson(result.toString(), SummonerInfo.class);
+        SummonerInfo summonerInfo = new Gson().fromJson(result.toString(), SummonerInfo.class);
+        summonerInfoRepository.save(summonerInfo);
+        return summonerInfo;
     }
 
     public ArrayList<SummonerLeagueInfo> getAllSummonerLeagueInfo(String encryptedId) {
