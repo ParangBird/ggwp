@@ -1,5 +1,7 @@
 package com.backend.ggwp.utils;
 
+import com.backend.ggwp.exception.ApiServerException;
+import com.backend.ggwp.exception.ApiServerNoSuchDataException;
 import com.backend.ggwp.exception.InvalidApiKeyException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,9 +22,15 @@ public class RestAPI {
             BufferedReader rd;
             if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
                 rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            } else {
+            } else if (conn.getResponseCode() == 403) {
                 rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
                 throw new InvalidApiKeyException("invalid api key");
+            } else if (conn.getResponseCode() == 404) {
+                rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                throw new ApiServerNoSuchDataException("no such data in api server");
+            } else {
+                rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                throw new ApiServerException("api server has problem");
             }
             String line;
             while ((line = rd.readLine()) != null) {
@@ -30,8 +38,12 @@ public class RestAPI {
             }
             rd.close();
             conn.disconnect();
+        } catch (InvalidApiKeyException e) {
+            throw new InvalidApiKeyException("invalid api key");
+        } catch (ApiServerNoSuchDataException e) {
+            throw new ApiServerNoSuchDataException("no such data in api server");
         } catch (Exception e) {
-            throw new InvalidApiKeyException("invalid api key2");
+            throw new ApiServerException("api server has problem");
         }
         return result;
     }
