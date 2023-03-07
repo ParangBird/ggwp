@@ -9,6 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class LeagueEntryController {
     private final LeagueEntryService leagueEntryService;
 
+    @GetMapping("/api/entry/update/c")
+    public String updateChallengerLeagueEntry() throws InterruptedException {
+        leagueEntryService.getChallengerLeagueEntry();
+        return "ok";
+    }
+
     @GetMapping("/api/entry/update/")
     public String updateLeagueEntry() {
 
