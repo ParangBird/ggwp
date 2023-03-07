@@ -51,7 +51,7 @@ public class SummonerService {
         }
 
         SummonerInfoDTO summonerInfoDto = SummonerInfoDTO.builder()
-                .id(summonerInfo.getId())
+                .id(summonerInfo.getSummonerId())
                 .name(summonerInfo.getName())
                 .profileIconUrl("https://ddragon.leagueoflegends.com/cdn/" + apiInfo.getVersion() +
                         "/img/profileicon/" + summonerInfo.getProfileIconId() + ".png")

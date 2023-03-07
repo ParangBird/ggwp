@@ -590,10 +590,10 @@ public class BbsController {
         String encodedName = URLEncoder.encode(summonerName, "UTF-8");
         SummonerInfo summonerInfo = summonerService.getSummonerInfo(encodedName);
 
-        if (summonerInfo.getId() == null)
+        if (summonerInfo.getSummonerId() == null)
             return "none";
 
-        String encryptedId = summonerInfo.getId();
+        String encryptedId = summonerInfo.getSummonerId();
         ArrayList<SummonerLeagueInfo> summoner = summonerService.getAllSummonerLeagueInfo(encryptedId);
 
         SummonerLeagueInfo soloQueue = null;

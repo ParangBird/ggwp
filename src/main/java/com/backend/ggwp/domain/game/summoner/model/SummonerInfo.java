@@ -1,13 +1,13 @@
 package com.backend.ggwp.domain.game.summoner.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "SUMMONER_INFO")
 @Setter
 @Getter
 @NoArgsConstructor
@@ -15,10 +15,14 @@ import javax.persistence.Id;
 @ToString
 public class SummonerInfo {
 
+    @Expose(serialize = false, deserialize = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long summonerInfoId;
-    private String id;
+
+    @SerializedName("id")
+    private String summonerId;
     private String accountId;
     private String puuid;
     private String name;
