@@ -1,20 +1,20 @@
 package com.backend.ggwp.domain.bbs;
 
 import com.backend.ggwp.auth.OauthUser;
-import com.backend.ggwp.domain.game.currentgame.CurrentGameService;
-import com.backend.ggwp.domain.game.rotationinfo.RotationInfoService;
-import com.backend.ggwp.domain.game.summoner.summonerinfo.SummonerInfoService;
-import com.backend.ggwp.utils.ApiInfo;
 import com.backend.ggwp.domain.bbs.post.PostDTO;
 import com.backend.ggwp.domain.bbs.post.PostEnum;
 import com.backend.ggwp.domain.bbs.post.PostService;
 import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
-import com.backend.ggwp.domain.game.search.SearchService;
-import com.backend.ggwp.domain.game.rotationinfo.RotationInfo;
+import com.backend.ggwp.domain.game.currentgame.CurrentGameService;
 import com.backend.ggwp.domain.game.currentgame.model.CurrentGameInfo;
+import com.backend.ggwp.domain.game.rotationinfo.RotationInfo;
+import com.backend.ggwp.domain.game.rotationinfo.RotationInfoService;
 import com.backend.ggwp.domain.game.summoner.summonerinfo.SummonerInfo;
+import com.backend.ggwp.domain.game.summoner.summonerinfo.SummonerInfoService;
 import com.backend.ggwp.domain.game.summoner.summonerleagueinfo.SummonerLeagueInfo;
+import com.backend.ggwp.domain.game.summoner.summonerleagueinfo.SummonerLeagueInfoService;
 import com.backend.ggwp.exception.InvalidApiKeyException;
+import com.backend.ggwp.utils.ApiInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -33,7 +33,7 @@ import java.util.List;
 @Controller
 public class BbsController {
     private final ApiInfo API_INFO;
-    private final SearchService searchService;
+    private final SummonerLeagueInfoService summonerLeagueInfoService;
     private final SummonerInfoService summonerInfoService;
     private final RotationInfoService rotationInfoService;
     private final CurrentGameService currentGameService;
@@ -594,7 +594,7 @@ public class BbsController {
             return "none";
 
         String encryptedId = summonerInfo.getSummonerId();
-        ArrayList<SummonerLeagueInfo> summoner = summonerInfoService.getAllSummonerLeagueInfo(encryptedId);
+        ArrayList<SummonerLeagueInfo> summoner = summonerLeagueInfoService.getAllSummonerLeagueInfo(encryptedId);
 
         SummonerLeagueInfo soloQueue = null;
         for (int i = 0; i < summoner.size(); i++) {
