@@ -10,7 +10,7 @@ import javax.annotation.processing.Generated;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "league_entry")
+@Table(name = "league_entry", indexes = @Index(name = "idx_summoner_id", columnList = "summonerId"))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -62,4 +62,9 @@ public class LeagueEntry {
     @SerializedName("hotStreak")
     @Expose
     private Boolean hotStreak;
+
+    public void update(LeagueEntry leagueEntry) {
+        this.freshBlood = leagueEntry.freshBlood;
+
+    }
 }

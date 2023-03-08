@@ -1,5 +1,6 @@
 package com.backend.ggwp.domain.game.summoner.leagueentry;
 
+import com.backend.ggwp.aop.LogExecutionTime;
 import com.backend.ggwp.utils.ApiInfo;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -22,6 +23,7 @@ public class LeagueEntryService {
     //  1 request for 1.5 sec
 
 
+    @LogExecutionTime
     @Transactional
     public ArrayList<LeagueEntry> getChallengerLeagueEntry() throws InterruptedException {
         ArrayList<LeagueEntry> challengerListAll = new ArrayList<>();
@@ -37,6 +39,9 @@ public class LeagueEntryService {
                     new Gson().fromJson(result.toString(), new TypeToken<ArrayList<LeagueEntry>>() {
                     }.getType());
             for (LeagueEntry leagueEntry : challengerList) {
+                leagueEntryRepository.findBySummonerId(leagueEntry.getSummonerId()).ifPresent((prev) -> {
+                    leagueEntry.setId(prev.getId());
+                });
                 challengerListAll.add(leagueEntry);
             }
         }
