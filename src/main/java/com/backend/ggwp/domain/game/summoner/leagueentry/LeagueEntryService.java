@@ -5,6 +5,7 @@ import com.backend.ggwp.utils.ApiInfo;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 
 import static com.backend.ggwp.utils.RestAPI.restApi;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class LeagueEntryService {
@@ -47,5 +49,34 @@ public class LeagueEntryService {
         }
         leagueEntryRepository.saveAll(challengerListAll);
         return challengerListAll;
+    }
+
+    @LogExecutionTime
+    @Transactional
+    public ArrayList<LeagueEntry> getTierLeagueEntry(String tier, String rank) throws InterruptedException {
+        ArrayList<LeagueEntry> tierLeagueEntryList = new ArrayList<>();
+        int page = 1;
+        while (true) {
+            Thread.sleep(1500);
+            String apiURL = "https://kr.api.riotgames.com/lol/league-exp/v4/entries/RANKED_SOLO_5x5/" +
+                    tier + "/" + rank + "?page=" + page++ + "&api_key=" + API_INFO.getApiKey();
+            StringBuffer result = restApi(apiURL);
+            if (result == null || result.length() == 0 || result.length() == 3) {
+                break;
+            }
+            ArrayList<LeagueEntry> leagueEntries =
+                    new Gson().fromJson(result.toString(), new TypeToken<ArrayList<LeagueEntry>>() {
+                    }.getType());
+            for (LeagueEntry leagueEntry : leagueEntries) {
+                leagueEntryRepository.findBySummonerId(leagueEntry.getSummonerId()).ifPresent((prev) -> {
+                    leagueEntry.setId(prev.getId());
+                });
+                tierLeagueEntryList.add(leagueEntry);
+            }
+
+        }
+        leagueEntryRepository.saveAll(tierLeagueEntryList);
+        log.info("tier size {}", tierLeagueEntryList.size());
+        return tierLeagueEntryList;
     }
 }

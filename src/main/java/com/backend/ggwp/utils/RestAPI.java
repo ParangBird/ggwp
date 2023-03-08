@@ -20,12 +20,13 @@ public class RestAPI {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             BufferedReader rd;
-            if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+            int responseCode = conn.getResponseCode();
+            if (responseCode >= 200 && responseCode <= 300) {
                 rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            } else if (conn.getResponseCode() == 403) {
+            } else if (responseCode == 401 || responseCode == 403) {
                 rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
                 throw new InvalidApiKeyException("invalid api key");
-            } else if (conn.getResponseCode() == 404) {
+            } else if (responseCode == 404) {
                 rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
                 throw new ApiServerNoSuchDataException("no such data in api server");
             } else {

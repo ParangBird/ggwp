@@ -2,6 +2,7 @@ package com.backend.ggwp.domain.game.summoner.leagueentry;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -15,9 +16,10 @@ public class LeagueEntryController {
         return "ok";
     }
 
-    @GetMapping("/api/entry/update/")
-    public String updateLeagueEntry() {
 
-        return "";
+    @GetMapping("/api/entry/update/{tier}/{rank}")
+    public String updateLeagueEntry(@PathVariable("tier") String tier, @PathVariable("rank") String rank) throws InterruptedException {
+        leagueEntryService.getTierLeagueEntry(tier, rank);
+        return "good";
     }
 }
