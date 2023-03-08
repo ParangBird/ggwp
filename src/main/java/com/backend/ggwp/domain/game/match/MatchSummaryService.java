@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class MatchSummaryService {
     private final MatchSummaryRepository matchSummaryRepository;
     private final ApiInfo API_INFO;
 
+    @Transactional(readOnly = true)
     public Boolean matchExist(String name, String matchId) {
         ArrayList<MatchSummary> matchSummary = matchSummaryRepository.findByMatchId(matchId);
 
@@ -32,16 +34,92 @@ public class MatchSummaryService {
         return false;
     }
 
+    @Transactional(readOnly = true)
     public ArrayList<MatchSummary> getAll30Matches(SummonerInfo summonerInfo) throws UnsupportedEncodingException {
         String summonerName = summonerInfo.getName();
-        //String encodedName = URLEncoder.encode(summonerName, "UTF-8");
         ArrayList<MatchSummary> matchSummaries = matchSummaryRepository.find30ByName(summonerName);
         return matchSummaries;
     }
 
+    @Transactional(readOnly = true)
     public ArrayList<MatchSummary> get30SoloRankMatches(SummonerInfo summonerInfo) {
         ArrayList<MatchSummary> matchSummaries = matchSummaryRepository.find30SoloRankByName(summonerInfo.getName(), "420");
         return matchSummaries;
+    }
+
+    @Transactional
+    public void updateMatchSummary(SummonerInfo summonerInfo) {
+        ArrayList<String> matchIds = getMatchIds(summonerInfo.getPuuid());
+        String summonerName = summonerInfo.getName();
+        for (String matchId : matchIds) {
+            if (matchExist(summonerName, matchId)) continue;
+            Match match = getMatchInfo(matchId);
+
+            Participant my = new Participant();
+            int myNumber = 0;
+            int myTeam = 0; // 0 : 블루팀 , 1 : 레드팀
+            Long gameTimestamp = 0L;
+            List<String> champList = new ArrayList<String>();
+            List<String> nameList = new ArrayList<String>();
+
+            for (Participant p : match.getInfo().getParticipants()) {
+                myNumber++;
+                champList.add(p.getChampionName());
+                nameList.add(p.getSummonerName());
+                if (p.getSummonerName().equals(summonerInfo.getName())) {
+                    my = p;
+                    if (myNumber > 5) myTeam = 1;
+                }
+            }
+
+            if (match.getInfo().getGameEndTimestamp() == null)
+                gameTimestamp = match.getInfo().getGameStartTimestamp();
+            else
+                gameTimestamp = match.getInfo().getGameEndTimestamp();
+
+            MatchSummary matchSummary = getMatchSummary(summonerName, matchId, match, my, myTeam, gameTimestamp, champList);
+            saveMatchSummary(matchSummary);
+        }
+    }
+
+    private MatchSummary getMatchSummary(String summonerName, String matchId, Match match, Participant my, int myTeam, Long gameTimestamp, List<String> champList) {
+        MatchSummary matchSummary = MatchSummary.builder()
+                .queueId(match.getInfo().getQueueId())
+                .matchId(matchId)
+                .gameEndTimestamp(gameTimestamp)
+                .name(summonerName)
+                .champ(my.getChampionName())
+                .blueChamp1(champList.get(0))
+                .blueChamp2(champList.get(1))
+                .blueChamp3(champList.get(2))
+                .blueChamp4(champList.get(3))
+                .blueChamp5(champList.get(4))
+                .redChamp1(champList.get(5))
+                .redChamp2(champList.get(6))
+                .redChamp3(champList.get(7))
+                .redChamp4(champList.get(8))
+                .redChamp5(champList.get(9))
+                .perkMain(my.getPerks().getStyles().get(0).getSelections().get(0).getPerk())
+                .perkSub(my.getPerks().getStyles().get(1).getStyle())
+                .spell1(my.getSummoner1Id())
+                .spell2(my.getSummoner2Id())
+                .level(my.getChampLevel())
+                .kills(my.getKills())
+                .deaths(my.getDeaths())
+                .assists(my.getAssists())
+                .time(my.getTimePlayed())
+                .cs(my.getTotalMinionsKilled() + my.getNeutralMinionsKilled())
+                .totalKill(match.getInfo().getTeams().get(myTeam).getObjectives().getChampion().getKills())
+                .item0(my.getItem0())
+                .item1(my.getItem1())
+                .item2(my.getItem2())
+                .item3(my.getItem3())
+                .item4(my.getItem4())
+                .item5(my.getItem5())
+                .item6(my.getItem6())
+                .win(my.getWin())
+                .build();
+        return matchSummary;
     }
 
     public ArrayList<String> getMatchIds(String puuid) {
@@ -67,77 +145,7 @@ public class MatchSummaryService {
         return match;
     }
 
-    public void updateMatchSummary(SummonerInfo summonerInfo) {
-        ArrayList<String> matches = getMatchIds(summonerInfo.getPuuid());
-        matches.addAll(getSoloMatchIds(summonerInfo.getPuuid()));
-        String summonerName = summonerInfo.getName();
-        //log.info(" UPDATE MATCH SUMMARY ---");
-        for (String s : matches) {
-            if (matchExist(summonerName, s)) continue;
-            Match match = getMatchInfo(s);
-
-            Participant my = new Participant();
-            int myNumber = 0;
-            int myTeam = 0; // 0 : 블루팀 , 1 : 레드팀
-            Long gameTimestamp = 0L;
-            List<String> champList = new ArrayList<String>();
-            List<String> nameList = new ArrayList<String>();
-
-            for (Participant p : match.getInfo().getParticipants()) {
-                myNumber++;
-                champList.add(p.getChampionName());
-                nameList.add(p.getSummonerName());
-                if (p.getSummonerName().equals(summonerInfo.getName())) {
-                    my = p;
-                    if (myNumber > 5) myTeam = 1;
-                }
-            }
-
-            if (match.getInfo().getGameEndTimestamp() == null)
-                gameTimestamp = match.getInfo().getGameStartTimestamp();
-            else
-                gameTimestamp = match.getInfo().getGameEndTimestamp();
-
-            MatchSummary matchSummary = MatchSummary.builder()
-                    .queueId(match.getInfo().getQueueId())
-                    .matchId(s)
-                    .gameEndTimestamp(gameTimestamp)
-                    .name(summonerName)
-                    .champ(my.getChampionName())
-                    .blueChamp1(champList.get(0))
-                    .blueChamp2(champList.get(1))
-                    .blueChamp3(champList.get(2))
-                    .blueChamp4(champList.get(3))
-                    .blueChamp5(champList.get(4))
-                    .redChamp1(champList.get(5))
-                    .redChamp2(champList.get(6))
-                    .redChamp3(champList.get(7))
-                    .redChamp4(champList.get(8))
-                    .redChamp5(champList.get(9))
-                    .perkMain(my.getPerks().getStyles().get(0).getSelections().get(0).getPerk())
-                    .perkSub(my.getPerks().getStyles().get(1).getStyle())
-                    .spell1(my.getSummoner1Id())
-                    .spell2(my.getSummoner2Id())
-                    .level(my.getChampLevel())
-                    .kills(my.getKills())
-                    .deaths(my.getDeaths())
-                    .assists(my.getAssists())
-                    .time(my.getTimePlayed())
-                    .cs(my.getTotalMinionsKilled() + my.getNeutralMinionsKilled())
-                    .totalKill(match.getInfo().getTeams().get(myTeam).getObjectives().getChampion().getKills())
-                    .item0(my.getItem0())
-                    .item1(my.getItem1())
-                    .item2(my.getItem2())
-                    .item3(my.getItem3())
-                    .item4(my.getItem4())
-                    .item5(my.getItem5())
-                    .item6(my.getItem6())
-                    .win(my.getWin())
-                    .build();
-            saveMatchSummary(matchSummary);
-        }
-    }
-
+    @Transactional
     public void saveMatchSummary(MatchSummary matchSummary) {
         matchSummaryRepository.save(matchSummary);
     }

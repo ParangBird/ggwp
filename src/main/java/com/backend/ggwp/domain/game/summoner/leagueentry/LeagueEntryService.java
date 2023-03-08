@@ -71,9 +71,8 @@ public class LeagueEntryService {
                 leagueEntryRepository.findBySummonerId(leagueEntry.getSummonerId()).ifPresent((prev) -> {
                     leagueEntry.setId(prev.getId());
                 });
-                tierLeagueEntryList.add(leagueEntry);
             }
-
+            tierLeagueEntryList.addAll(leagueEntries);
         }
         leagueEntryRepository.saveAll(tierLeagueEntryList);
         log.info("tier size {}", tierLeagueEntryList.size());

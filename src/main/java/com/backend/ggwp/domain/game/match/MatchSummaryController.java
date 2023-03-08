@@ -24,7 +24,6 @@ public class MatchSummaryController {
     @GetMapping("/api/matches/update/{name}")
     public void updateMatches(@PathVariable(value = "name") String name) throws UnsupportedEncodingException {
         String summonerName = StringFormat.setApiString(name);
-        //String encodedName = URLEncoder.encode(summonerName, "UTF-8");
         SummonerInfo summonerInfo = summonerInfoService.getSummonerInfo(summonerName);
         //log.info(accountInfo.toString());
         matchSummaryService.updateMatchSummary(summonerInfo);
