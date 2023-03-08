@@ -15,6 +15,7 @@ import com.backend.ggwp.domain.game.summoner.summonerleagueinfo.SummonerLeagueIn
 import com.backend.ggwp.domain.game.summoner.summonerleagueinfo.SummonerLeagueInfoService;
 import com.backend.ggwp.exception.InvalidApiKeyException;
 import com.backend.ggwp.utils.ApiInfo;
+import com.backend.ggwp.utils.StringFormat;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -586,9 +587,7 @@ public class BbsController {
     @ResponseBody
     @GetMapping("/search/{summonerName}")
     public String search(Model model, @PathVariable("summonerName") String summonerName) throws UnsupportedEncodingException {
-        summonerName = summonerName.replace(" ", "");
-        String encodedName = URLEncoder.encode(summonerName, "UTF-8");
-        SummonerInfo summonerInfo = summonerInfoService.getSummonerInfo(encodedName);
+        SummonerInfo summonerInfo = summonerInfoService.getSummonerInfo(StringFormat.setApiString(summonerName));
 
         if (summonerInfo.getSummonerId() == null)
             return "none";
@@ -632,7 +631,7 @@ public class BbsController {
             System.out.println(challenger.getSummonerName() + " : " + challenger.getLeaguePoints());
         }
 */
-
+        log.info("bbbbbbbbbsssssssssss");
 
         return "search";
     }

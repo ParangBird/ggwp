@@ -2,15 +2,15 @@ package com.backend.ggwp.domain.game.summoner.summonerinfo;
 
 import com.backend.ggwp.domain.game.summoner.summonerleagueinfo.SummonerLeagueInfo;
 import com.backend.ggwp.utils.ApiInfo;
+import com.backend.ggwp.utils.StringFormat;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Optional;
 
 import static com.backend.ggwp.utils.RestAPI.restApi;
 
@@ -22,30 +22,17 @@ public class SummonerInfoService {
     private final ApiInfo API_INFO;
     private final SummonerInfoRepository summonerInfoRepository;
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public SummonerInfo getSummonerInfo(String summonerName) {
-        Optional<SummonerInfo> byName = summonerInfoRepository.findByName(summonerName);
-        if (byName.isPresent()) {
-            SummonerInfo summonerInfo = byName.get();
-            // 업데이트 시간이 24시간 이내면 그대로 반환
-            LocalDateTime now = LocalDateTime.now();
-            LocalDateTime modifiedDate = summonerInfo.getModifiedDate();
-            if (now.isBefore(modifiedDate.plusDays(1))) {
-                return summonerInfo;
-            }
-        }
+        summonerName = StringFormat.setApiString(summonerName);
         return updateSummonerInfo(summonerName);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public SummonerInfo updateSummonerInfo(String summonerName) {
         String apiURL = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + summonerName + "?api_key=" + API_INFO.getApiKey();
         StringBuffer result = restApi(apiURL);
         SummonerInfo summonerInfo = new Gson().fromJson(result.toString(), SummonerInfo.class);
-        summonerInfoRepository.findByName(summonerName).ifPresent((prev) -> {
-            summonerInfo.setSummonerInfoId(prev.getSummonerInfoId());
-        });
-        summonerInfoRepository.save(summonerInfo);
         return summonerInfo;
     }
 
