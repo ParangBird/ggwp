@@ -23,6 +23,7 @@ public class SearchService {
 
     public SummonerInfoDTO search(String summonerName) {
         SummonerInfo summonerInfo = summonerInfoService.getSummonerInfo(summonerName);
+        log.info("summonerName {}", summonerInfo.getName());
         ArrayList<SummonerLeagueInfo> leagueInfos = summonerLeagueInfoService.getAllSummonerLeagueInfo(summonerInfo.getSummonerId());
         SummonerInfoDTO summonerInfoDto = summonerInfoService.getSummonerInfoDTO(summonerInfo, leagueInfos, API_INFO);
         return summonerInfoDto;

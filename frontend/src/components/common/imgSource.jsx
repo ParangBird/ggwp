@@ -1,10 +1,10 @@
 export const getSpellImgUrl = (id) => {
-  return "http://ddragon.leagueoflegends.com/cdn/12.1.1/img/spell/" + id + ".png";
+  return "http://ddragon.leagueoflegends.com/cdn/13.4.1/img/spell/" + id + ".png";
 };
 
 export const getChampImgUrl = (championName) => {
   if (championName == "FiddleSticks") championName = "Fiddlesticks";
-  return "https://ddragon.leagueoflegends.com/cdn/12.1.1/img/champion/" + championName + ".png";
+  return "https://ddragon.leagueoflegends.com/cdn/13.4.1/img/champion/" + championName + ".png";
 };
 
 export const getPerkImgUrl = (perkDir) => {
@@ -12,5 +12,5 @@ export const getPerkImgUrl = (perkDir) => {
 };
 
 export const getItemImgUrl = (item) => {
-  return "https://ddragon.leagueoflegends.com/cdn/12.1.1/img/item/" + item + ".png";
+  return "https://ddragon.leagueoflegends.com/cdn/13.4.1/img/item/" + item + ".png";
 };

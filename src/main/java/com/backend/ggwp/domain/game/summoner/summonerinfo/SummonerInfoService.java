@@ -42,10 +42,12 @@ public class SummonerInfoService {
         String apiURL = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + summonerName + "?api_key=" + API_INFO.getApiKey();
         StringBuffer result = restApi(apiURL);
         SummonerInfo summonerInfo = new Gson().fromJson(result.toString(), SummonerInfo.class);
+        summonerInfoRepository.findByName(summonerName).ifPresent((prev) -> {
+            summonerInfo.setSummonerInfoId(prev.getSummonerInfoId());
+        });
         summonerInfoRepository.save(summonerInfo);
         return summonerInfo;
     }
-
 
 
     @Transactional
