@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class MatchSummaryService {
     }
 
     @Transactional(readOnly = true)
-    public ArrayList<MatchSummary> getAll30Matches(SummonerInfo summonerInfo) throws UnsupportedEncodingException {
+    public ArrayList<MatchSummary> getAll30Matches(SummonerInfo summonerInfo) {
         String summonerName = summonerInfo.getName();
         ArrayList<MatchSummary> matchSummaries = matchSummaryRepository.find30ByName(summonerName);
         return matchSummaries;

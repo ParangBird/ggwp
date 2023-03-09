@@ -42,8 +42,8 @@ export default function () {
 
   return (
     <ContentWrapper>
-      <button onClick={all}>all</button>
-      <button onClick={solo}>solo</button>
+      {/*<button onClick={all}>all</button>
+      <button onClick={solo}>solo</button>*/}
       {match.map((m) => (
         <Match match={m} />
       ))}
