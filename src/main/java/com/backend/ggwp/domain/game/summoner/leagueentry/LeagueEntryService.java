@@ -34,7 +34,8 @@ public class LeagueEntryService {
             Thread.sleep(1500);
             String apiURL = "https://kr.api.riotgames.com/lol/league-exp/v4/entries/RANKED_SOLO_5x5/CHALLENGER/I?page=" + page++ + "&api_key=" + API_INFO.getApiKey();
             String result = restApi(apiURL);
-            if (result == null || result.length() == 0 || result.length() == 3) {
+            log.info(result);
+            if (result == null || result.length() <= 3) {
                 break;
             }
             ArrayList<LeagueEntry> challengerList =
@@ -61,7 +62,7 @@ public class LeagueEntryService {
             String apiURL = "https://kr.api.riotgames.com/lol/league-exp/v4/entries/RANKED_SOLO_5x5/" +
                     tier + "/" + rank + "?page=" + page++ + "&api_key=" + API_INFO.getApiKey();
             String result = restApi(apiURL);
-            if (result == null || result.length() == 0 || result.length() == 3) {
+            if (result == null || result.length() <= 3) {
                 break;
             }
             ArrayList<LeagueEntry> leagueEntries =
