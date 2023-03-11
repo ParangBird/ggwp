@@ -31,8 +31,8 @@ public class SummonerInfoService {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public SummonerInfo updateSummonerInfo(String summonerName) {
         String apiURL = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + summonerName + "?api_key=" + API_INFO.getApiKey();
-        StringBuffer result = restApi(apiURL);
-        SummonerInfo summonerInfo = new Gson().fromJson(result.toString(), SummonerInfo.class);
+        String result = restApi(apiURL);
+        SummonerInfo summonerInfo = new Gson().fromJson(result, SummonerInfo.class);
         return summonerInfo;
     }
 
@@ -40,8 +40,8 @@ public class SummonerInfoService {
     @Transactional
     public String getPuuidBySummonerName(String summonerName) {
         String apiURL = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + summonerName + "?api_key=" + API_INFO.getApiKey();
-        StringBuffer result = restApi(apiURL);
-        SummonerInfo summonerInfo = new Gson().fromJson(result.toString(), SummonerInfo.class);
+        String result = restApi(apiURL);
+        SummonerInfo summonerInfo = new Gson().fromJson(result, SummonerInfo.class);
         SummonerInfo summonerInfo1 = summonerInfoRepository.findByName(summonerName).orElseThrow();
         if (!summonerInfo1.getPuuid().equals(summonerInfo1.getPuuid())) {
         }

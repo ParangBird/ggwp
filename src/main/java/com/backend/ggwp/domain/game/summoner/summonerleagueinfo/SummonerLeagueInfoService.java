@@ -17,8 +17,8 @@ public class SummonerLeagueInfoService {
 
     public ArrayList<SummonerLeagueInfo> getAllSummonerLeagueInfo(String encryptedId) {
         String apiURL = "https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/" + encryptedId + "?api_key=" + API_INFO.getApiKey();
-        StringBuffer result = restApi(apiURL);
-        return new Gson().fromJson(result.toString(), new TypeToken<ArrayList<SummonerLeagueInfo>>() {
+        String result = restApi(apiURL);
+        return new Gson().fromJson(result, new TypeToken<ArrayList<SummonerLeagueInfo>>() {
         }.getType());
     }
 }

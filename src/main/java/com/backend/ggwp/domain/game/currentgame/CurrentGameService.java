@@ -17,9 +17,9 @@ public class CurrentGameService {
     public CurrentGameInfo getCurrentGame(String encryptedId) {
         String apiURL = "https://kr.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/" + encryptedId + "?api_key=" + API_INFO.getApiKey();
         //System.out.println("apiURL = " + apiURL);
-        StringBuffer result = restApi(apiURL);
+        String result = restApi(apiURL);
         //System.out.println("result = " + result);
-        CurrentGameInfo currentGameInfo = new Gson().fromJson(result.toString(), CurrentGameInfo.class);
+        CurrentGameInfo currentGameInfo = new Gson().fromJson(result, CurrentGameInfo.class);
         return currentGameInfo;
     }
 }

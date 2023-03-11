@@ -124,23 +124,23 @@ public class MatchSummaryService {
     public ArrayList<String> getMatchIds(String puuid) {
         String apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids?start=0&count=30&api_key=" + API_INFO.getApiKey();
         //log.info("GET RECENT MATCH API : {}", apiURL);
-        StringBuffer result = restApi(apiURL);
-        return new Gson().fromJson(result.toString(), new TypeToken<ArrayList<String>>() {
+        String result = restApi(apiURL);
+        return new Gson().fromJson(result, new TypeToken<ArrayList<String>>() {
         }.getType());
     }
 
     public ArrayList<String> getSoloMatchIds(String puuid) {
         String apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids?queue=420&start=0&count=30&api_key=" + API_INFO.getApiKey();
-        StringBuffer result = restApi(apiURL);
-        return new Gson().fromJson(result.toString(), new TypeToken<ArrayList<String>>() {
+        String result = restApi(apiURL);
+        return new Gson().fromJson(result, new TypeToken<ArrayList<String>>() {
         }.getType());
     }
 
     public Match getMatchInfo(String matchId) {
         String apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/" + matchId + "?api_key=" + API_INFO.getApiKey();
-        StringBuffer result = restApi(apiURL);
+        String result = restApi(apiURL);
         //log.info("MATCH INFO : {}", result.toString());
-        Match match = new Gson().fromJson(result.toString(), Match.class);
+        Match match = new Gson().fromJson(result, Match.class);
         return match;
     }
 

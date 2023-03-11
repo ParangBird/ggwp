@@ -33,12 +33,12 @@ public class LeagueEntryService {
         while (true) {
             Thread.sleep(1500);
             String apiURL = "https://kr.api.riotgames.com/lol/league-exp/v4/entries/RANKED_SOLO_5x5/CHALLENGER/I?page=" + page++ + "&api_key=" + API_INFO.getApiKey();
-            StringBuffer result = restApi(apiURL);
+            String result = restApi(apiURL);
             if (result == null || result.length() == 0 || result.length() == 3) {
                 break;
             }
             ArrayList<LeagueEntry> challengerList =
-                    new Gson().fromJson(result.toString(), new TypeToken<ArrayList<LeagueEntry>>() {
+                    new Gson().fromJson(result, new TypeToken<ArrayList<LeagueEntry>>() {
                     }.getType());
             for (LeagueEntry leagueEntry : challengerList) {
                 leagueEntryRepository.findBySummonerId(leagueEntry.getSummonerId()).ifPresent((prev) -> {
@@ -60,12 +60,12 @@ public class LeagueEntryService {
             Thread.sleep(1500);
             String apiURL = "https://kr.api.riotgames.com/lol/league-exp/v4/entries/RANKED_SOLO_5x5/" +
                     tier + "/" + rank + "?page=" + page++ + "&api_key=" + API_INFO.getApiKey();
-            StringBuffer result = restApi(apiURL);
+            String result = restApi(apiURL);
             if (result == null || result.length() == 0 || result.length() == 3) {
                 break;
             }
             ArrayList<LeagueEntry> leagueEntries =
-                    new Gson().fromJson(result.toString(), new TypeToken<ArrayList<LeagueEntry>>() {
+                    new Gson().fromJson(result, new TypeToken<ArrayList<LeagueEntry>>() {
                     }.getType());
             for (LeagueEntry leagueEntry : leagueEntries) {
                 leagueEntryRepository.findBySummonerId(leagueEntry.getSummonerId()).ifPresent((prev) -> {
