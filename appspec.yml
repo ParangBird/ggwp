@@ -6,7 +6,7 @@ files:
     overwrite: yes
 
 permissions:
-  - object: /
+  - object: /home/ubuntu/ggwp
     pattern: "**"
     onwer: ubuntu
     group: ubuntu
