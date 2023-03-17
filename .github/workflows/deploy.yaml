@@ -3,7 +3,7 @@ name: CI-CD
 on:
   push:
     branches:
-      - main
+      - master
 
 env:
   S3_BUCKET_NAME: s3-ggwp
