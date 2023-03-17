@@ -53,6 +53,10 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+jar{
+    enabled = false
+}
 /*
 
 def frontendDir = "$projectDir/frontend"
