@@ -6,13 +6,13 @@ files:
     overwrite: yes
 
 permissions:
-  - object: /home/ubuntu/ggwp
+  - object: /
     pattern: "**"
     owner: ubuntu
     group: ubuntu
 
 hooks:
   ApplicationStart:
-    - location: scripts/gh_bdeploy.sh
+    - location: scripts/gh_deploy.sh
       timeout: 60
       runas: ubuntu
