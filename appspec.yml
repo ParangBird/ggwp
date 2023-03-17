@@ -8,7 +8,7 @@ files:
 permissions:
   - object: /home/ubuntu/ggwp
     pattern: "**"
-    onwer: ubuntu
+    owner: ubuntu
     group: ubuntu
 
 hooks:
