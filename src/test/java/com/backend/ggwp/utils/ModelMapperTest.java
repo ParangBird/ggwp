@@ -1,4 +1,4 @@
-package com.backend.ggwp;
+package com.backend.ggwp.utils;
 
 import com.backend.ggwp.domain.bbs.post.Post;
 import com.backend.ggwp.domain.bbs.post.PostDTO;

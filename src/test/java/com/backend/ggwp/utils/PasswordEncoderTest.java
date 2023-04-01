@@ -1,6 +1,5 @@
-package com.backend.ggwp;
+package com.backend.ggwp.utils;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

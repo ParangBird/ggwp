@@ -8,6 +8,7 @@ src/main/resources/application.properties
 src/main/resources/application-oauth.properties
 src/main/resources/application-API-KEY.properties
 src/main/resources/application-email.properties
+src/main/resources/application.yml
 
 ### STS ###
 .apt_generated
