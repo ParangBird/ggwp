@@ -3,7 +3,6 @@ package com.backend.ggwp.domain.bbs.user;
 import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
 import com.backend.ggwp.domain.bbs.user.dto.LoginDto;
 import com.backend.ggwp.domain.bbs.user.dto.RegisterDto;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,17 +33,22 @@ class UserServiceTest {
         userService.deleteById(saveId);
     }
 
-    @Disabled
     @Test
     void loginTest() {
-        LoginDto loginDto = new LoginDto("test@naver.com", "123456");
+        Long save = userService.registerUser(GgwpUserDTO
+                .builder()
+                .email("testuser@naver.com")
+                .password("123456")
+                .build());
+        LoginDto loginDto = new LoginDto("testuser@naver.com", "123456");
         GgwpUserDTO userDTO = userService.login(loginDto);
         assertThat(userDTO).isNotNull();
+        userService.deleteById(save);
     }
 
     @Test
     void registerTest() {
-        String newUserEmail = "testEmail@naver.com";
+        String newUserEmail = "testuser@naver.com";
         RegisterDto registerDto = new RegisterDto(newUserEmail, "TESTUSER", "123456", "123456");
         Long id = userService.registerUser(registerDto);
         GgwpUserDTO ggwpUser = userService.findByEmail(newUserEmail);

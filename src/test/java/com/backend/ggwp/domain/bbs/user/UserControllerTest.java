@@ -1,12 +1,10 @@
 package com.backend.ggwp.domain.bbs.user;
 
-import org.junit.jupiter.api.Disabled;
+import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.servlet.http.HttpSession;
@@ -24,19 +22,23 @@ class UserControllerTest {
     MockMvc mock;
     @Autowired
     UserService userService;
-    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    @Disabled
     @Test
     void loginTest() throws Exception {
         String url = "/bbs/login";
+        Long save = userService.registerUser(GgwpUserDTO
+                .builder()
+                .email("testuser@naver.com")
+                .password("123456")
+                .build());
         HttpSession session =
                 mock.perform(
                         post(url)
-                                .param("email", "test@naver.com")
+                                .param("email", "testuser@naver.com")
                                 .param("password", "123456")
                 ).andReturn().getRequest().getSession();
         assertThat(session.getAttribute("ggwpUser")).isNotNull();
+        userService.deleteById(save);
     }
 
     @Test

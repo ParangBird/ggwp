@@ -49,6 +49,11 @@ public class UserService {
     }
 
     @Transactional
+    public Long registerUser(GgwpUserDTO ggwpUserDTO) {
+        return save(ggwpUserDTO);
+    }
+
+    @Transactional
     public Long registerUser(RegisterDto registerDto) {
         String userName = registerDto.getUserName();
         String password = registerDto.getPassword();

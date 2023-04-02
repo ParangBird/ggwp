@@ -12,7 +12,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Testcontainers
-@SpringBootTest()
+@SpringBootTest
 public class TestContainerTest {
     @Container
     static MySQLContainer mySQLContainer = new MySQLContainer();
