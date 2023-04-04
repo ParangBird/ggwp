@@ -1,5 +1,6 @@
-package com.backend.ggwp.auth;
+package com.backend.ggwp.config;
 
+import com.backend.ggwp.domain.bbs.user.oauth.CustomOAuth2UserService;
 import com.backend.ggwp.domain.bbs.user.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

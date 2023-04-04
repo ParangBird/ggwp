@@ -1,6 +1,5 @@
-package com.backend.ggwp.auth;
+package com.backend.ggwp.domain.bbs.user.oauth;
 
-import com.backend.ggwp.domain.bbs.user.PageUser;
 import com.backend.ggwp.domain.bbs.user.Role;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.backend.ggwp.domain.bbs.user;
+package com.backend.ggwp.domain.bbs.user.oauth;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

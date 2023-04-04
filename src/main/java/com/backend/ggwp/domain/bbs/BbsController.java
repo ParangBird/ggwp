@@ -1,6 +1,6 @@
 package com.backend.ggwp.domain.bbs;
 
-import com.backend.ggwp.auth.OauthUser;
+import com.backend.ggwp.domain.bbs.user.oauth.OauthUser;
 import com.backend.ggwp.domain.bbs.post.PostDTO;
 import com.backend.ggwp.domain.bbs.post.PostEnum;
 import com.backend.ggwp.domain.bbs.post.PostService;

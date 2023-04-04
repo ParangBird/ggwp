@@ -1,6 +1,6 @@
 package com.backend.ggwp.websocket;
 
-import com.backend.ggwp.auth.OauthUser;
+import com.backend.ggwp.domain.bbs.user.oauth.OauthUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GgwpUser implements User {
+public class GgwpUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

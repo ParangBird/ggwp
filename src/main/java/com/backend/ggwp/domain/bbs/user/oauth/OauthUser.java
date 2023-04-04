@@ -1,13 +1,11 @@
-package com.backend.ggwp.auth;
+package com.backend.ggwp.domain.bbs.user.oauth;
 
-import com.backend.ggwp.domain.bbs.user.PageUser;
-import com.backend.ggwp.domain.bbs.user.User;
 import lombok.Getter;
 
 import java.io.Serializable;
 
 @Getter
-public class OauthUser implements Serializable, User {
+public class OauthUser implements Serializable {
     private String name;
     private String email;
     //private String nickname;
