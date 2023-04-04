@@ -19,6 +19,8 @@ public class GgwpUser {
     private String password;
     private String email;
     private boolean emailAuth;
+    private String provider;
+    private String providerId;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private List<Post> posts = new ArrayList<>();
