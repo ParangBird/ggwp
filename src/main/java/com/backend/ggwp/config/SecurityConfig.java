@@ -1,7 +1,6 @@
 package com.backend.ggwp.config;
 
 import com.backend.ggwp.domain.bbs.user.oauth.CustomOAuth2UserService;
-import com.backend.ggwp.domain.bbs.user.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,11 +29,12 @@ public class SecurityConfig {
         http.csrf().disable()
                 .headers().frameOptions().disable()
                 .and()
+                .formLogin()
+                .loginPage("/bbs/loginRedirect")
+                .and()
                 .authorizeRequests()
-                .antMatchers("**"/*, "/bbs", "/bbs/login", "/", "/bbs/top",
-                        "/css/**", "/images/**", "/js/**", "/h2-console/**", "/profile"*/).permitAll()
-                .antMatchers("/api/v1/**").hasRole(Role.USER.name())
-                .anyRequest().authenticated()
+                .antMatchers("/bbs/modify/**", "/bbs/write/**").authenticated()
+                .anyRequest().permitAll()
                 .and()
                 .logout().logoutUrl("/bbs/logout").addLogoutHandler((req, res, auth) -> {
                     if (req.getSession() != null) req.getSession().invalidate();

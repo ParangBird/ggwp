@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -25,6 +26,12 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
+    @GetMapping("/bbs/loginRedirect")
+    @ResponseBody
+    public String loginRedirect() {
+        return "redirect for login ...";
+    }
 
     @PostMapping("/bbs/login")
     public String login(@ModelAttribute("loginDto") LoginDto loginDto, HttpSession session, HttpServletResponse response) {
