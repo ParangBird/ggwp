@@ -7,10 +7,12 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@ToString
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class GgwpUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +21,7 @@ public class GgwpUser {
     private String password;
     private String email;
     private boolean emailAuth;
+    private String role;
     private String provider;
     private String providerId;
 
