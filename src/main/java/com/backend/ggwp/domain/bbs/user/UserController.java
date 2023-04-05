@@ -1,7 +1,6 @@
 package com.backend.ggwp.domain.bbs.user;
 
 import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
-import com.backend.ggwp.domain.bbs.user.dto.LoginDto;
 import com.backend.ggwp.domain.bbs.user.dto.RegisterDto;
 import com.backend.ggwp.domain.bbs.user.dto.ResetPasswordDto;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -44,7 +42,7 @@ public class UserController {
         return "redirect:/bbs";
     }
 
-    @PostMapping("/bbs/login")
+/*    @PostMapping("/bbs/login")
     public String login(@ModelAttribute("loginDto") LoginDto loginDto, HttpSession session, HttpServletResponse response) {
         GgwpUserDTO loginUser = userService.login(loginDto);
         if (loginUser == null) {
@@ -55,15 +53,25 @@ public class UserController {
                 out.print("<script>alert('회원 정보를 확인해주세요!'); location.href='/bbs';</script>");
                 out.flush();
                 out.close();
+                return "redirect:/bbs2";
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return "redirect:/bbs";
         }
-        session.setAttribute("ggwpUser", loginUser);
-        return "redirect:/bbs";
-    }
+        else return "redirect:/bbs";
+        return "";
+    }*/
 
+
+/*    @GetMapping("/user")
+    public @ResponseBody
+    String user(@AuthenticationPrincipal PrincipalDetails principal) {
+        System.out.println("Principal : " + principal);
+        //System.out.println("OAuth2 : " + principal.getGgwpUser().getProvider());
+        // iterator 순차 출력 해보기
+        System.out.println("principal.getGgwpUser() = " + principal.getGgwpUser());
+        return "유저 페이지입니다.";
+    }*/
 
     @GetMapping("/bbs/register")
     public String register(Model model) {

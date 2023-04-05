@@ -1,10 +1,9 @@
 package com.backend.ggwp.domain.bbs;
 
-import com.backend.ggwp.domain.bbs.user.oauth.OauthUser;
 import com.backend.ggwp.domain.bbs.post.PostDTO;
 import com.backend.ggwp.domain.bbs.post.PostEnum;
 import com.backend.ggwp.domain.bbs.post.PostService;
-import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
+import com.backend.ggwp.domain.bbs.user.auth.PrincipalDetails;
 import com.backend.ggwp.domain.game.currentgame.CurrentGameService;
 import com.backend.ggwp.domain.game.currentgame.model.CurrentGameInfo;
 import com.backend.ggwp.domain.game.rotationinfo.RotationInfo;
@@ -48,13 +47,9 @@ public class BbsController {
 
     @RequestMapping("/bbs")
     public String index(Model model, @RequestParam(required = false) String postTag) {
-        OauthUser user = (OauthUser) httpSession.getAttribute("user");
-        GgwpUserDTO ggwpUser = (GgwpUserDTO) httpSession.getAttribute("ggwpUser");
-        if (user != null) {
-            model.addAttribute("user", user);
-        } else if (ggwpUser != null) {
-            System.out.println("set ggwpUser");
-            model.addAttribute("user", ggwpUser);
+        PrincipalDetails details = (PrincipalDetails) httpSession.getAttribute("user");
+        if (details != null) {
+            model.addAttribute("user", details.getGgwpUser());
         }
         RotationInfo rotationInfo = rotationInfoService.getRotationInfo();
         List<Integer> freeChampionIds = rotationInfo.getFreeChampionIds();
