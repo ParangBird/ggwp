@@ -14,10 +14,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 @Slf4j
@@ -28,9 +29,17 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/bbs/loginRedirect")
-    @ResponseBody
-    public String loginRedirect() {
-        return "redirect for login ...";
+    public String loginRedirect(HttpServletResponse response) {
+        try {
+            response.setContentType("text/html; charset=utf-8");
+            PrintWriter out = response.getWriter();
+            out.print("<script>alert('로그인을 해 주세요!'); location.href='/bbs';</script>");
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "redirect:/bbs";
     }
 
     @PostMapping("/bbs/login")
