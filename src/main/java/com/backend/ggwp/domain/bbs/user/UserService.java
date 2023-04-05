@@ -20,6 +20,10 @@ public class UserService {
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
 
+    public static final int NON_DUPLICATED = 0;
+    public static final int DUPLICATED_USERNAME = 1;
+    public static final int DUPLICATED_EMAIL = 2;
+
     @Transactional
     public Long save(GgwpUserDTO ggwpUserDTO) {
         String originPassword = ggwpUserDTO.getPassword();
@@ -103,16 +107,22 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public int checkDuplicateUser(String userName, String email) {
-        try {
-            GgwpUserDTO byName = findByName(userName);
-        } catch (Exception e) {
-            return 1;
-        }
-        try {
-            GgwpUserDTO byEmail = findByEmail(email);
-        } catch (Exception e) {
-            return 2;
-        }
-        return 0;
+
+        if (isDuplicatedName(userName)) return DUPLICATED_USERNAME;
+        else if (isDuplicatedEmail(email)) return DUPLICATED_EMAIL;
+        return NON_DUPLICATED;
+    }
+
+    @Transactional(readOnly = true)
+    public boolean isDuplicatedName(String username) {
+        GgwpUser ggwpUser = userRepository.findByName(username).orElse(null);
+        return ggwpUser != null;
+    }
+
+
+    @Transactional(readOnly = true)
+    public boolean isDuplicatedEmail(String email) {
+        GgwpUser ggwpUser = userRepository.findByEmail(email).orElse(null);
+        return ggwpUser != null;
     }
 }

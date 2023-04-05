@@ -31,6 +31,7 @@ public class SecurityConfig {
                 .and()
                 .formLogin()
                 .loginPage("/bbs/loginRedirect")
+                .loginProcessingUrl("/bbs/login")
                 .and()
                 .authorizeRequests()
                 .antMatchers("/bbs/modify/**", "/bbs/write/**").authenticated()

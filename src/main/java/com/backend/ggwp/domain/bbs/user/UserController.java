@@ -6,6 +6,7 @@ import com.backend.ggwp.domain.bbs.user.dto.RegisterDto;
 import com.backend.ggwp.domain.bbs.user.dto.ResetPasswordDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +28,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/bbs/loginRedirect")
     public String loginRedirect(HttpServletResponse response) {
@@ -47,7 +49,7 @@ public class UserController {
         GgwpUserDTO loginUser = userService.login(loginDto);
         if (loginUser == null) {
             log.info("로그인 실패");
-/*            try {
+            try {
                 response.setContentType("text/html; charset=utf-8");
                 PrintWriter out = response.getWriter();
                 out.print("<script>alert('회원 정보를 확인해주세요!'); location.href='/bbs';</script>");
@@ -55,7 +57,7 @@ public class UserController {
                 out.close();
             } catch (IOException e) {
                 e.printStackTrace();
-            }*/
+            }
             return "redirect:/bbs";
         }
         session.setAttribute("ggwpUser", loginUser);
@@ -72,7 +74,6 @@ public class UserController {
     @PostMapping("/bbs/register")
     public String register(@Validated @ModelAttribute("registerDto") RegisterDto registerDto,
                            BindingResult bindingResult) {
-
         if (bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
             for (ObjectError allError : allErrors) {
@@ -81,20 +82,18 @@ public class UserController {
             log.info("retry to register");
             return "bbs/register";
         }
-
         if (!registerDto.getPassword().equals(registerDto.getPasswordCheck())) {
             log.info("password != passwordCheck");
             bindingResult.rejectValue("passwordCheck", "패스워드 확인 해주세요", "패스워드 확인 해주세요");
             return "bbs/register";
         }
-
         int duplicateNumber = userService.checkDuplicateUser(registerDto.getUserName(), registerDto.getEmail());
 
-        if (duplicateNumber == 1) {
+        if (duplicateNumber == UserService.DUPLICATED_USERNAME) {
             log.info("email duplicated");
             bindingResult.rejectValue("email", "이미 가입된 이메일입니다", "이미 가입된 이메일입니다");
             return "bbs/register";
-        } else if (duplicateNumber == 2) {
+        } else if (duplicateNumber == UserService.DUPLICATED_EMAIL) {
             log.info("userName duplicated");
             bindingResult.rejectValue("userName", "다른 닉네임을 입력해주세요", "다른 닉네임을 입력해주세요");
             return "bbs/register";

@@ -12,4 +12,6 @@ public class GgwpUserDTO {
     private String password;
     private String email;
     private boolean emailAuth;
+    private String provider;
+    private String providerId;
 }
