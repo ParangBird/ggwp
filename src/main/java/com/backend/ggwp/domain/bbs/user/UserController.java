@@ -1,10 +1,12 @@
 package com.backend.ggwp.domain.bbs.user;
 
+import com.backend.ggwp.domain.bbs.user.auth.PrincipalDetails;
 import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
 import com.backend.ggwp.domain.bbs.user.dto.RegisterDto;
 import com.backend.ggwp.domain.bbs.user.dto.ResetPasswordDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -42,28 +45,7 @@ public class UserController {
         return "redirect:/bbs";
     }
 
-/*    @PostMapping("/bbs/login")
-    public String login(@ModelAttribute("loginDto") LoginDto loginDto, HttpSession session, HttpServletResponse response) {
-        GgwpUserDTO loginUser = userService.login(loginDto);
-        if (loginUser == null) {
-            log.info("로그인 실패");
-            try {
-                response.setContentType("text/html; charset=utf-8");
-                PrintWriter out = response.getWriter();
-                out.print("<script>alert('회원 정보를 확인해주세요!'); location.href='/bbs';</script>");
-                out.flush();
-                out.close();
-                return "redirect:/bbs2";
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        else return "redirect:/bbs";
-        return "";
-    }*/
-
-
-/*    @GetMapping("/user")
+    @GetMapping("/user")
     public @ResponseBody
     String user(@AuthenticationPrincipal PrincipalDetails principal) {
         System.out.println("Principal : " + principal);
@@ -71,7 +53,7 @@ public class UserController {
         // iterator 순차 출력 해보기
         System.out.println("principal.getGgwpUser() = " + principal.getGgwpUser());
         return "유저 페이지입니다.";
-    }*/
+    }
 
     @GetMapping("/bbs/register")
     public String register(Model model) {

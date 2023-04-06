@@ -23,7 +23,6 @@ public class ExceptionHandler {
     }
 
 
-    // TODO : 로그 찍히게
     @org.springframework.web.bind.annotation.ExceptionHandler({Exception.class, ApiServerException.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String internal500(Exception e) {
