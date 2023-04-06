@@ -27,13 +27,13 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     public PrincipalDetails(ModelMapper modelMapper, GgwpUserDTO ggwpUserDTO, Map<String, Object> attributes) {
         this.modelMapper = modelMapper;
-        this.ggwpUser = GgwpUser.builder().email(ggwpUserDTO.getEmail()).build();
+        this.ggwpUser = modelMapper.map(ggwpUserDTO, GgwpUser.class);
         this.attributes = attributes;
     }
 
     @Override
     public String getName() {
-        return null;
+        return ggwpUser.getName();
     }
 
     @Override
@@ -45,8 +45,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collect = new ArrayList<GrantedAuthority>();
         collect.add(() -> {
-            if (ggwpUser.getProvider() == null) return "oauth_user";
-            else return "normal_user";
+            return ggwpUser.getRole();
         });
         return collect;
     }
@@ -58,7 +57,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     @Override
     public String getUsername() {
-        return ggwpUser.getName();
+        return ggwpUser.getEmail();
     }
 
     @Override

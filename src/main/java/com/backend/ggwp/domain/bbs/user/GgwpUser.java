@@ -36,6 +36,10 @@ public class GgwpUser {
         emailAuth = false;
     }
 
+    public void changeEmail(String email) {
+        this.email = email;
+    }
+
     public void setEmailAuth(boolean emailAuth) {
         this.emailAuth = emailAuth;
     }

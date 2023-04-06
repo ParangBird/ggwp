@@ -63,12 +63,14 @@ public class UserService {
         String password = registerDto.getPassword();
         String email = registerDto.getEmail();
 
-        GgwpUserDTO newGgwpUser = GgwpUserDTO.
-                builder().
-                name(userName).
-                password(password).
-                email(email).
-                build();
+        GgwpUserDTO newGgwpUser = GgwpUserDTO
+                .builder()
+                .name(userName)
+                .password(password)
+                .email(email)
+                .emailAuth(false)
+                .role("normal_user")
+                .build();
 
         return save(newGgwpUser);
     }

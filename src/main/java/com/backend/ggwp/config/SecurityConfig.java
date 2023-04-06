@@ -1,7 +1,7 @@
 package com.backend.ggwp.config;
 
 import com.backend.ggwp.domain.bbs.user.auth.PrincipalDetails;
-import com.backend.ggwp.domain.bbs.user.oauth.CustomOAuth2UserService;
+import com.backend.ggwp.domain.bbs.user.oauth.PrincipalOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +26,7 @@ import java.io.PrintWriter;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final CustomOAuth2UserService customOAuth2UserService;
+    private final PrincipalOAuth2UserService principalOAuth2UserService;
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
@@ -82,7 +82,7 @@ public class SecurityConfig {
                 .and()
                 .oauth2Login()
                 .userInfoEndpoint()
-                .userService(customOAuth2UserService);
+                .userService(principalOAuth2UserService);
         return http.build();
     }
 }

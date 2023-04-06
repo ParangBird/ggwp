@@ -10,4 +10,6 @@ public interface UserRepository extends JpaRepository<GgwpUser, Long> {
     Optional<GgwpUser> findByName(String username);
 
     Optional<GgwpUser> findByEmail(String email);
+
+    Optional<GgwpUser> findByProviderAndProviderId(String provider, String providerId);
 }
