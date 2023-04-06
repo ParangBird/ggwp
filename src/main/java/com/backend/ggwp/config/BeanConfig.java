@@ -1,6 +1,7 @@
 package com.backend.ggwp.config;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.NameTokenizers;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,7 +13,9 @@ public class BeanConfig {
         modelMapper.
                 getConfiguration()
                 .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE)
-                .setFieldMatchingEnabled(true);
+                .setFieldMatchingEnabled(true)
+                .setSourceNameTokenizer(NameTokenizers.UNDERSCORE)
+                .setDestinationNameTokenizer(NameTokenizers.CAMEL_CASE);
         return modelMapper;
     }
 }
