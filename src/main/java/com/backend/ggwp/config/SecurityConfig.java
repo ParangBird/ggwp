@@ -81,6 +81,14 @@ public class SecurityConfig {
                 })
                 .and()
                 .oauth2Login()
+                .successHandler(new AuthenticationSuccessHandler() {
+                    @Override
+                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                        PrincipalDetails details = (PrincipalDetails) authentication.getPrincipal();
+                        request.getSession().setAttribute("user", details);
+                        response.sendRedirect("/bbs");
+                    }
+                })
                 .userInfoEndpoint()
                 .userService(principalOAuth2UserService);
         return http.build();
