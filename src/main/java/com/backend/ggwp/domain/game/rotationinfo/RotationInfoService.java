@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import static com.backend.ggwp.utils.RestAPI.restApi;
+import static com.backend.ggwp.utils.RestAPI.riotRestAPI;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -16,7 +16,7 @@ public class RotationInfoService {
 
     public RotationInfo getRotationInfo() {
         String apiURL = "https://kr.api.riotgames.com/lol/platform/v3/champion-rotations?api_key=" + API_INFO.getApiKey();
-        String s = restApi(apiURL);
+        String s = riotRestAPI(apiURL);
         return new Gson().fromJson(s, RotationInfo.class);
     }
 

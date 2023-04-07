@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import static com.backend.ggwp.utils.RestAPI.restApi;
+import static com.backend.ggwp.utils.RestAPI.riotRestAPI;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +17,7 @@ public class CurrentGameService {
     public CurrentGameInfo getCurrentGame(String encryptedId) {
         String apiURL = "https://kr.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/" + encryptedId + "?api_key=" + API_INFO.getApiKey();
         //System.out.println("apiURL = " + apiURL);
-        String result = restApi(apiURL);
+        String result = riotRestAPI(apiURL);
         //System.out.println("result = " + result);
         CurrentGameInfo currentGameInfo = new Gson().fromJson(result, CurrentGameInfo.class);
         return currentGameInfo;

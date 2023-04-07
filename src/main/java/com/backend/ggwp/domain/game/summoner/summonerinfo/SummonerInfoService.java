@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
-import static com.backend.ggwp.utils.RestAPI.restApi;
+import static com.backend.ggwp.utils.RestAPI.riotRestAPI;
 
 @Slf4j
 @Service
@@ -31,7 +31,7 @@ public class SummonerInfoService {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public SummonerInfo updateSummonerInfo(String summonerName) {
         String apiURL = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + summonerName + "?api_key=" + API_INFO.getApiKey();
-        String result = restApi(apiURL);
+        String result = riotRestAPI(apiURL);
         SummonerInfo summonerInfo = new Gson().fromJson(result, SummonerInfo.class);
         return summonerInfo;
     }
@@ -40,7 +40,7 @@ public class SummonerInfoService {
     @Transactional
     public String getPuuidBySummonerName(String summonerName) {
         String apiURL = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + summonerName + "?api_key=" + API_INFO.getApiKey();
-        String result = restApi(apiURL);
+        String result = riotRestAPI(apiURL);
         SummonerInfo summonerInfo = new Gson().fromJson(result, SummonerInfo.class);
         SummonerInfo summonerInfo1 = summonerInfoRepository.findByName(summonerName).orElseThrow();
         if (!summonerInfo1.getPuuid().equals(summonerInfo1.getPuuid())) {

@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
-import static com.backend.ggwp.utils.RestAPI.restApi;
+import static com.backend.ggwp.utils.RestAPI.riotRestAPI;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,7 +33,7 @@ public class LeagueEntryService {
         while (true) {
             Thread.sleep(1500);
             String apiURL = "https://kr.api.riotgames.com/lol/league-exp/v4/entries/RANKED_SOLO_5x5/CHALLENGER/I?page=" + page++ + "&api_key=" + API_INFO.getApiKey();
-            String result = restApi(apiURL);
+            String result = riotRestAPI(apiURL);
             log.info(result);
             if (result == null || result.length() <= 3) {
                 break;
@@ -61,7 +61,7 @@ public class LeagueEntryService {
             Thread.sleep(1500);
             String apiURL = "https://kr.api.riotgames.com/lol/league-exp/v4/entries/RANKED_SOLO_5x5/" +
                     tier + "/" + rank + "?page=" + page++ + "&api_key=" + API_INFO.getApiKey();
-            String result = restApi(apiURL);
+            String result = riotRestAPI(apiURL);
             if (result == null || result.length() <= 3) {
                 break;
             }

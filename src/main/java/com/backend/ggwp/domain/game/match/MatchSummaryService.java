@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.backend.ggwp.utils.RestAPI.restApi;
+import static com.backend.ggwp.utils.RestAPI.riotRestAPI;
 
 @AllArgsConstructor
 @Service
@@ -124,21 +124,21 @@ public class MatchSummaryService {
     public ArrayList<String> getMatchIds(String puuid) {
         String apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids?start=0&count=30&api_key=" + API_INFO.getApiKey();
         //log.info("GET RECENT MATCH API : {}", apiURL);
-        String result = restApi(apiURL);
+        String result = riotRestAPI(apiURL);
         return new Gson().fromJson(result, new TypeToken<ArrayList<String>>() {
         }.getType());
     }
 
     public ArrayList<String> getSoloMatchIds(String puuid) {
         String apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids?queue=420&start=0&count=30&api_key=" + API_INFO.getApiKey();
-        String result = restApi(apiURL);
+        String result = riotRestAPI(apiURL);
         return new Gson().fromJson(result, new TypeToken<ArrayList<String>>() {
         }.getType());
     }
 
     public Match getMatchInfo(String matchId) {
         String apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/" + matchId + "?api_key=" + API_INFO.getApiKey();
-        String result = restApi(apiURL);
+        String result = riotRestAPI(apiURL);
         //log.info("MATCH INFO : {}", result.toString());
         Match match = new Gson().fromJson(result, Match.class);
         return match;

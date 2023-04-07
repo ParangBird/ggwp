@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
 
-import static com.backend.ggwp.utils.RestAPI.restApi;
+import static com.backend.ggwp.utils.RestAPI.riotRestAPI;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -90,7 +90,7 @@ public class LeagueItemService {
 
     public LeagueList getChallengerLeague() {
         String apiURL = "https://kr.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/RANKED_SOLO_5x5?api_key=" + API_INFO.getApiKey();
-        String result = restApi(apiURL);
+        String result = riotRestAPI(apiURL);
         LeagueList challengerList = new Gson().fromJson(result, LeagueList.class);
         for (LeagueItem c : challengerList.getEntries())
             c.setSummonerRank("Challenger");
@@ -99,7 +99,7 @@ public class LeagueItemService {
 
     public LeagueList getGrandMasterLeague() {
         String apiURL = "https://kr.api.riotgames.com/lol/league/v4/grandmasterleagues/by-queue/RANKED_SOLO_5x5?api_key=" + API_INFO.getApiKey();
-        String result = restApi(apiURL);
+        String result = riotRestAPI(apiURL);
         LeagueList grandMasterList = new Gson().fromJson(result, LeagueList.class);
         for (LeagueItem gm : grandMasterList.getEntries())
             gm.setSummonerRank("GrandMaster");
@@ -109,7 +109,7 @@ public class LeagueItemService {
 
     public LeagueList getMasterLeague() {
         String apiURL = "https://kr.api.riotgames.com/lol/league/v4/masterleagues/by-queue/RANKED_SOLO_5x5?api_key=" + API_INFO.getApiKey();
-        String result = restApi(apiURL);
+        String result = riotRestAPI(apiURL);
         LeagueList masterList = new Gson().fromJson(result, LeagueList.class);
         for (LeagueItem m : masterList.getEntries())
             m.setSummonerRank("Master");

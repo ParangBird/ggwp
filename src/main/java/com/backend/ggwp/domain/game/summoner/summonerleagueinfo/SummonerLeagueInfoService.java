@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
-import static com.backend.ggwp.utils.RestAPI.restApi;
+import static com.backend.ggwp.utils.RestAPI.riotRestAPI;
 
 @RequiredArgsConstructor
 @Service
@@ -17,7 +17,7 @@ public class SummonerLeagueInfoService {
 
     public ArrayList<SummonerLeagueInfo> getAllSummonerLeagueInfo(String encryptedId) {
         String apiURL = "https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/" + encryptedId + "?api_key=" + API_INFO.getApiKey();
-        String result = restApi(apiURL);
+        String result = riotRestAPI(apiURL);
         return new Gson().fromJson(result, new TypeToken<ArrayList<SummonerLeagueInfo>>() {
         }.getType());
     }
