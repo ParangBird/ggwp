@@ -1,4 +1,4 @@
-package com.backend.ggwp.domain.bbs.user;
+package com.backend.ggwp.domain.bbs.user.user;
 
 import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
 import com.backend.ggwp.domain.bbs.user.dto.LoginDto;

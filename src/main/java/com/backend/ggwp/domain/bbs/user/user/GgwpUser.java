@@ -1,4 +1,4 @@
-package com.backend.ggwp.domain.bbs.user;
+package com.backend.ggwp.domain.bbs.user.user;
 
 import com.backend.ggwp.domain.bbs.post.Post;
 import lombok.*;

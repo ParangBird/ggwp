@@ -1,6 +1,6 @@
 package com.backend.ggwp.domain.bbs.user.auth;
 
-import com.backend.ggwp.domain.bbs.user.GgwpUser;
+import com.backend.ggwp.domain.bbs.user.user.GgwpUser;
 import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
 import lombok.Getter;
 import org.modelmapper.ModelMapper;

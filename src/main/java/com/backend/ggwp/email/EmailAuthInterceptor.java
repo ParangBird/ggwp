@@ -1,6 +1,6 @@
 package com.backend.ggwp.email;
 
-import com.backend.ggwp.domain.bbs.user.GgwpUser;
+import com.backend.ggwp.domain.bbs.user.user.GgwpUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;

@@ -1,6 +1,6 @@
 package com.backend.ggwp.domain.bbs.post;
 
-import com.backend.ggwp.domain.bbs.user.UserService;
+import com.backend.ggwp.domain.bbs.user.user.UserService;
 import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

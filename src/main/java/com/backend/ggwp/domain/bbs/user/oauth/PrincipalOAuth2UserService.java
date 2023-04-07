@@ -1,7 +1,7 @@
 package com.backend.ggwp.domain.bbs.user.oauth;
 
-import com.backend.ggwp.domain.bbs.user.GgwpUser;
-import com.backend.ggwp.domain.bbs.user.UserRepository;
+import com.backend.ggwp.domain.bbs.user.user.GgwpUser;
+import com.backend.ggwp.domain.bbs.user.user.UserRepository;
 import com.backend.ggwp.domain.bbs.user.auth.PrincipalDetails;
 import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
 import com.backend.ggwp.domain.bbs.user.nickname.RandomNicknameService;

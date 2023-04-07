@@ -1,6 +1,6 @@
 package com.backend.ggwp.utils;
 
-import com.backend.ggwp.domain.bbs.user.UserService;
+import com.backend.ggwp.domain.bbs.user.user.UserService;
 import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

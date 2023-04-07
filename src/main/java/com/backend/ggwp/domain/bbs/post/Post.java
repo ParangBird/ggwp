@@ -1,7 +1,7 @@
 package com.backend.ggwp.domain.bbs.post;
 
 import com.backend.ggwp.domain.time.BaseTimeEntity;
-import com.backend.ggwp.domain.bbs.user.GgwpUser;
+import com.backend.ggwp.domain.bbs.user.user.GgwpUser;
 import lombok.*;
 
 import javax.persistence.*;
