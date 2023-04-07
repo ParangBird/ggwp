@@ -4,6 +4,7 @@ import com.backend.ggwp.domain.bbs.user.GgwpUser;
 import com.backend.ggwp.domain.bbs.user.UserRepository;
 import com.backend.ggwp.domain.bbs.user.auth.PrincipalDetails;
 import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
+import com.backend.ggwp.domain.bbs.user.nickname.RandomNicknameService;
 import com.backend.ggwp.domain.bbs.user.oauth.provider.GoogleUserInfo;
 import com.backend.ggwp.domain.bbs.user.oauth.provider.NaverUserInfo;
 import com.backend.ggwp.domain.bbs.user.oauth.provider.OAuth2UserInfo;
@@ -29,6 +30,8 @@ public class PrincipalOAuth2UserService extends DefaultOAuth2UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    private final RandomNicknameService randomNicknameService;
+    private final static int NICKNAME_MAX_LENGTH = 8;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -64,7 +67,7 @@ public class PrincipalOAuth2UserService extends DefaultOAuth2UserService {
             // user의 패스워드가 null이기 때문에 OAuth 유저는 일반적인 로그인을 할 수 없음.
             log.info("없어서 새로 만들게요");
             user = GgwpUser.builder()
-                    .name(oAuth2UserInfo.getProvider() + "_" + oAuth2UserInfo.getProviderId())
+                    .name(randomNicknameService.randomNickname(NICKNAME_MAX_LENGTH))
                     .password(bCryptPasswordEncoder.encode(UUID.randomUUID().toString()))
                     .email(oAuth2UserInfo.getEmail())
                     .role("oauth2_user")
