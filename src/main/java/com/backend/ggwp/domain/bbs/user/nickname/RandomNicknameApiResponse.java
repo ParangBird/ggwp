@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class NicknameApiResponse {
+public class RandomNicknameApiResponse {
     @Expose
     @SerializedName("words")
     private List<String> words;
