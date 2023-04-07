@@ -17,7 +17,7 @@ import java.net.URL;
 @Slf4j
 public class RestAPI {
 
-    public static String restApi(String apiURL) {
+    public static String riotRestAPI(String apiURL) {
         URI uri = UriComponentsBuilder
                 .fromUriString(apiURL)
                 .encode()
@@ -33,6 +33,21 @@ public class RestAPI {
         } else if (responseCode == 404) {
             throw new ApiServerNoSuchDataException("no such data in api server");
         } else {
+            throw new ApiServerException("api server has problem");
+        }
+        return responseEntity.getBody();
+    }
+
+    public static String randomNicknameAPI(int count, int maxLength) {
+        URI uri = UriComponentsBuilder
+                .fromUriString("https://nickname.hwanmoo.kr/?format=json&count=" + count + "&max_length=" + maxLength)
+                .encode()
+                .build()
+                .toUri();
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(uri, String.class);
+        int responseCode = responseEntity.getStatusCodeValue();
+        if (!(responseCode >= 200 && responseCode <= 300)) {
             throw new ApiServerException("api server has problem");
         }
         return responseEntity.getBody();
