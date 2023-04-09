@@ -18,6 +18,7 @@ import java.net.URL;
 public class RestAPI {
 
     public static String riotRestAPI(String apiURL) {
+        log.info("Riot API called : {}", apiURL);
         URI uri = UriComponentsBuilder
                 .fromUriString(apiURL)
                 .encode()
@@ -44,6 +45,7 @@ public class RestAPI {
                 .encode()
                 .build()
                 .toUri();
+        log.info("Random Nickname Generate API called : {}", uri.toString());
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(uri, String.class);
         int responseCode = responseEntity.getStatusCodeValue();

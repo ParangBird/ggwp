@@ -51,7 +51,7 @@ public class BbsController {
         if (details != null) {
             model.addAttribute("user", details.getGgwpUser());
         }
-        RotationInfo rotationInfo = rotationInfoService.getRotationInfo();
+        RotationInfo rotationInfo = rotationInfoService.getRotationInfo("key");
         List<Integer> freeChampionIds = rotationInfo.getFreeChampionIds();
         if (freeChampionIds == null) {
             throw new InvalidApiKeyException("invalid api key");
