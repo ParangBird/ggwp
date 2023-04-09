@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 public class RandomNicknameService {
 
     private final RandomNicknameRepository randomNicknameRepository;
+    private final Gson gson;
 
     public String randomNickname(int maxLength) {
         if (maxLength < 6) {
             log.warn("maxLength 는 6 이상이어야 하므로 자동으로 length = 6인 닉네임 생성");
         }
-        Gson gson = new Gson();
         String nickname = "";
         do {
             String response = RestAPI.randomNicknameAPI(1, maxLength);

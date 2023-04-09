@@ -15,13 +15,13 @@ import static com.backend.ggwp.utils.RestAPI.riotRestAPI;
 @Service
 public class RotationInfoService {
     private final ApiInfo API_INFO;
+    private final Gson gson;
 
     @Cacheable(key = "#key", value = RedisConfig.CACHE_KEY_TEST, cacheManager = "redisCacheManager")
     public RotationInfo getRotationInfo(String key) {
         String apiURL = "https://kr.api.riotgames.com/lol/platform/v3/champion-rotations?api_key=" + API_INFO.getApiKey();
         String s = riotRestAPI(apiURL);
-        RotationInfo rotationInfo = new Gson().fromJson(s, RotationInfo.class);
-
+        RotationInfo rotationInfo = gson.fromJson(s, RotationInfo.class);
         return rotationInfo;
     }
 

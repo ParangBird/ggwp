@@ -19,6 +19,7 @@ import static com.backend.ggwp.utils.RestAPI.riotRestAPI;
 public class LeagueEntryService {
     private final ApiInfo API_INFO;
     private final LeagueEntryRepository leagueEntryRepository;
+    private final Gson gson;
     //    RATE LIMITS
     //  20 requests every 1 seconds(s)
     //  100 requests every 2 minutes(s)
@@ -39,7 +40,7 @@ public class LeagueEntryService {
                 break;
             }
             ArrayList<LeagueEntry> challengerList =
-                    new Gson().fromJson(result, new TypeToken<ArrayList<LeagueEntry>>() {
+                    gson.fromJson(result, new TypeToken<ArrayList<LeagueEntry>>() {
                     }.getType());
             for (LeagueEntry leagueEntry : challengerList) {
                 leagueEntryRepository.findBySummonerId(leagueEntry.getSummonerId()).ifPresent((prev) -> {
@@ -66,7 +67,7 @@ public class LeagueEntryService {
                 break;
             }
             ArrayList<LeagueEntry> leagueEntries =
-                    new Gson().fromJson(result, new TypeToken<ArrayList<LeagueEntry>>() {
+                    gson.fromJson(result, new TypeToken<ArrayList<LeagueEntry>>() {
                     }.getType());
             for (LeagueEntry leagueEntry : leagueEntries) {
                 leagueEntryRepository.findBySummonerId(leagueEntry.getSummonerId()).ifPresent((prev) -> {

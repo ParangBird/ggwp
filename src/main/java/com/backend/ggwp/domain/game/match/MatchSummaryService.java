@@ -22,6 +22,7 @@ import static com.backend.ggwp.utils.RestAPI.riotRestAPI;
 public class MatchSummaryService {
     private final MatchSummaryRepository matchSummaryRepository;
     private final ApiInfo API_INFO;
+    private final Gson gson;
 
     @Transactional(readOnly = true)
     public Boolean matchExist(String name, String matchId) {
@@ -125,14 +126,14 @@ public class MatchSummaryService {
         String apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids?start=0&count=30&api_key=" + API_INFO.getApiKey();
         //log.info("GET RECENT MATCH API : {}", apiURL);
         String result = riotRestAPI(apiURL);
-        return new Gson().fromJson(result, new TypeToken<ArrayList<String>>() {
+        return gson.fromJson(result, new TypeToken<ArrayList<String>>() {
         }.getType());
     }
 
     public ArrayList<String> getSoloMatchIds(String puuid) {
         String apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids?queue=420&start=0&count=30&api_key=" + API_INFO.getApiKey();
         String result = riotRestAPI(apiURL);
-        return new Gson().fromJson(result, new TypeToken<ArrayList<String>>() {
+        return gson.fromJson(result, new TypeToken<ArrayList<String>>() {
         }.getType());
     }
 
@@ -140,7 +141,7 @@ public class MatchSummaryService {
         String apiURL = "https://asia.api.riotgames.com/lol/match/v5/matches/" + matchId + "?api_key=" + API_INFO.getApiKey();
         String result = riotRestAPI(apiURL);
         //log.info("MATCH INFO : {}", result.toString());
-        Match match = new Gson().fromJson(result, Match.class);
+        Match match = gson.fromJson(result, Match.class);
         return match;
     }
 

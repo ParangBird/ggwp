@@ -14,12 +14,14 @@ import static com.backend.ggwp.utils.RestAPI.riotRestAPI;
 @Slf4j
 public class CurrentGameService {
     private final ApiInfo API_INFO;
+    private final Gson gson;
+
     public CurrentGameInfo getCurrentGame(String encryptedId) {
         String apiURL = "https://kr.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/" + encryptedId + "?api_key=" + API_INFO.getApiKey();
         //System.out.println("apiURL = " + apiURL);
         String result = riotRestAPI(apiURL);
         //System.out.println("result = " + result);
-        CurrentGameInfo currentGameInfo = new Gson().fromJson(result, CurrentGameInfo.class);
+        CurrentGameInfo currentGameInfo = gson.fromJson(result, CurrentGameInfo.class);
         return currentGameInfo;
     }
 }

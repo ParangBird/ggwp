@@ -22,6 +22,7 @@ import static com.backend.ggwp.utils.RestAPI.riotRestAPI;
 public class LeagueItemService {
     private final LeagueItemRepository leagueItemRepository;
     private final ApiInfo API_INFO;
+    private final Gson gson;
 
     public ArrayList<Optional<LeagueItem>> findRank50BySummonerName(String summonerName) {
         ArrayList<Optional<LeagueItem>> leagueItems = new ArrayList<>();
@@ -91,7 +92,7 @@ public class LeagueItemService {
     public LeagueList getChallengerLeague() {
         String apiURL = "https://kr.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/RANKED_SOLO_5x5?api_key=" + API_INFO.getApiKey();
         String result = riotRestAPI(apiURL);
-        LeagueList challengerList = new Gson().fromJson(result, LeagueList.class);
+        LeagueList challengerList = gson.fromJson(result, LeagueList.class);
         for (LeagueItem c : challengerList.getEntries())
             c.setSummonerRank("Challenger");
         return challengerList;
@@ -100,7 +101,7 @@ public class LeagueItemService {
     public LeagueList getGrandMasterLeague() {
         String apiURL = "https://kr.api.riotgames.com/lol/league/v4/grandmasterleagues/by-queue/RANKED_SOLO_5x5?api_key=" + API_INFO.getApiKey();
         String result = riotRestAPI(apiURL);
-        LeagueList grandMasterList = new Gson().fromJson(result, LeagueList.class);
+        LeagueList grandMasterList = gson.fromJson(result, LeagueList.class);
         for (LeagueItem gm : grandMasterList.getEntries())
             gm.setSummonerRank("GrandMaster");
         return grandMasterList;
@@ -110,7 +111,7 @@ public class LeagueItemService {
     public LeagueList getMasterLeague() {
         String apiURL = "https://kr.api.riotgames.com/lol/league/v4/masterleagues/by-queue/RANKED_SOLO_5x5?api_key=" + API_INFO.getApiKey();
         String result = riotRestAPI(apiURL);
-        LeagueList masterList = new Gson().fromJson(result, LeagueList.class);
+        LeagueList masterList = gson.fromJson(result, LeagueList.class);
         for (LeagueItem m : masterList.getEntries())
             m.setSummonerRank("Master");
         return masterList;

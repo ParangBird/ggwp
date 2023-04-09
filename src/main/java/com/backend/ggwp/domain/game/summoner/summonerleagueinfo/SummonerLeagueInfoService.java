@@ -14,11 +14,12 @@ import static com.backend.ggwp.utils.RestAPI.riotRestAPI;
 @Service
 public class SummonerLeagueInfoService {
     private final ApiInfo API_INFO;
+    private final Gson gson;
 
     public ArrayList<SummonerLeagueInfo> getAllSummonerLeagueInfo(String encryptedId) {
         String apiURL = "https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/" + encryptedId + "?api_key=" + API_INFO.getApiKey();
         String result = riotRestAPI(apiURL);
-        return new Gson().fromJson(result, new TypeToken<ArrayList<SummonerLeagueInfo>>() {
+        return gson.fromJson(result, new TypeToken<ArrayList<SummonerLeagueInfo>>() {
         }.getType());
     }
 }
