@@ -4,7 +4,7 @@ import com.backend.ggwp.exception.ApiServerException;
 import com.backend.ggwp.exception.ApiServerNoSuchDataException;
 import com.backend.ggwp.exception.InvalidApiKeyException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -18,14 +18,22 @@ import java.net.URL;
 public class RestAPI {
 
     public static String riotRestAPI(String apiURL) {
-        log.info("Riot API called : {}", apiURL);
         URI uri = UriComponentsBuilder
                 .fromUriString(apiURL)
                 .encode()
                 .build()
                 .toUri();
+        log.info("Riot API called : {}", uri);
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(uri, String.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+        HttpEntity req = new HttpEntity(headers);
+        ResponseEntity<String> responseEntity = restTemplate.exchange(
+                uri,
+                HttpMethod.GET,
+                req,
+                String.class
+        );
         int responseCode = responseEntity.getStatusCodeValue();
         if (responseCode >= 200 && responseCode <= 300) {
 

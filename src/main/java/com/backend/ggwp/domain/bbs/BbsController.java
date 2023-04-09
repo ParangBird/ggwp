@@ -5,21 +5,20 @@ import com.backend.ggwp.domain.bbs.post.PostEnum;
 import com.backend.ggwp.domain.bbs.post.PostService;
 import com.backend.ggwp.domain.bbs.user.auth.PrincipalDetails;
 import com.backend.ggwp.domain.game.currentgame.CurrentGameService;
-import com.backend.ggwp.domain.game.currentgame.model.CurrentGameInfo;
 import com.backend.ggwp.domain.game.rotationinfo.RotationInfo;
 import com.backend.ggwp.domain.game.rotationinfo.RotationInfoService;
-import com.backend.ggwp.domain.game.summoner.summonerinfo.SummonerInfo;
 import com.backend.ggwp.domain.game.summoner.summonerinfo.SummonerInfoService;
-import com.backend.ggwp.domain.game.summoner.summonerleagueinfo.SummonerLeagueInfo;
 import com.backend.ggwp.domain.game.summoner.summonerleagueinfo.SummonerLeagueInfoService;
 import com.backend.ggwp.exception.InvalidApiKeyException;
 import com.backend.ggwp.utils.ApiInfo;
-import com.backend.ggwp.utils.StringFormat;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
@@ -579,7 +578,7 @@ public class BbsController {
         return name;
     }
 
-    @ResponseBody
+    /*@ResponseBody
     @GetMapping("/search/{summonerName}")
     public String search(Model model, @PathVariable("summonerName") String summonerName) throws UnsupportedEncodingException {
         SummonerInfo summonerInfo = summonerInfoService.getSummonerInfo(StringFormat.setApiString(summonerName));
@@ -587,7 +586,7 @@ public class BbsController {
         if (summonerInfo.getSummonerId() == null)
             return "none";
 
-        String encryptedId = summonerInfo.getSummonerId();
+        String encryptedId = summonerInfo.getAccountId();
         ArrayList<SummonerLeagueInfo> summoner = summonerLeagueInfoService.getAllSummonerLeagueInfo(encryptedId);
 
         SummonerLeagueInfo soloQueue = null;
@@ -613,22 +612,22 @@ public class BbsController {
 
         // 해당 소환사 최근 20겜 매치아이디 가져오기
 //        ArrayList<String> matchIds = restApiService.getMatchIds(accountInfo.getPuuid());
-/*
+*//*
         검색한 소환사 가장 최근 매치 정보 불러오기     
         Match match = restApiService.getMatchInfo(matchIds.get(0));
         ArrayList<Participant> participants = match.getInfo().getParticipants();
 
-*/
+*//*
         
-/*      챌린저큐 정보 불러오기
+*//*      챌린저큐 정보 불러오기
         ArrayList<LeagueEntrySummonerList> challengerList = restApiService.getChallengerList();
         for(LeagueEntrySummonerList challenger : challengerList){
             System.out.println(challenger.getSummonerName() + " : " + challenger.getLeaguePoints());
         }
-*/
+*//*
         log.info("bbbbbbbbbsssssssssss");
 
         return "search";
-    }
+    }*/
 
 }
