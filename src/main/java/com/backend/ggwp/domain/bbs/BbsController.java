@@ -618,8 +618,8 @@ public class BbsController {
         ArrayList<Participant> participants = match.getInfo().getParticipants();
 
 *//*
-        
-*//*      챌린저큐 정보 불러오기
+
+     *//*      챌린저큐 정보 불러오기
         ArrayList<LeagueEntrySummonerList> challengerList = restApiService.getChallengerList();
         for(LeagueEntrySummonerList challenger : challengerList){
             System.out.println(challenger.getSummonerName() + " : " + challenger.getLeaguePoints());

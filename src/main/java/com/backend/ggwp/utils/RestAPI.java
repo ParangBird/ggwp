@@ -18,33 +18,35 @@ import java.net.URL;
 public class RestAPI {
 
     public static String riotRestAPI(String apiURL) {
-        URI uri = UriComponentsBuilder
-                .fromUriString(apiURL)
-                .encode()
-                .build()
-                .toUri();
-        log.info("Riot API called : {}", uri);
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
-        HttpEntity req = new HttpEntity(headers);
-        ResponseEntity<String> responseEntity = restTemplate.exchange(
-                uri,
-                HttpMethod.GET,
-                req,
-                String.class
-        );
+        log.info("Riot API called : {}", apiURL);
+        ResponseEntity<String> responseEntity = getStringResponseEntity(apiURL);
         int responseCode = responseEntity.getStatusCodeValue();
-        if (responseCode >= 200 && responseCode <= 300) {
+        if (responseCode >= 200 && responseCode < 300) {
 
-        } else if (responseCode == 401 || responseCode == 403) {
+        } else if (responseCode == HttpStatus.UNAUTHORIZED.value() || responseCode == HttpStatus.FORBIDDEN.value()) {
             throw new InvalidApiKeyException("invalid api key");
-        } else if (responseCode == 404) {
+        } else if (responseCode == HttpStatus.NOT_FOUND.value()) {
             throw new ApiServerNoSuchDataException("no such data in api server");
         } else {
             throw new ApiServerException("api server has problem");
         }
         return responseEntity.getBody();
+    }
+
+    private static ResponseEntity<String> getStringResponseEntity(String apiURL) {
+        URI uri = UriComponentsBuilder
+                .fromUriString(apiURL)
+                .encode()
+                .build()
+                .toUri();
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+        HttpEntity req = new HttpEntity(headers);
+        ResponseEntity<String> responseEntity = restTemplate.exchange(
+                uri, HttpMethod.GET, req, String.class
+        );
+        return responseEntity;
     }
 
     public static String randomNicknameAPI(int count, int maxLength) {

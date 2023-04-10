@@ -44,6 +44,8 @@ public class ExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String exception(Exception e) {
         log.error("정의되지 않은 범용적인 오류");
+        System.out.println(e.toString());
+        e.printStackTrace();
         log.error(e.toString());
         return "error/5xx";
     }

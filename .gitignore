@@ -9,7 +9,7 @@ src/main/resources/application-oauth.properties
 src/main/resources/application-API-KEY.properties
 src/main/resources/application-email.properties
 src/main/resources/application.yml
-
+lib/**
 ### STS ###
 .apt_generated
 .classpath
