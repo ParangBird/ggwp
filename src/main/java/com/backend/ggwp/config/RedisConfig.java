@@ -1,6 +1,7 @@
 package com.backend.ggwp.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -10,12 +11,13 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair.fromSerializer;
 
 @Configuration
 public class RedisConfig {
@@ -23,7 +25,7 @@ public class RedisConfig {
     private String redisHost;
     @Value("${spring.redis.port}")
     private int redisPort;
-    public static final String CACHE_KEY_TEST = "TEST";
+    public static final String CACHE_KEY_ROTATION = "ROTATION";
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
@@ -49,25 +51,26 @@ public class RedisConfig {
     /*
      Redis Cache 적용을 위한 RedisCacheManager 설정
     */
-    @Bean
-    public RedisCacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory) {
-        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration
-                .defaultCacheConfig()
-                .serializeKeysWith(RedisSerializationContext
-                        .SerializationPair
-                        .fromSerializer(new StringRedisSerializer()))
-                .serializeValuesWith(RedisSerializationContext
-                        .SerializationPair
-                        .fromSerializer(new GenericJackson2JsonRedisSerializer()));
-
-        Map<String, RedisCacheConfiguration> cacheConfiguration = new HashMap<>();
-        cacheConfiguration.put(CACHE_KEY_TEST, redisCacheConfiguration.entryTtl(Duration.ofSeconds(180L)));
-
-
-        return RedisCacheManager
-                .RedisCacheManagerBuilder
-                .fromConnectionFactory(redisConnectionFactory)
-                .cacheDefaults(redisCacheConfiguration)
+    @Bean(name = "redisCacheManager")
+    public CacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+        return RedisCacheManager.builder(connectionFactory)
+                .cacheDefaults(defaultConf())
+                .withInitialCacheConfigurations(confMap())
                 .build();
+    }
+
+    // 기본 TTL : 1분
+    private RedisCacheConfiguration defaultConf() {
+        return RedisCacheConfiguration.defaultCacheConfig()
+                .serializeKeysWith(fromSerializer(new StringRedisSerializer()))
+                .serializeValuesWith(fromSerializer(new GenericJackson2JsonRedisSerializer()))
+                .entryTtl(Duration.ofMinutes(1));
+    }
+
+    // ROTATION 관련 TTL : 1H
+    private Map<String, RedisCacheConfiguration> confMap() {
+        Map<String, RedisCacheConfiguration> cacheConfigurations = new HashMap<>();
+        cacheConfigurations.put(CACHE_KEY_ROTATION, defaultConf().entryTtl(Duration.ofHours(1L)));
+        return cacheConfigurations;
     }
 }

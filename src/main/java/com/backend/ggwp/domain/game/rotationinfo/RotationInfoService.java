@@ -1,5 +1,6 @@
 package com.backend.ggwp.domain.game.rotationinfo;
 
+import com.backend.ggwp.aop.LogExecutionTime;
 import com.backend.ggwp.config.RedisConfig;
 import com.backend.ggwp.utils.ApiInfo;
 import com.google.gson.Gson;
@@ -17,7 +18,8 @@ public class RotationInfoService {
     private final ApiInfo API_INFO;
     private final Gson gson;
 
-    @Cacheable(key = "#key", value = RedisConfig.CACHE_KEY_TEST, cacheManager = "redisCacheManager")
+    @LogExecutionTime
+    @Cacheable(key = "#key", value = RedisConfig.CACHE_KEY_ROTATION, cacheManager = "redisCacheManager")
     public RotationInfo getRotationInfo(String key) {
         String apiURL = "https://kr.api.riotgames.com/lol/platform/v3/champion-rotations?api_key=" + API_INFO.getApiKey();
         String s = riotRestAPI(apiURL);
