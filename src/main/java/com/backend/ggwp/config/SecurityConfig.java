@@ -7,17 +7,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -35,6 +31,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        // csrf 및 formLogin, logout 설정
         http.csrf().disable()
                 .headers().frameOptions().disable()
                 .and()
@@ -43,54 +40,57 @@ public class SecurityConfig {
                 .loginProcessingUrl("/bbs/login")
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .successHandler(new AuthenticationSuccessHandler() {
-                    @Override
-                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                        PrincipalDetails details = (PrincipalDetails) authentication.getPrincipal();
-                        request.getSession().setAttribute("user", details);
-                        response.sendRedirect("/bbs");
-                    }
-                })
-                .failureHandler(new AuthenticationFailureHandler() {
-                    @Override
-                    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-                        try {
-                            response.setContentType("text/html; charset=utf-8");
-                            PrintWriter out = response.getWriter();
-                            out.print("<script>alert('회원정보를 확인해 주세요!'); location.href='/bbs';</script>");
-                            out.flush();
-                            out.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                })
-                .and()
-                .authorizeRequests()
-                .antMatchers("/bbs/modify/**", "/bbs/write/**").authenticated()
-                .anyRequest().permitAll()
+                .successHandler(loginSuccessHandler())
+                .failureHandler(loginFailureHandler())
                 .and()
                 .logout().logoutUrl("/bbs/logout")
-                .addLogoutHandler((req, res, auth) -> {
-                    if (req.getSession() != null) req.getSession().invalidate();
-                    try {
-                        res.sendRedirect("/bbs");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                })
-                .and()
-                .oauth2Login()
-                .successHandler(new AuthenticationSuccessHandler() {
-                    @Override
-                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                        PrincipalDetails details = (PrincipalDetails) authentication.getPrincipal();
-                        request.getSession().setAttribute("user", details);
-                        response.sendRedirect("/bbs");
-                    }
-                })
+                .addLogoutHandler(logoutHandler());
+
+        // 권한 설정
+        http.authorizeRequests()
+                .antMatchers("/bbs/modify/**", "/bbs/write/**").authenticated()
+                .anyRequest().permitAll();
+
+
+        // oauth2 설정
+        http.oauth2Login()
+                .successHandler(loginSuccessHandler())
                 .userInfoEndpoint()
                 .userService(principalOAuth2UserService);
+
         return http.build();
+    }
+
+    private LogoutHandler logoutHandler() {
+        return (req, res, auth) -> {
+            if (req.getSession() != null) req.getSession().invalidate();
+            try {
+                res.sendRedirect("/bbs");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        };
+    }
+
+    private AuthenticationFailureHandler loginFailureHandler() {
+        return (req, res, auth) -> {
+            try {
+                res.setContentType("text/html; charset=utf-8");
+                PrintWriter out = res.getWriter();
+                out.print("<script>alert('회원정보를 확인해 주세요!'); location.href='/bbs';</script>");
+                out.flush();
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        };
+    }
+
+    private AuthenticationSuccessHandler loginSuccessHandler() {
+        return (req, res, auth) -> {
+            PrincipalDetails details = (PrincipalDetails) auth.getPrincipal();
+            req.getSession().setAttribute("user", details);
+            res.sendRedirect("/bbs");
+        };
     }
 }
