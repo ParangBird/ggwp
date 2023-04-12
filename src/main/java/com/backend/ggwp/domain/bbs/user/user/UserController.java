@@ -79,13 +79,13 @@ public class UserController {
         }
         int duplicateNumber = userService.checkDuplicateUser(registerDto.getUserName(), registerDto.getEmail());
 
-        if (duplicateNumber == UserService.DUPLICATED_USERNAME) {
+        if (duplicateNumber == UserService.DUPLICATED_EMAIL) {
             log.info("email duplicated");
             bindingResult.rejectValue("email", "이미 가입된 이메일입니다", "이미 가입된 이메일입니다");
             return "bbs/register";
-        } else if (duplicateNumber == UserService.DUPLICATED_EMAIL) {
+        } else if (duplicateNumber == UserService.DUPLICATED_USERNAME) {
             log.info("userName duplicated");
-            bindingResult.rejectValue("userName", "다른 닉네임을 입력해주세요", "다른 닉네임을 입력해주세요");
+            bindingResult.rejectValue("userName", "이미 가입된 닉네임입니다", "이미 가입된 닉네임입니다");
             return "bbs/register";
         }
         userService.registerUser(registerDto);
@@ -98,7 +98,6 @@ public class UserController {
         return "bbs/reset-password";
     }
 
-    // TODO: 2023-02-28 추후 이메일 보낼때 같이 수정
     @PostMapping("/bbs/reset-password")
     public String resetPassword(@Validated @ModelAttribute("resetPasswordDto")
                                         ResetPasswordDto resetPasswordDto,
