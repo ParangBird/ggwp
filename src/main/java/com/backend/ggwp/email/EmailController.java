@@ -94,7 +94,7 @@ public class EmailController {
             return "email/email-auth";
         }
         GgwpUserDTO authedUser = userService.findByEmail(emailAuthDTO.getEmail());
-        authedUser.setEmailAuth(true);
+        authedUser.emailAuthed();
         userService.save(authedUser);
         log.info("인증 성공 !! ! !");
         return "redirect:/bbs";

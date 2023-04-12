@@ -23,4 +23,9 @@ public class GgwpUserDTO {
         this.email = email;
         this.emailAuth = emailAuth;
     }
+
+    public void emailAuthed() {
+        role = "ROLE_AUTHED_USER";
+        emailAuth = true;
+    }
 }
