@@ -48,7 +48,7 @@ public class SecurityConfig {
 
         // 권한 설정
         http.authorizeRequests()
-                .antMatchers("/bbs/modify/**", "/bbs/write/**").authenticated()
+                .antMatchers("/bbs/modify/**", "/bbs/write/**").hasAnyRole("AUTHED_USER", "OAUTH2_USER")
                 .anyRequest().permitAll();
 
 

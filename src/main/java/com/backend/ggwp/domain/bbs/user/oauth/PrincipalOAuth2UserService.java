@@ -70,7 +70,7 @@ public class PrincipalOAuth2UserService extends DefaultOAuth2UserService {
                     .name(randomNicknameService.randomNickname(NICKNAME_MAX_LENGTH))
                     .password(bCryptPasswordEncoder.encode(UUID.randomUUID().toString()))
                     .email(oAuth2UserInfo.getEmail())
-                    .role("oauth2_user")
+                    .role("ROLE_OAUTH2_USER")
                     .emailAuth(true)
                     .provider(oAuth2UserInfo.getProvider())
                     .providerId(oAuth2UserInfo.getProviderId())
