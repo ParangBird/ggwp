@@ -38,7 +38,7 @@ class UserControllerTest {
                                 .param("email", "testuser@naver.com")
                                 .param("password", "123456")
                 ).andReturn().getRequest().getSession();
-        assertThat(session.getAttribute("ggwpUser")).isNotNull();
+        assertThat(session.getAttribute("user")).isNotNull();
         userService.deleteById(save);
     }
 
@@ -60,6 +60,7 @@ class UserControllerTest {
                         .param("password", "123456")
                         .param("passwordCheck", "123456")
         );
+        userService.deleteByEmail("test@naver.com");
     }
 
     @Test
@@ -70,6 +71,5 @@ class UserControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("resetPasswordDto"));
-
     }
 }
