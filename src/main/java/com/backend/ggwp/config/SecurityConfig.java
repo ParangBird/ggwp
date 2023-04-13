@@ -2,6 +2,7 @@ package com.backend.ggwp.config;
 
 import com.backend.ggwp.domain.bbs.user.auth.PrincipalDetails;
 import com.backend.ggwp.domain.bbs.user.oauth.PrincipalOAuth2UserService;
+import com.backend.ggwp.domain.bbs.user.user.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,7 +52,7 @@ public class SecurityConfig {
                 .accessDeniedHandler(accessDeniedHandler());
         // 권한 설정
         http.authorizeRequests()
-                .antMatchers("/bbs/modify/**", "/bbs/write/**").hasAnyRole("AUTHED_USER", "OAUTH2_USER")
+                .antMatchers("/bbs/modify/**", "/bbs/write/**").hasAnyRole(Role.ROLE_AUTHED_USER.getRole(), Role.ROLE_OAUTH2_USER.getRole())
                 .anyRequest().permitAll();
 
 

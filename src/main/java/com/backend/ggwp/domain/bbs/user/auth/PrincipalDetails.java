@@ -38,7 +38,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collect = new ArrayList<GrantedAuthority>();
-        collect.add(() -> ggwpUserDto.getRole());
+        collect.add(() -> ggwpUserDto.getRole().getRole());
         return collect;
     }
 

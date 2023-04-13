@@ -1,5 +1,6 @@
 package com.backend.ggwp.domain.bbs.user.dto;
 
+import com.backend.ggwp.domain.bbs.user.user.Role;
 import lombok.*;
 
 @Builder
@@ -12,7 +13,7 @@ public class GgwpUserDto {
     private String name;
     private String password;
     private String email;
-    private String role;
+    private Role role;
     private String provider;
     private String providerId;
     private boolean emailAuth;
@@ -24,12 +25,12 @@ public class GgwpUserDto {
         this.emailAuth = emailAuth;
     }
 
-    public boolean getEmailAuth(){
+    public boolean getEmailAuth() {
         return this.emailAuth;
     }
 
     public void authUser() {
-        role = "ROLE_AUTHED_USER";
+        role = Role.ROLE_AUTHED_USER;
         emailAuth = true;
     }
 }

@@ -69,7 +69,7 @@ public class UserService {
                 .password(password)
                 .email(email)
                 .emailAuth(false)
-                .role("ROLE_NORMAL_USER")
+                .role(Role.ROLE_NORMAL_USER)
                 .build();
 
         return save(newGgwpUser);
