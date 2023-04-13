@@ -127,4 +127,11 @@ public class UserService {
         GgwpUser ggwpUser = userRepository.findByEmail(email).orElse(null);
         return ggwpUser != null;
     }
+
+    @Transactional
+    public Long deleteByEmail(String email) {
+        Long id = userRepository.findByEmail(email).orElseThrow().getId();
+        userRepository.deleteById(id);
+        return id;
+    }
 }
