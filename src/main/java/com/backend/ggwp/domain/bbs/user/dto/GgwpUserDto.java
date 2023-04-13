@@ -12,10 +12,10 @@ public class GgwpUserDto {
     private String name;
     private String password;
     private String email;
-    private boolean emailAuth;
     private String role;
     private String provider;
     private String providerId;
+    private boolean emailAuth;
 
     public GgwpUserDto(String name, String password, String email, boolean emailAuth) {
         this.name = name;
@@ -24,7 +24,11 @@ public class GgwpUserDto {
         this.emailAuth = emailAuth;
     }
 
-    public void emailAuthed() {
+    public boolean getEmailAuth(){
+        return this.emailAuth;
+    }
+
+    public void authUser() {
         role = "ROLE_AUTHED_USER";
         emailAuth = true;
     }

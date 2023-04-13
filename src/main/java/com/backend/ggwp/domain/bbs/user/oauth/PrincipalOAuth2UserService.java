@@ -1,13 +1,13 @@
 package com.backend.ggwp.domain.bbs.user.oauth;
 
-import com.backend.ggwp.domain.bbs.user.user.GgwpUser;
-import com.backend.ggwp.domain.bbs.user.user.UserRepository;
 import com.backend.ggwp.domain.bbs.user.auth.PrincipalDetails;
 import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDto;
 import com.backend.ggwp.domain.bbs.user.nickname.RandomNicknameService;
 import com.backend.ggwp.domain.bbs.user.oauth.provider.GoogleUserInfo;
 import com.backend.ggwp.domain.bbs.user.oauth.provider.NaverUserInfo;
 import com.backend.ggwp.domain.bbs.user.oauth.provider.OAuth2UserInfo;
+import com.backend.ggwp.domain.bbs.user.user.GgwpUser;
+import com.backend.ggwp.domain.bbs.user.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -79,6 +79,6 @@ public class PrincipalOAuth2UserService extends DefaultOAuth2UserService {
         userRepository.save(user);
         GgwpUserDto map = modelMapper.map(user, GgwpUserDto.class);
         log.info("OAUTH 반납 객체 : {}", map.toString());
-        return new PrincipalDetails(modelMapper, map, oAuth2User.getAttributes());
+        return new PrincipalDetails(map, oAuth2User.getAttributes());
     }
 }

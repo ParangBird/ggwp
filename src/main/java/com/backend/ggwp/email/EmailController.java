@@ -68,7 +68,7 @@ public class EmailController {
             bindingResult.rejectValue("email", "", "해당 이메일 정보가 없습니다.");
             return null;
         }
-        if (byEmail.isEmailAuth()) {
+        if (byEmail.getEmailAuth()) {
             bindingResult.rejectValue("email", "", "이미 인증된 이메일입니다.");
             return null;
         }
@@ -94,7 +94,7 @@ public class EmailController {
             return "email/email-auth";
         }
         GgwpUserDto authedUser = userService.findByEmail(emailAuthDTO.getEmail());
-        authedUser.emailAuthed();
+        authedUser.authUser();
         userService.save(authedUser);
         log.info("인증 성공 !! ! !");
         return "redirect:/bbs";

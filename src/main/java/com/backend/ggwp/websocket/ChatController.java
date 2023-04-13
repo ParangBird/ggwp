@@ -29,7 +29,7 @@ public class ChatController {
         log.info("chatting GET");
         PrincipalDetails details = (PrincipalDetails) httpSession.getAttribute("user");
         if (details != null) {
-            model.addAttribute("userName", details.getGgwpUser().getName());
+            model.addAttribute("userName", details.getGgwpUserDto().getName());
         }
         return "bbs/chat";
     }

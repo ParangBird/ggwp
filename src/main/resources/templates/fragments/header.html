@@ -3,7 +3,7 @@
 
 <header th:fragment="header">
     <div class="header-container">
-        <div th:unless="${user}" class="login-container">
+        <div th:unless="${session.user}" class="login-container">
             <div class="login-div-form">
                 <p class="login-text">GG.WP를 더 편리하게 이용하세요</p>
                 <form class="login-form" method="POST" action="/bbs/login" th:action="@{/bbs/login}">
@@ -27,16 +27,17 @@
                 <div class="oauth-login-div">
                     <button type="button" onclick="location.href='/oauth2/authorization/naver';"
                             class="oauth-login-button btn btn-success">네이버 로그인
-                    </button>ㅣ
+                    </button>
+                    ㅣ
                     <button type="button" onclick="location.href='/oauth2/authorization/google';"
                             class="oauth-login-button btn btn-primary">구글 로그인
                     </button>
                 </div>
             </div>
         </div>
-        <div th:if="${user}" class="userinfo-container">
-            <span class="search-text">반갑습니다, <span th:text="${user.name}">ㅇㅇㅇ</span> 님!</span>
-            <div class="userinfo-buttons" th:unless="${user.emailAuth}">
+        <div th:if="${session.user}" class="userinfo-container">
+            <span class="search-text">반갑습니다, <span th:text="${session.user.name}">ㅇㅇㅇ</span> 님!</span>
+            <div class="userinfo-buttons" th:if="${session.user.ggwpUserDto.emailAuth == false}">
                 <a class="btn btn-primary active" href="/bbs/email/send" th:href="@{/bbs/email/send}">이메일 인증하기</a>
             </div>
             <a href="/bbs/logout" class="btn btn-secondary active" role="button">Logout</a>

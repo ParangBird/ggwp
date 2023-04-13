@@ -1,7 +1,8 @@
 package com.backend.ggwp.domain.bbs.post;
 
-import com.backend.ggwp.domain.bbs.user.user.UserService;
+import com.backend.ggwp.domain.bbs.user.auth.PrincipalDetails;
 import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDto;
+import com.backend.ggwp.domain.bbs.user.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -33,8 +34,8 @@ public class PostController {
 
     @GetMapping("/bbs/write")
     public String write(Model model) {
-        //OauthUser user = (OauthUser) httpSession.getAttribute("user");
-        GgwpUserDto user = (GgwpUserDto) httpSession.getAttribute("ggwpUser");
+        PrincipalDetails details = (PrincipalDetails) httpSession.getAttribute("user");
+        GgwpUserDto user = details.getGgwpUserDto();
         PostDto post = PostDto.builder()
                 .user(user)
                 .build();

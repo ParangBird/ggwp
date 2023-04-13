@@ -1,9 +1,7 @@
 package com.backend.ggwp.domain.bbs.user.auth;
 
-import com.backend.ggwp.domain.bbs.user.user.GgwpUser;
 import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDto;
 import lombok.Getter;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -15,25 +13,21 @@ import java.util.Map;
 @Getter
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
-    private final ModelMapper modelMapper;
-    private GgwpUser ggwpUser;
+    private GgwpUserDto ggwpUserDto;
     private Map<String, Object> attributes;
 
-    public PrincipalDetails(ModelMapper modelMapper, GgwpUserDto ggwpUserDTO) {
-        this.modelMapper = modelMapper;
-        GgwpUser map = modelMapper.map(ggwpUserDTO, GgwpUser.class);
-        this.ggwpUser = map;
+    public PrincipalDetails(GgwpUserDto ggwpUserDTO) {
+        this.ggwpUserDto = ggwpUserDTO;
     }
 
-    public PrincipalDetails(ModelMapper modelMapper, GgwpUserDto ggwpUserDTO, Map<String, Object> attributes) {
-        this.modelMapper = modelMapper;
-        this.ggwpUser = modelMapper.map(ggwpUserDTO, GgwpUser.class);
+    public PrincipalDetails(GgwpUserDto ggwpUserDTO, Map<String, Object> attributes) {
+        this.ggwpUserDto = ggwpUserDTO;
         this.attributes = attributes;
     }
 
     @Override
     public String getName() {
-        return ggwpUser.getName();
+        return ggwpUserDto.getName();
     }
 
     @Override
@@ -44,18 +38,18 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collect = new ArrayList<GrantedAuthority>();
-        collect.add(() -> ggwpUser.getRole());
+        collect.add(() -> ggwpUserDto.getRole());
         return collect;
     }
 
     @Override
     public String getPassword() {
-        return ggwpUser.getPassword();
+        return ggwpUserDto.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return ggwpUser.getEmail();
+        return ggwpUserDto.getEmail();
     }
 
     @Override

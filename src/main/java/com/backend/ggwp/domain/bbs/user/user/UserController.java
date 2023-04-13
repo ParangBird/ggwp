@@ -49,9 +49,9 @@ public class UserController {
     public @ResponseBody
     String user(@AuthenticationPrincipal PrincipalDetails principal) {
         System.out.println("Principal : " + principal);
-        System.out.println("OAuth2 : " + principal.getGgwpUser().getProvider());
+        System.out.println("OAuth2 : " + principal.getGgwpUserDto().getProvider());
         // iterator 순차 출력 해보기
-        System.out.println("principal.getGgwpUser() = " + principal.getGgwpUser());
+        System.out.println("principal.getGgwpUser() = " + principal.getGgwpUserDto());
         return "유저 페이지입니다.";
     }
 

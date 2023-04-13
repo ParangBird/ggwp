@@ -48,7 +48,8 @@ public class BbsController {
     public String index(Model model, @RequestParam(required = false) String postTag) {
         PrincipalDetails details = (PrincipalDetails) httpSession.getAttribute("user");
         if (details != null) {
-            model.addAttribute("user", details.getGgwpUser());
+            model.addAttribute("user", details.getGgwpUserDto());
+            log.info(details.getGgwpUserDto().toString());
         }
         RotationInfo rotationInfo = rotationInfoService.getRotationInfo("key");
         List<Integer> freeChampionIds = rotationInfo.getFreeChampionIds();
