@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
@@ -46,6 +47,8 @@ public class SecurityConfig {
                 .logout().logoutUrl("/bbs/logout")
                 .addLogoutHandler(logoutHandler());
 
+        http.exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler());
         // 권한 설정
         http.authorizeRequests()
                 .antMatchers("/bbs/modify/**", "/bbs/write/**").hasAnyRole("AUTHED_USER", "OAUTH2_USER")
@@ -59,6 +62,20 @@ public class SecurityConfig {
                 .userService(principalOAuth2UserService);
 
         return http.build();
+    }
+
+    private AccessDeniedHandler accessDeniedHandler() {
+        return (req, res, accessDeniedException) -> {
+            try {
+                res.setContentType("text/html; charset=utf-8");
+                PrintWriter out = res.getWriter();
+                out.print("<script>alert('이메일 인증을 먼저 진행해주세요!'); location.href='/bbs/email/send';</script>");
+                out.flush();
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        };
     }
 
     private LogoutHandler logoutHandler() {
