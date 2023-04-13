@@ -3,7 +3,7 @@ package com.backend.ggwp.domain.bbs.user.oauth;
 import com.backend.ggwp.domain.bbs.user.user.GgwpUser;
 import com.backend.ggwp.domain.bbs.user.user.UserRepository;
 import com.backend.ggwp.domain.bbs.user.auth.PrincipalDetails;
-import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
+import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDto;
 import com.backend.ggwp.domain.bbs.user.nickname.RandomNicknameService;
 import com.backend.ggwp.domain.bbs.user.oauth.provider.GoogleUserInfo;
 import com.backend.ggwp.domain.bbs.user.oauth.provider.NaverUserInfo;
@@ -77,7 +77,7 @@ public class PrincipalOAuth2UserService extends DefaultOAuth2UserService {
                     .build();
         }
         userRepository.save(user);
-        GgwpUserDTO map = modelMapper.map(user, GgwpUserDTO.class);
+        GgwpUserDto map = modelMapper.map(user, GgwpUserDto.class);
         log.info("OAUTH 반납 객체 : {}", map.toString());
         return new PrincipalDetails(modelMapper, map, oAuth2User.getAttributes());
     }

@@ -1,7 +1,7 @@
 package com.backend.ggwp.domain.bbs.user.auth;
 
 import com.backend.ggwp.domain.bbs.user.user.GgwpUser;
-import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
+import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDto;
 import lombok.Getter;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,13 +19,13 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     private GgwpUser ggwpUser;
     private Map<String, Object> attributes;
 
-    public PrincipalDetails(ModelMapper modelMapper, GgwpUserDTO ggwpUserDTO) {
+    public PrincipalDetails(ModelMapper modelMapper, GgwpUserDto ggwpUserDTO) {
         this.modelMapper = modelMapper;
         GgwpUser map = modelMapper.map(ggwpUserDTO, GgwpUser.class);
         this.ggwpUser = map;
     }
 
-    public PrincipalDetails(ModelMapper modelMapper, GgwpUserDTO ggwpUserDTO, Map<String, Object> attributes) {
+    public PrincipalDetails(ModelMapper modelMapper, GgwpUserDto ggwpUserDTO, Map<String, Object> attributes) {
         this.modelMapper = modelMapper;
         this.ggwpUser = modelMapper.map(ggwpUserDTO, GgwpUser.class);
         this.attributes = attributes;

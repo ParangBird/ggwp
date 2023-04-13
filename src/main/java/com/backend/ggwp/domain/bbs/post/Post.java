@@ -26,7 +26,7 @@ public class Post extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private PostEnum postTag;
 
-    public void update(PostDTO postDTO) {
+    public void update(PostDto postDTO) {
         this.title = postDTO.getTitle();
         this.content = postDTO.getContent();
         this.postTag = postDTO.getPostTag();

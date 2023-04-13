@@ -1,6 +1,6 @@
 package com.backend.ggwp.domain.bbs;
 
-import com.backend.ggwp.domain.bbs.post.PostDTO;
+import com.backend.ggwp.domain.bbs.post.PostDto;
 import com.backend.ggwp.domain.bbs.post.PostEnum;
 import com.backend.ggwp.domain.bbs.post.PostService;
 import com.backend.ggwp.domain.bbs.user.auth.PrincipalDetails;
@@ -64,7 +64,7 @@ public class BbsController {
         model.addAttribute("freeChampionNames1", freeChampionNames.subList(0, 8));
         model.addAttribute("freeChampionNames2", freeChampionNames.subList(8, 16));
         model.addAttribute("version", API_INFO.getVersion());
-        List<PostDTO> allPost;
+        List<PostDto> allPost;
         if (postTag == null || postTag.equals("ALL"))
             allPost = postService.findAll();
         else {

@@ -1,12 +1,12 @@
 package com.backend.ggwp.email;
 
+import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDto;
 import com.backend.ggwp.domain.bbs.user.user.UserService;
-import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.BDDMockito.given;
@@ -15,8 +15,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+
+@WebMvcTest(EmailController.class)
+@MockBean(JpaMetamodelMappingContext.class)
 class EmailControllerTest {
     @Autowired
     MockMvc mock;
@@ -28,7 +29,7 @@ class EmailControllerTest {
     @Test
     void emailSendPageTest() throws Exception {
         String url = "/bbs/email/send";
-        mock.perform(get(url))
+        mock.perform(get(url).secure(true))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("emailAuthDTO"));
     }
@@ -37,7 +38,7 @@ class EmailControllerTest {
     void emailSendTest() throws Exception {
         String url = "/bbs/email/send";
         given(userService.findByEmail("donchipong@naver.com")).willReturn(
-                new GgwpUserDTO("donchipong", "1111", "donchipong@naver.com", false)
+                new GgwpUserDto("donchipong", "1111", "donchipong@naver.com", false)
         );
         mock.perform(post(url).param("email", "donchipong@naver.com"))
                 .andExpect(status().is3xxRedirection());

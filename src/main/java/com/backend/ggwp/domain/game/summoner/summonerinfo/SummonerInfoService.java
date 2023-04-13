@@ -51,7 +51,7 @@ public class SummonerInfoService {
     }
 
 
-    public SummonerInfoDTO getSummonerInfoDTO(SummonerInfo summonerInfo, ArrayList<SummonerLeagueInfo> leagueInfos, ApiInfo apiInfo) {
+    public SummonerInfoDto getSummonerInfoDTO(SummonerInfo summonerInfo, ArrayList<SummonerLeagueInfo> leagueInfos, ApiInfo apiInfo) {
 
         SummonerLeagueInfo soloRank = new SummonerLeagueInfo();
         SummonerLeagueInfo flexRank = new SummonerLeagueInfo();
@@ -66,7 +66,7 @@ public class SummonerInfoService {
             }
         }
 
-        SummonerInfoDTO summonerInfoDto = SummonerInfoDTO.builder()
+        SummonerInfoDto summonerInfoDto = SummonerInfoDto.builder()
                 .id(summonerInfo.getSummonerId())
                 .name(summonerInfo.getName())
                 .profileIconUrl("https://ddragon.leagueoflegends.com/cdn/" + apiInfo.getVersion() +

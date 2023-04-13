@@ -16,44 +16,44 @@ public class PostService {
     private final ModelMapper modelMapper;
 
     @Transactional
-    public Long save(PostDTO postDTO) {
+    public Long save(PostDto postDTO) {
         Post post = modelMapper.map(postDTO, Post.class);
         postRepository.save(post);
         return post.getId();
     }
 
     @Transactional
-    public void update(Long id, PostDTO updatePostDTO) {
+    public void update(Long id, PostDto updatePostDto) {
         Post updatePost = postRepository.findById(id).orElseThrow();
-        updatePost.update(updatePostDTO);
+        updatePost.update(updatePostDto);
         postRepository.save(updatePost);
     }
 
     @Transactional(readOnly = true)
-    public PostDTO findPostById(Long id) {
+    public PostDto findPostById(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new NoSuchPostFoundException("해당 게시글 없음"));
-        PostDTO dto = modelMapper.map(post, PostDTO.class);
+        PostDto dto = modelMapper.map(post, PostDto.class);
         return dto;
     }
 
     @Transactional(readOnly = true)
-    public List<PostDTO> findAll() {
+    public List<PostDto> findAll() {
         List<Post> all = postRepository.findAll();
-        List<PostDTO> postDTOList = new ArrayList<>();
+        List<PostDto> postDtoList = new ArrayList<>();
         for (Post post : all) {
-            postDTOList.add(modelMapper.map(post, PostDTO.class));
+            postDtoList.add(modelMapper.map(post, PostDto.class));
         }
-        return postDTOList;
+        return postDtoList;
     }
 
     @Transactional(readOnly = true)
-    public List<PostDTO> findAllByTag(PostEnum tag) {
+    public List<PostDto> findAllByTag(PostEnum tag) {
         List<Post> allByPostTag = postRepository.findAllByPostTag(tag);
-        List<PostDTO> postDTOList = new ArrayList<>();
+        List<PostDto> postDtoList = new ArrayList<>();
         for (Post post : allByPostTag) {
-            postDTOList.add(modelMapper.map(post, PostDTO.class));
+            postDtoList.add(modelMapper.map(post, PostDto.class));
         }
-        return postDTOList;
+        return postDtoList;
     }
 
     public void deleteById(Long id) {

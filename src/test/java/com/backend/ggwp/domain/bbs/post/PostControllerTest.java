@@ -1,14 +1,11 @@
 package com.backend.ggwp.domain.bbs.post;
 
-import com.backend.ggwp.domain.bbs.user.user.UserService;
-import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
+import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDto;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.BDDMockito.given;
@@ -17,22 +14,20 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@AutoConfigureMockMvc
+@WebMvcTest(PostController.class)
+@MockBean(JpaMetamodelMappingContext.class)
 class PostControllerTest {
     @Autowired
     private MockMvc mvc;
-
     @MockBean
-    private UserService userService;
+    private PostController postController;
     @MockBean
     private PostService postService;
 
     @Test
     void writeGetTest() throws Exception {
         String url = "/bbs/write";
-        mvc.perform(get(url))
+        mvc.perform(get(url).secure(true))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("post"));
     }
@@ -59,16 +54,16 @@ class PostControllerTest {
 
     @Test
     void modifyGetTest() throws Exception {
-        GgwpUserDTO ggwpUser = GgwpUserDTO.builder()
+        GgwpUserDto ggwpUser = GgwpUserDto.builder()
                 .name("donchipong")
                 .email("donchipong@naver.com")
                 .password("12345")
                 .build();
         given(postService.findPostById(1L)).willReturn(
-                new PostDTO(1L, "333", "3333", ggwpUser, PostEnum.ADC)
+                new PostDto(1L, "333", "3333", ggwpUser, PostEnum.ADC)
         );
         String url = "/bbs/modify/1";
-        GgwpUserDTO userDTO = GgwpUserDTO.builder().name("donchipong").build();
+        GgwpUserDto userDTO = GgwpUserDto.builder().name("donchipong").build();
         mvc.perform(get(url).sessionAttr("ggwpUser", userDTO))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("post"));
@@ -76,16 +71,16 @@ class PostControllerTest {
 
     @Test
     void modifyPostTest() throws Exception {
-        GgwpUserDTO ggwpUser = GgwpUserDTO.builder()
+        GgwpUserDto ggwpUser = GgwpUserDto.builder()
                 .name("donchipong")
                 .email("donchipong@naver.com")
                 .password("12345")
                 .build();
         given(postService.findPostById(1L)).willReturn(
-                new PostDTO(1L, "333", "3333", ggwpUser, PostEnum.ADC)
+                new PostDto(1L, "333", "3333", ggwpUser, PostEnum.ADC)
         );
         String url = "/bbs/modify/1";
-        GgwpUserDTO userDTO = GgwpUserDTO.builder().name("donchipong").build();
+        GgwpUserDto userDTO = GgwpUserDto.builder().name("donchipong").build();
         mvc.perform(post(url)
                         .sessionAttr("ggwpUser", userDTO)
                         .param("title", "444")
@@ -99,16 +94,16 @@ class PostControllerTest {
 
     @Test
     void deleteTest() throws Exception {
-        GgwpUserDTO ggwpUser = GgwpUserDTO.builder()
+        GgwpUserDto ggwpUser = GgwpUserDto.builder()
                 .name("donchipong")
                 .email("donchipong@naver.com")
                 .password("12345")
                 .build();
         given(postService.findPostById(1L)).willReturn(
-                new PostDTO(1L, "333", "3333", ggwpUser, PostEnum.ADC)
+                new PostDto(1L, "333", "3333", ggwpUser, PostEnum.ADC)
         );
         String url = "/bbs/delete/1";
-        GgwpUserDTO userDTO = GgwpUserDTO.builder().name("donchipong").build();
+        GgwpUserDto userDTO = GgwpUserDto.builder().name("donchipong").build();
         mvc.perform(post(url).sessionAttr("ggwpUser", userDTO))
                 .andExpect(status().is3xxRedirection());
     }

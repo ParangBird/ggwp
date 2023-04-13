@@ -20,8 +20,8 @@ class PostServiceTest {
     PostEnum updatedTag = PostEnum.JUG;
 
 
-    PostDTO testDTO(String title, String content, PostEnum tag) {
-        return PostDTO.builder()
+    PostDto testDTO(String title, String content, PostEnum tag) {
+        return PostDto.builder()
                 .title(title)
                 .content(content)
                 .postTag(tag)
@@ -33,7 +33,7 @@ class PostServiceTest {
 
 
         Long saveId = postService.save(testDTO(title, content, tag));
-        PostDTO post = postService.findPostById(saveId);
+        PostDto post = postService.findPostById(saveId);
 
         assertThat(post.getTitle()).isEqualTo(title);
         assertThat(post.getContent()).isEqualTo(content);
@@ -45,11 +45,11 @@ class PostServiceTest {
 
     @Test
     void updateTest() {
-        PostDTO postDTO = testDTO(title, content, tag);
+        PostDto postDTO = testDTO(title, content, tag);
         Long saveId = postService.save(postDTO);
 
-        PostDTO updateDTO =
-                PostDTO.builder()
+        PostDto updateDTO =
+                PostDto.builder()
                         .title(updateTitle)
                         .content(updateContent)
                         .postTag(updatedTag)
@@ -57,7 +57,7 @@ class PostServiceTest {
 
         postService.update(saveId, updateDTO);
 
-        PostDTO updatedPost = postService.findPostById(saveId);
+        PostDto updatedPost = postService.findPostById(saveId);
 
         assertThat(updatedPost.getTitle()).isEqualTo(updateTitle);
         assertThat(updatedPost.getContent()).isEqualTo(updateContent);

@@ -1,7 +1,7 @@
 package com.backend.ggwp.domain.bbs.post;
 
 import com.backend.ggwp.domain.bbs.user.user.UserService;
-import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
+import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -34,8 +34,8 @@ public class PostController {
     @GetMapping("/bbs/write")
     public String write(Model model) {
         //OauthUser user = (OauthUser) httpSession.getAttribute("user");
-        GgwpUserDTO user = (GgwpUserDTO) httpSession.getAttribute("ggwpUser");
-        PostDTO post = PostDTO.builder()
+        GgwpUserDto user = (GgwpUserDto) httpSession.getAttribute("ggwpUser");
+        PostDto post = PostDto.builder()
                 .user(user)
                 .build();
         model.addAttribute("post", post);
@@ -43,7 +43,7 @@ public class PostController {
     }
 
     @PostMapping("/bbs/write")
-    public String writePost(@Validated @ModelAttribute("post") PostDTO postDTO,
+    public String writePost(@Validated @ModelAttribute("post") PostDto postDTO,
                             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<ObjectError> allErrors = bindingResult.getAllErrors();
@@ -62,21 +62,21 @@ public class PostController {
 
     @GetMapping("/bbs/read/{postId}")
     public String readPost(@PathVariable String postId, Model model) throws Exception {
-        PostDTO post = postService.findPostById(Long.parseLong(postId));
+        PostDto post = postService.findPostById(Long.parseLong(postId));
         model.addAttribute("post", post);
         return "bbs/read";
     }
 
     @GetMapping("/bbs/modify/{postId}")
     public String showModifyPost(@PathVariable String postId, Model model, HttpServletResponse response) {
-        PostDTO postDTO = postService.findPostById(Long.parseLong(postId));
+        PostDto postDTO = postService.findPostById(Long.parseLong(postId));
         validAuthorCheck(httpSession, postDTO, response);
         model.addAttribute("post", postDTO);
         return "bbs/modify";
     }
 
     @PostMapping("/bbs/modify/{postId}")
-    public String modifyPost(@Validated @ModelAttribute("post") PostDTO updateDTO,
+    public String modifyPost(@Validated @ModelAttribute("post") PostDto updateDTO,
                              BindingResult bindingResult, @PathVariable String postId,
                              HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
@@ -87,7 +87,7 @@ public class PostController {
             log.info("retry to modify");
             return "bbs/modify";
         }
-        PostDTO postDTO = postService.findPostById(Long.parseLong(postId));
+        PostDto postDTO = postService.findPostById(Long.parseLong(postId));
         validAuthorCheck(httpSession, postDTO, response);
         log.info("Modify Post : title {} , author {}, content {} ", updateDTO.getTitle(), updateDTO.getUser().getName(), updateDTO.getContent());
         postService.update(Long.parseLong(postId), updateDTO);
@@ -96,14 +96,14 @@ public class PostController {
 
     @PostMapping("/bbs/delete/{postId}")
     public String deletePost(@PathVariable String postId, HttpServletResponse response) {
-        PostDTO postDTO = postService.findPostById(Long.parseLong(postId));
+        PostDto postDTO = postService.findPostById(Long.parseLong(postId));
         validAuthorCheck(httpSession, postDTO, response);
         postService.deleteById(postDTO.getId());
         return "redirect:/bbs";
     }
 
-    private void validAuthorCheck(HttpSession httpSession, PostDTO post, HttpServletResponse response) {
-        GgwpUserDTO user = (GgwpUserDTO) httpSession.getAttribute("ggwpUser");
+    private void validAuthorCheck(HttpSession httpSession, PostDto post, HttpServletResponse response) {
+        GgwpUserDto user = (GgwpUserDto) httpSession.getAttribute("ggwpUser");
         if (user == null || !user.getName().equals(post.getUser().getName())) {
             try {
                 response.setContentType("text/html; charset=utf-8");

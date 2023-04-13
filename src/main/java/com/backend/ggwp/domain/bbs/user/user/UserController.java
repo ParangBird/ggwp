@@ -1,7 +1,7 @@
 package com.backend.ggwp.domain.bbs.user.user;
 
 import com.backend.ggwp.domain.bbs.user.auth.PrincipalDetails;
-import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
+import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDto;
 import com.backend.ggwp.domain.bbs.user.dto.RegisterDto;
 import com.backend.ggwp.domain.bbs.user.dto.ResetPasswordDto;
 import lombok.RequiredArgsConstructor;
@@ -111,7 +111,7 @@ public class UserController {
             log.info("retry to reset-password");
             return "bbs/reset-password";
         }
-        GgwpUserDTO byEmail = null;
+        GgwpUserDto byEmail = null;
         try {
             byEmail = userService.findByEmail(resetPasswordDto.getEmail());
         } catch (Exception e) {

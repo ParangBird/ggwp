@@ -1,7 +1,7 @@
 package com.backend.ggwp.email;
 
 import com.backend.ggwp.domain.bbs.user.user.UserService;
-import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
+import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -32,13 +32,13 @@ public class EmailController {
 
     @GetMapping("/bbs/email/send")
     public String emailSendPage(Model model) {
-        EmailAuthDTO emailAuthDTO = new EmailAuthDTO();
+        EmailAuthDto emailAuthDTO = new EmailAuthDto();
         model.addAttribute("emailAuthDTO", emailAuthDTO);
         return "email/email-send";
     }
 
     @PostMapping("/bbs/email/send")
-    public String emailSend(@Validated @ModelAttribute("emailAuthDTO") EmailAuthDTO emailAuthDTO,
+    public String emailSend(@Validated @ModelAttribute("emailAuthDTO") EmailAuthDto emailAuthDTO,
                             BindingResult bindingResult,
                             RedirectAttributes ra) throws Exception {
         if (bindingResult.hasErrors()) {
@@ -59,9 +59,9 @@ public class EmailController {
         return "redirect:/bbs/email/auth";
     }
 
-    private String validEmailCheck(EmailAuthDTO emailAuthDTO, BindingResult bindingResult) {
+    private String validEmailCheck(EmailAuthDto emailAuthDTO, BindingResult bindingResult) {
         String email = emailAuthDTO.getEmail();
-        GgwpUserDTO byEmail = null;
+        GgwpUserDto byEmail = null;
         try {
             byEmail = userService.findByEmail(email);
         } catch (Exception e) {
@@ -83,7 +83,7 @@ public class EmailController {
     @PostMapping("/bbs/email/auth")
     public String emailAuth(@RequestParam("userAuthString") String userAuthString,
                             HttpServletResponse response, Model model) throws IOException {
-        EmailAuthDTO emailAuthDTO = (EmailAuthDTO) session.getAttribute("emailAuthDTO");
+        EmailAuthDto emailAuthDTO = (EmailAuthDto) session.getAttribute("emailAuthDTO");
         String authString = emailAuthDTO.getAuthString();
         if (!authString.equals(userAuthString)) {
             model.addAttribute("emailAuthDTO", emailAuthDTO);
@@ -93,7 +93,7 @@ public class EmailController {
             out.flush();
             return "email/email-auth";
         }
-        GgwpUserDTO authedUser = userService.findByEmail(emailAuthDTO.getEmail());
+        GgwpUserDto authedUser = userService.findByEmail(emailAuthDTO.getEmail());
         authedUser.emailAuthed();
         userService.save(authedUser);
         log.info("인증 성공 !! ! !");

@@ -1,6 +1,6 @@
 package com.backend.ggwp.domain.bbs.user.user;
 
-import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
+import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDto;
 import com.backend.ggwp.domain.bbs.user.dto.LoginDto;
 import com.backend.ggwp.domain.bbs.user.dto.RegisterDto;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class UserService {
     public static final int DUPLICATED_EMAIL = 2;
 
     @Transactional
-    public Long save(GgwpUserDTO ggwpUserDTO) {
+    public Long save(GgwpUserDto ggwpUserDTO) {
         String originPassword = ggwpUserDTO.getPassword();
         ggwpUserDTO.setPassword(passwordEncoder.encode(originPassword));
         GgwpUser ggwpUser = modelMapper.map(ggwpUserDTO, GgwpUser.class);
@@ -34,10 +34,10 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public GgwpUserDTO login(LoginDto loginDto) {
+    public GgwpUserDto login(LoginDto loginDto) {
         String email = loginDto.getEmail();
         String password = loginDto.getPassword();
-        GgwpUserDTO user = null;
+        GgwpUserDto user = null;
         try {
             user = findByEmail(email);
             log.info("해당 이메일 없음");
@@ -53,7 +53,7 @@ public class UserService {
     }
 
     @Transactional
-    public Long registerUser(GgwpUserDTO ggwpUserDTO) {
+    public Long registerUser(GgwpUserDto ggwpUserDTO) {
         return save(ggwpUserDTO);
     }
 
@@ -63,7 +63,7 @@ public class UserService {
         String password = registerDto.getPassword();
         String email = registerDto.getEmail();
 
-        GgwpUserDTO newGgwpUser = GgwpUserDTO
+        GgwpUserDto newGgwpUser = GgwpUserDto
                 .builder()
                 .name(userName)
                 .password(password)
@@ -76,23 +76,23 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public GgwpUserDTO findByName(String username) {
+    public GgwpUserDto findByName(String username) {
         GgwpUser ggwpUser = userRepository.findByName(username).orElseThrow();
-        GgwpUserDTO dto = modelMapper.map(ggwpUser, GgwpUserDTO.class);
+        GgwpUserDto dto = modelMapper.map(ggwpUser, GgwpUserDto.class);
         return dto;
     }
 
     @Transactional(readOnly = true)
-    public GgwpUserDTO findByEmail(String email) {
+    public GgwpUserDto findByEmail(String email) {
         GgwpUser ggwpUser = userRepository.findByEmail(email).orElseThrow();
-        GgwpUserDTO dto = modelMapper.map(ggwpUser, GgwpUserDTO.class);
+        GgwpUserDto dto = modelMapper.map(ggwpUser, GgwpUserDto.class);
         return dto;
     }
 
     @Transactional(readOnly = true)
-    public GgwpUserDTO findById(Long id) {
+    public GgwpUserDto findById(Long id) {
         GgwpUser ggwpUser = userRepository.findById(id).orElseThrow();
-        GgwpUserDTO dto = modelMapper.map(ggwpUser, GgwpUserDTO.class);
+        GgwpUserDto dto = modelMapper.map(ggwpUser, GgwpUserDto.class);
         return dto;
     }
 

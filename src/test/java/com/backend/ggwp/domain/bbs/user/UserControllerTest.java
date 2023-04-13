@@ -1,6 +1,6 @@
 package com.backend.ggwp.domain.bbs.user;
 
-import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
+import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDto;
 import com.backend.ggwp.domain.bbs.user.user.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ class UserControllerTest {
     @Test
     void loginTest() throws Exception {
         String url = "/bbs/login";
-        Long save = userService.registerUser(GgwpUserDTO
+        Long save = userService.registerUser(GgwpUserDto
                 .builder()
                 .email("testuser@naver.com")
                 .password("123456")

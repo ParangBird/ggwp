@@ -1,7 +1,7 @@
 package com.backend.ggwp.domain.bbs.user.auth;
 
 import com.backend.ggwp.domain.bbs.user.user.UserService;
-import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
+import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +17,7 @@ public class PrincipalDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        GgwpUserDTO byName = userService.findByEmail(username);
+        GgwpUserDto byName = userService.findByEmail(username);
         if (byName == null) return null;
         else return new PrincipalDetails(modelMapper, byName);
     }

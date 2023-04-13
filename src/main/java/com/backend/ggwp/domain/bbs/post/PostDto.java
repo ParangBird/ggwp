@@ -1,7 +1,7 @@
 package com.backend.ggwp.domain.bbs.post;
 
 
-import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDTO;
+import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDto;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -13,13 +13,13 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Getter
 @ToString
-public class PostDTO {
+public class PostDto {
     private Long id;
     @NotBlank
     private String title;
     @NotBlank
     private String content;
-    private GgwpUserDTO user;
+    private GgwpUserDto user;
     @NotNull
     private PostEnum postTag;
 }

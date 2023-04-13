@@ -17,7 +17,6 @@ class SummonerInfoServiceTest {
     SummonerInfoRepository summonerInfoRepository;
 
     @Test
-    @Disabled
     void dateTest() {
         LocalDateTime now = LocalDateTime.of(2016, 3, 3, 5, 5);
         LocalDateTime modifiedDate = LocalDateTime.of(2016, 3, 2, 3, 3);
