@@ -1,5 +1,7 @@
 package com.backend.ggwp.domain.bbs.post;
 
+import com.backend.ggwp.domain.bbs.user.dto.GgwpUserDto;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -64,5 +66,20 @@ class PostServiceTest {
         assertThat(updatedPost.getPostTag()).isEqualTo(updatedTag);
 
         postService.deleteById(saveId);
+    }
+
+    @Test
+    @Disabled
+    void insertDummyPosts() {
+        for (int i = 0; i < 50; i++)
+            postService.save(PostDto.builder()
+                    .title(title + i)
+                    .content(content + i)
+                    .postTag(PostEnum.TOP)
+                    .user(GgwpUserDto
+                            .builder()
+                            .name("user" + i)
+                            .build())
+                    .build());
     }
 }
