@@ -3,6 +3,8 @@ package com.backend.ggwp.domain.bbs.post;
 import com.backend.ggwp.exception.NoSuchPostFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +56,14 @@ public class PostService {
         for (Post post : allByPostTag) {
             postDtoList.add(modelMapper.map(post, PostDto.class));
         }
+        return postDtoList;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<PostDto> getPostListByPage(int page) {
+        PageRequest pageable = PageRequest.of(page, 10);
+        Page<Post> all = postRepository.findAll(pageable);
+        Page<PostDto> postDtoList = all.map(post -> modelMapper.map(post, PostDto.class));
         return postDtoList;
     }
 

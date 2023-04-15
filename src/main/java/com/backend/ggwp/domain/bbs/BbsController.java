@@ -13,6 +13,7 @@ import com.backend.ggwp.exception.InvalidApiKeyException;
 import com.backend.ggwp.utils.ApiInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,7 +46,9 @@ public class BbsController {
     }
 
     @RequestMapping("/bbs")
-    public String index(Model model, @RequestParam(required = false) String postTag) {
+    public String index(Model model,
+                        @RequestParam(required = false, defaultValue = "0") Integer page,
+                        @RequestParam(required = false, defaultValue = "ALL") String postTag) {
         PrincipalDetails details = (PrincipalDetails) httpSession.getAttribute("user");
         if (details != null) {
             model.addAttribute("user", details.getGgwpUserDto());
@@ -66,14 +69,16 @@ public class BbsController {
         model.addAttribute("freeChampionNames2", freeChampionNames.subList(8, 16));
         model.addAttribute("version", API_INFO.getVersion());
         List<PostDto> allPost;
-        if (postTag == null || postTag.equals("ALL"))
+
+        Page<PostDto> postListByPage = postService.getPostListByPage(page);
+        if (postTag.equals("ALL")) {
             allPost = postService.findAll();
-        else {
+        } else {
             allPost = postService.findAllByTag(PostEnum.valueOf(postTag));
         }
         if (allPost != null) {
             Collections.reverse(allPost);
-            model.addAttribute("posts", allPost);
+            model.addAttribute("paging", postListByPage);
         }
         return "bbs/index";
     }

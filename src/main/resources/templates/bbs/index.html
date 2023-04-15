@@ -72,7 +72,7 @@
             <th>제목</th>
             <th>작성자</th>
         </tr>
-        <tr th:each="post : ${posts}">
+        <tr th:each="post, loop : ${paging}">
             <td th:text="${post.postTag}"></td>
             <td th:text="${post.id}"></td>
             <td><a th:text="${post.title}" th:href="@{/bbs/read/{id}(id = ${post.id})}"></a></td>
