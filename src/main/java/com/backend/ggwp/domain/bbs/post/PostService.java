@@ -23,10 +23,11 @@ public class PostService {
     }
 
     @Transactional
-    public void update(Long id, PostDto updatePostDto) {
+    public PostDto update(Long id, PostDto updatePostDto) {
         Post updatePost = postRepository.findById(id).orElseThrow();
         updatePost.update(updatePostDto);
-        postRepository.save(updatePost);
+        Post save = postRepository.save(updatePost);
+        return modelMapper.map(save, PostDto.class);
     }
 
     @Transactional(readOnly = true)
